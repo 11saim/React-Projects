@@ -1,0 +1,112 @@
+[
+    {
+        "id": 1,
+        "question": "Which programming language is primarily used for web development in browsers?",
+        "options": [
+            "Python",
+            "C++",
+            "JavaScript",
+            "Java"
+        ],
+        "answer": 2
+    },
+    {
+        "id": 2,
+        "question": "What does HTML stand for?",
+        "options": [
+            "Hyperlinks and Text Markup Language",
+            "Hyper Text Markup Language",
+            "Home Tool Markup Language",
+            "Hyper Tool Making Language"
+        ],
+        "answer": 1
+    },
+    {
+        "id": 3,
+        "question": "Which tag is used in HTML to include an external JavaScript file?",
+        "options": [
+            "<js>",
+            "<javascript>",
+            "<script>",
+            "<link>"
+        ],
+        "answer": 2
+    },
+    {
+        "id": 4,
+        "question": "In CSS, which property is used to change the text color of an element?",
+        "options": [
+            "font-color",
+            "color",
+            "text-color",
+            "fgcolor"
+        ],
+        "answer": 1
+    },
+    {
+        "id": 5,
+        "question": "Which keyword is used to define a constant variable in JavaScript?",
+        "options": [
+            "let",
+            "var",
+            "static",
+            "const"
+        ],
+        "answer": 3
+    },
+    {
+        "id": 6,
+        "question": "What is the output of 2 + '2' in JavaScript?",
+        "options": [
+            "4",
+            "22",
+            "NaN",
+            "Error"
+        ],
+        "answer": 1
+    },
+    {
+        "id": 7,
+        "question": "Which data structure works on the principle of LIFO?",
+        "options": [
+            "Queue",
+            "Array",
+            "Stack",
+            "Tree"
+        ],
+        "answer": 2
+    },
+    {
+        "id": 8,
+        "question": "Which protocol is used to send web pages over the Internet?",
+        "options": [
+            "FTP",
+            "HTTP",
+            "SMTP",
+            "SNMP"
+        ],
+        "answer": 1
+    },
+    {
+        "id": 9,
+        "question": "Which of the following is NOT a programming paradigm?",
+        "options": [
+            "Functional",
+            "Object-Oriented",
+            "Procedural",
+            "Computational"
+        ],
+        "answer": 3
+    },
+    {
+        "id": 10,
+        "question": "Which company developed the React library?",
+        "options": [
+            "Google",
+            "Microsoft",
+            "Facebook",
+            "Amazon"
+        ],
+        "answer": 2
+    }
+]
