@@ -8,6 +8,7 @@ function QuizApp() {
   const [data, setData] = useState(null);
   const [currQues, setcurrQues] = useState(1);
   const [isStart, setIsStart] = useState(true);
+  const [isAnswered, setIsAnswered] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -30,8 +31,8 @@ function QuizApp() {
         isStart={isStart}
         setIsStart={setIsStart}
       />
-      <Main />
-      <Button setIsStart={setIsStart} />
+      <Main question={data[currQues - 1]["question"]} options={data[currQues - 1]['options']}/>
+      <Button setIsStart={setIsStart} isAnswered={true} />
     </div>
   ) : (
     <Loader />

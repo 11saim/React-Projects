@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import stopwatch from "../assets/stopwatch.png";
 
-export default function Timer({isStart,setIsStart}) {
+export default function Timer({ isStart, setIsStart }) {
   const [timeLeft, setTimeLeft] = useState(17999);
   const timerIdRef = useRef(null);
   const startTimeRef = useRef(null);
