@@ -31,7 +31,10 @@ function QuizApp() {
         isStart={isStart}
         setIsStart={setIsStart}
       />
-      <Main question={data[currQues - 1]["question"]} options={data[currQues - 1]['options']}/>
+      <Main
+        question={data[currQues - 1]["question"]}
+        options={data[currQues - 1]["options"]}
+      />
       <Button setIsStart={setIsStart} isAnswered={true} />
     </div>
   ) : (
