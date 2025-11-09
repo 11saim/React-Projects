@@ -1,8 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import stopwatch from "../assets/stopwatch.png";
 
-export default function Timer() {
-  const [isStart, setIsStart] = useState(true);
+export default function Timer({isStart,setIsStart}) {
   const [timeLeft, setTimeLeft] = useState(17999);
   const timerIdRef = useRef(null);
   const startTimeRef = useRef(null);
@@ -30,7 +29,7 @@ export default function Timer() {
   const seconds = Math.floor((timeLeft / 1000) % 60);
   const milliseconds = Math.floor((timeLeft % 1000) / 10);
   return (
-    <div className="w-27 rounded-[50px] px-3 py-1 bg-[#8538f8] flex justify-between items-center">
+    <div className="w-27 rounded-[50px] px-2 py-1 bg-[#8538f8] flex justify-between items-center">
       <img className="w-8 h-8" src={stopwatch} alt="Stop-Watch" />
       <p className="text-white text">
         {seconds.toString().padStart(2, "0") +

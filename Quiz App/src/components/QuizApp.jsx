@@ -7,6 +7,8 @@ import { useEffect, useState } from "react";
 function QuizApp() {
   const [data, setData] = useState(null);
   const [currQues, setcurrQues] = useState(1);
+  const [isStart, setIsStart] = useState(true);
+
   useEffect(() => {
     async function fetchData() {
       try {
@@ -22,9 +24,14 @@ function QuizApp() {
 
   return data ? (
     <div className="bg-[#430d97] w-96 rounded-3xl m-2 py-4">
-      <Header currQues={currQues} totalQues={data.length} />
+      <Header
+        currQues={currQues}
+        totalQues={data.length}
+        isStart={isStart}
+        setIsStart={setIsStart}
+      />
       <Main />
-      <Button />
+      <Button setIsStart={setIsStart} />
     </div>
   ) : (
     <Loader />
