@@ -34,6 +34,7 @@ function QuizApp() {
       <Main
         question={data[currQues - 1]["question"]}
         options={data[currQues - 1]["options"]}
+        correctOption={data[currQues - 1]["answer"]}
       />
       <Button setIsStart={setIsStart} isAnswered={true} />
     </div>
