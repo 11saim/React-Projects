@@ -7,7 +7,6 @@ import { useEffect, useState } from "react";
 function QuizApp() {
   const [data, setData] = useState(null);
   const [currQues, setcurrQues] = useState(1);
-  const [isStart, setIsStart] = useState(true);
   const [isAnswered, setIsAnswered] = useState(false);
 
   useEffect(() => {
@@ -28,15 +27,16 @@ function QuizApp() {
       <Header
         currQues={currQues}
         totalQues={data.length}
-        isStart={isStart}
-        setIsStart={setIsStart}
+        isAnswered={isAnswered}
       />
       <Main
         question={data[currQues - 1]["question"]}
         options={data[currQues - 1]["options"]}
         correctOption={data[currQues - 1]["answer"]}
+        isAnswered={isAnswered}
+        setIsAnswered={setIsAnswered}
       />
-      <Button setIsStart={setIsStart} isAnswered={true} />
+      <Button />
     </div>
   ) : (
     <Loader />

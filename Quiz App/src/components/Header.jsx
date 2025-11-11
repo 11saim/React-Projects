@@ -1,14 +1,14 @@
 import React from "react";
 import Timer from "./Timer";
 
-export default function Header({ currQues, totalQues, isStart, setIsStart }) {
+export default function Header({ currQues, totalQues, isAnswered }) {
   return (
     <div className="flex my-4 flex-col space-y-6">
       <div className="flex justify-around items-center">
         <p className="text-white font-bold">
           {currQues} of {totalQues}
         </p>
-        <Timer isStart={isStart} setIsStart={setIsStart} />
+        <Timer isAnswered={isAnswered} />
       </div>
       <div className="progress-bar">
         <div className="w-[90%] h-4 bg-black m-auto rounded-[40px]">

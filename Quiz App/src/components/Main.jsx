@@ -1,8 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
-export default function Main({ question, options, correctOption }) {
+export default function Main({
+  question,
+  options,
+  correctOption,
+  isAnswered,
+  setIsAnswered,
+}) {
   const [selected, setSelected] = useState(null);
-  const [isAnswered, setIsAnswered] = useState(false);
 
   const clickHandler = (selectedOption) => {
     if (isAnswered) return;
