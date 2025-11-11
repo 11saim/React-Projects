@@ -9,6 +9,7 @@ export default function Timer({ isAnswered }) {
   useEffect(() => {
     if (isAnswered) return;
 
+    setTimeLeft(17999);
     startTimeRef.current = performance.now();
     timerIdRef.current = setInterval(() => {
       const elapsedTime = performance.now() - startTimeRef.current;

@@ -36,7 +36,11 @@ function QuizApp() {
         isAnswered={isAnswered}
         setIsAnswered={setIsAnswered}
       />
-      <Button />
+      <Button
+        isAnswered={isAnswered}
+        setIsAnswered={setIsAnswered}
+        setcurrQues={setcurrQues}
+      />
     </div>
   ) : (
     <Loader />
