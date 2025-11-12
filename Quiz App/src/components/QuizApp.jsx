@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 
 function QuizApp() {
   const [data, setData] = useState(null);
-  const [currQues, setcurrQues] = useState(1);
+  const [currQues, setCurrQues] = useState(1);
   const [isAnswered, setIsAnswered] = useState(false);
 
   useEffect(() => {
@@ -39,7 +39,7 @@ function QuizApp() {
       <Button
         isAnswered={isAnswered}
         setIsAnswered={setIsAnswered}
-        setcurrQues={setcurrQues}
+        setCurrQues={setCurrQues}
       />
     </div>
   ) : (

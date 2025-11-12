@@ -1,11 +1,11 @@
 import React from "react";
 
-export default function Button({ setcurrQues, isAnswered, setIsAnswered }) {
+export default function Button({ setCurrQues, isAnswered, setIsAnswered }) {
   return (
     <div
       onClick={() => {
         if (isAnswered) {
-          setcurrQues((prev) => prev + 1);
+          setCurrQues((prev) => prev + 1);
           setIsAnswered(false);
         }
       }}
