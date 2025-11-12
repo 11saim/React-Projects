@@ -1,30 +1,33 @@
 import React, { useEffect, useRef, useState } from "react";
 import stopwatch from "../assets/stopwatch.png";
 
-export default function Timer({ isAnswered }) {
-  const [timeLeft, setTimeLeft] = useState(17999);
+export default function Timer({ currQues, isAnswered, setCurrQues }) {
+  const [timeLeft, setTimeLeft] = useState(null);
   const timerIdRef = useRef(null);
   const startTimeRef = useRef(null);
-
+  const timerCycleCompleted = useRef(false);
   useEffect(() => {
     if (isAnswered) return;
 
     setTimeLeft(17999);
     startTimeRef.current = performance.now();
+    timerCycleCompleted.current = false;
     timerIdRef.current = setInterval(() => {
       const elapsedTime = performance.now() - startTimeRef.current;
       startTimeRef.current = performance.now();
       setTimeLeft((prevTime) => {
         const newTime = prevTime - elapsedTime;
-        if (newTime <= 0) {
+        if (newTime <= 0 && !timerCycleCompleted.current) {
           clearInterval(timerIdRef.current);
+          setCurrQues((prev) => prev + 1);
+          timerCycleCompleted.current = true;
           return 0;
         }
         return newTime;
       });
     }, 100);
     return () => clearInterval(timerIdRef.current);
-  }, [isAnswered]);
+  }, [isAnswered, currQues]);
 
   const seconds = Math.floor((timeLeft / 1000) % 60);
   const milliseconds = Math.floor((timeLeft % 1000) / 10);

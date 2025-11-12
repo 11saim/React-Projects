@@ -28,6 +28,7 @@ function QuizApp() {
         currQues={currQues}
         totalQues={data.length}
         isAnswered={isAnswered}
+        setCurrQues={setCurrQues}
       />
       <Main
         question={data[currQues - 1]["question"]}
