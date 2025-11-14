@@ -6,6 +6,7 @@ export default function Main({
   correctOption,
   isAnswered,
   setIsAnswered,
+  setResult,
 }) {
   const [selected, setSelected] = useState(null);
 
@@ -13,6 +14,18 @@ export default function Main({
     if (isAnswered) return;
     setIsAnswered(true);
     setSelected(selectedOption);
+
+    if (selectedOption === correctOption) {
+      setResult((prev) => ({
+        ...prev,
+        correct: prev.correct + 1,
+      }));
+    } else {
+      setResult((prev) => ({
+        ...prev,
+        wrong: prev.wrong + 1,
+      }));
+    }
   };
   return (
     <div className="relative m-4 mt-7 xs:m-5">

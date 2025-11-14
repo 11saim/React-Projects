@@ -8,7 +8,12 @@ function QuizApp() {
   const [data, setData] = useState(null);
   const [currQues, setCurrQues] = useState(1);
   const [isAnswered, setIsAnswered] = useState(false);
-
+  const [result, setResult] = useState({
+    correct: 0,
+    wrong: 0,
+    notAnswered: 0,
+  });
+  console.log(result);
   useEffect(() => {
     async function fetchData() {
       try {
@@ -29,6 +34,7 @@ function QuizApp() {
         totalQues={data.length}
         isAnswered={isAnswered}
         setCurrQues={setCurrQues}
+        setResult={setResult}
       />
       <Main
         question={data[currQues - 1]["question"]}
@@ -36,6 +42,7 @@ function QuizApp() {
         correctOption={data[currQues - 1]["answer"]}
         isAnswered={isAnswered}
         setIsAnswered={setIsAnswered}
+        setResult={setResult}
       />
       <Button
         isAnswered={isAnswered}

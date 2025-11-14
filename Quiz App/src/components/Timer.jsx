@@ -1,7 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import stopwatch from "../assets/stopwatch.png";
 
-export default function Timer({ currQues, isAnswered, setCurrQues }) {
+export default function Timer({
+  currQues,
+  isAnswered,
+  setCurrQues,
+  setResult,
+}) {
   const [timeLeft, setTimeLeft] = useState(null);
   const timerIdRef = useRef(null);
   const startTimeRef = useRef(null);
@@ -21,6 +26,10 @@ export default function Timer({ currQues, isAnswered, setCurrQues }) {
           clearInterval(timerIdRef.current);
           setCurrQues((prev) => prev + 1);
           timerCycleCompleted.current = true;
+          setResult((prev) => ({
+            ...prev,
+            notAnswered: prev.notAnswered + 1,
+          }));
           return 0;
         }
         return newTime;
