@@ -2,6 +2,7 @@ import Header from "./Header";
 import Main from "./Main";
 import Button from "./Button";
 import Loader from "./Loader";
+import Result from "./Result";
 import { useEffect, useState } from "react";
 
 function QuizApp() {
@@ -13,7 +14,6 @@ function QuizApp() {
     wrong: 0,
     notAnswered: 0,
   });
-  console.log(result);
   useEffect(() => {
     async function fetchData() {
       try {
@@ -28,28 +28,29 @@ function QuizApp() {
   }, []);
 
   return data ? (
-    <div className="bg-[#430d97] w-96 rounded-3xl m-2 py-4">
-      <Header
-        currQues={currQues}
-        totalQues={data.length}
-        isAnswered={isAnswered}
-        setCurrQues={setCurrQues}
-        setResult={setResult}
-      />
-      <Main
-        question={data[currQues - 1]["question"]}
-        options={data[currQues - 1]["options"]}
-        correctOption={data[currQues - 1]["answer"]}
-        isAnswered={isAnswered}
-        setIsAnswered={setIsAnswered}
-        setResult={setResult}
-      />
-      <Button
-        isAnswered={isAnswered}
-        setIsAnswered={setIsAnswered}
-        setCurrQues={setCurrQues}
-      />
-    </div>
+    // <div className="bg-[#430d97] w-96 rounded-3xl m-2 py-4">
+    //   <Header
+    //     currQues={currQues}
+    //     totalQues={data.length}
+    //     isAnswered={isAnswered}
+    //     setCurrQues={setCurrQues}
+    //     setResult={setResult}
+    //   />
+    //   <Main
+    //     question={data[currQues - 1]["question"]}
+    //     options={data[currQues - 1]["options"]}
+    //     correctOption={data[currQues - 1]["answer"]}
+    //     isAnswered={isAnswered}
+    //     setIsAnswered={setIsAnswered}
+    //     setResult={setResult}
+    //   />
+    //   <Button
+    //     isAnswered={isAnswered}
+    //     setIsAnswered={setIsAnswered}
+    //     setCurrQues={setCurrQues}
+    //   />
+    // </div>
+    <Result />
   ) : (
     <Loader />
   );
