@@ -5,7 +5,7 @@ import correct from "../assets/correct.png";
 import wrong from "../assets/wrong.png";
 import notAnswered from "../assets/not-answered.png";
 
-export default function Result() {
+export default function Result({ result, setResult }) {
   return (
     <div className="flex justify-center items-center flex-col">
       <h1 className="text-center text-3xl text-white font-bold mb-30">
@@ -25,14 +25,17 @@ export default function Result() {
           <div className="flex w-full justify-center items-center flex-col h-20 rounded-bl-3xl border border-l-0 border-b-0 border-r-0 border-t-slate-300">
             <div className="flex justify-center items-center">
               <img className="w-7 h-7 mr-2" src={correct} alt="correct" />
-              <p>05</p>
+              <p>
+                {result.correct > 9 ? result.correct : "0" + result.correct}
+              </p>
             </div>
             <p className="text-slate-400">Correct</p>
           </div>
           <div className="flex w-full justify-center items-center flex-col h-20 border border-b-0 border-slate-300">
             <div className="flex justify-center items-center">
               <img className="w-7 h-7 mr-2" src={wrong} alt="wrong" />
-              <p>03</p>
+              {result.wrong > 9 ? result.wrong : "0" + result.wrong}
+              <p></p>
             </div>
             <p className="text-slate-400">Wrong</p>
           </div>
@@ -43,14 +46,21 @@ export default function Result() {
                 src={notAnswered}
                 alt="not-answered"
               />
-              <p>05</p>
+              {result.notAnswered > 9
+                ? result.notAnswered
+                : "0" + result.notAnswered}
+              <p></p>
             </div>
             <p className="text-slate-400">Not-Ans</p>
           </div>
         </div>
       </div>
       <button>
-        <img className="w-15 h-15 mt-10 cursor-pointer" src={retry} alt="retry" />
+        <img
+          className="w-15 h-15 mt-10 cursor-pointer"
+          src={retry}
+          alt="retry"
+        />
       </button>
     </div>
   );

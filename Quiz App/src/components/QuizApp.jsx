@@ -28,29 +28,32 @@ function QuizApp() {
   }, []);
 
   return data ? (
-    // <div className="bg-[#430d97] w-96 rounded-3xl m-2 py-4">
-    //   <Header
-    //     currQues={currQues}
-    //     totalQues={data.length}
-    //     isAnswered={isAnswered}
-    //     setCurrQues={setCurrQues}
-    //     setResult={setResult}
-    //   />
-    //   <Main
-    //     question={data[currQues - 1]["question"]}
-    //     options={data[currQues - 1]["options"]}
-    //     correctOption={data[currQues - 1]["answer"]}
-    //     isAnswered={isAnswered}
-    //     setIsAnswered={setIsAnswered}
-    //     setResult={setResult}
-    //   />
-    //   <Button
-    //     isAnswered={isAnswered}
-    //     setIsAnswered={setIsAnswered}
-    //     setCurrQues={setCurrQues}
-    //   />
-    // </div>
-    <Result />
+    currQues <= 10 ? (
+      <div className="bg-[#430d97] w-96 rounded-3xl m-2 py-4">
+        <Header
+          currQues={currQues}
+          totalQues={data.length}
+          isAnswered={isAnswered}
+          setCurrQues={setCurrQues}
+          setResult={setResult}
+        />
+        <Main
+          question={data[currQues - 1]["question"]}
+          options={data[currQues - 1]["options"]}
+          correctOption={data[currQues - 1]["answer"]}
+          isAnswered={isAnswered}
+          setIsAnswered={setIsAnswered}
+          setResult={setResult}
+        />
+        <Button
+          isAnswered={isAnswered}
+          setIsAnswered={setIsAnswered}
+          setCurrQues={setCurrQues}
+        />
+      </div>
+    ) : (
+      <Result result={result} setResult={setResult} />
+    )
   ) : (
     <Loader />
   );
