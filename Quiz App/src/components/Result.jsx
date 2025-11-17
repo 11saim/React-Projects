@@ -5,7 +5,24 @@ import correct from "../assets/correct.png";
 import wrong from "../assets/wrong.png";
 import notAnswered from "../assets/not-answered.png";
 
-export default function Result({ result, setResult }) {
+export default function Result({ result, setResult, setCurrQues }) {
+  const clickHandler = () => {
+    setCurrQues(1);
+    setResult({
+      correct: 0,
+      wrong: 0,
+      notAnswered: 0,
+    });
+  };
+  const resultTitle = (score) => {
+    if (score < 5) {
+      return "Better Luck Next Time !";
+    } else if (score > 5 && score < 8) {
+      return "Not Bad !";
+    } else {
+      return "Congratulations !";
+    }
+  };
   return (
     <div className="flex justify-center items-center flex-col">
       <h1 className="text-center text-3xl text-white font-bold mb-30">
@@ -17,9 +34,17 @@ export default function Result({ result, setResult }) {
           src={trophy}
           alt="trophy-icon"
         />
-        <div className="font-bold text-2xl mt-27">Congratulations !</div>
+        <div className="font-bold text-2xl mt-27">
+          {resultTitle(result.correct)}
+        </div>
         <div className="text-slate-400 text-lg my-2">
-          You've Scored <span className="text-green-400">+80</span> points
+          You've Scored{" "}
+          <span className="text-green-400">
+            {result.correct * 10 > 0
+              ? "+" + result.correct * 10
+              : result.correct * 10}
+          </span>{" "}
+          points
         </div>
         <div className="flex justify-around items-center w-full">
           <div className="flex w-full justify-center items-center flex-col h-20 rounded-bl-3xl border border-l-0 border-b-0 border-r-0 border-t-slate-300">
@@ -55,7 +80,11 @@ export default function Result({ result, setResult }) {
           </div>
         </div>
       </div>
-      <button>
+      <button
+        onClick={() => {
+          clickHandler();
+        }}
+      >
         <img
           className="w-15 h-15 mt-10 cursor-pointer"
           src={retry}
