@@ -52,7 +52,7 @@ function QuizApp() {
         />
       </div>
     ) : (
-      <Result result={result} setResult={setResult} setCurrQues={setCurrQues}/>
+      <Result result={result} setResult={setResult} setCurrQues={setCurrQues} />
     )
   ) : (
     <Loader />

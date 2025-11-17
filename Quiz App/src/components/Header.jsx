@@ -11,9 +11,12 @@ export default function Header({
   return (
     <div className="flex my-4 flex-col space-y-6">
       <div className="flex justify-around items-center">
-        <p className="text-white font-bold">
-          {currQues} of {totalQues}
-        </p>
+        <div>
+          <p className="text-white text-xs font-bold">Ques No:</p>
+          <p className="text-white font-bold">
+            {currQues} of {totalQues}
+          </p>
+        </div>
         <Timer
           setResult={setResult}
           currQues={currQues}
