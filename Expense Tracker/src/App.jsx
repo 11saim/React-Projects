@@ -4,11 +4,10 @@ import ExpenseTable from "./components/ExpenseTable";
 
 function App() {
   return (
-    <>
-      <h1>Track Your Expense</h1>
+    <div className="flex items-start justify-around py-10">
       <ExpenseForm />
       <ExpenseTable />
-    </>
+    </div>
   );
 }
 
