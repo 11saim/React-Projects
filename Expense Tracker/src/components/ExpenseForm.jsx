@@ -2,21 +2,20 @@ import React from "react";
 
 export default function ExpenseForm() {
   return (
-    <div className="flex flex-col">
-      <h1 className="text-4xl font-bold">Track Your Expense</h1>
-      <form className="m-5">
+    <div className="flex flex-col w-[40%]">
+      <form className="m-5 flex flex-col space-y-3">
         <label htmlFor="title">
-          <h3 className="">Title</h3>
+          <h3 className="text-lg font-bold">Title</h3>
           <input
-            className="border w-full outline-0 pl-2"
+            className="border w-full outline-0 p-1"
             type="text"
             id="title"
           />
         </label>
         <label htmlFor="category">
-          <h3 className="">Category</h3>
+          <h3 className="text-lg font-bold">Category</h3>
           <select
-            className="border w-full outline-0"
+            className="border w-full outline-0 p-1"
             name="category"
             id="category"
           >
@@ -29,15 +28,15 @@ export default function ExpenseForm() {
           </select>
         </label>
         <label htmlFor="amount">
-          <h3>Amount</h3>
+          <h3 className="text-lg font-bold">Amount</h3>
           <input
-            className="border w-full outline-0 pl-2"
+            className="border w-full outline-0 p-1"
             type="number"
             id="amount"
           />
         </label>
+        <button className="mt-5 border w-full p-1 cursor-pointer">Add</button>
       </form>
-      <button className="bg-amber-200 mx-5">Add</button>
     </div>
   );
 }
