@@ -2,7 +2,7 @@ import React from "react";
 
 export default function ExpenseTable() {
   return (
-    <table className="border-2 border-collapse w-[40%] mt-12">
+    <table className="border-2 border-collapse w-[80%] lg:w-[40%] mt-12">
       <thead>
         <tr>
           <th className="border-2 p-1">Title </th>

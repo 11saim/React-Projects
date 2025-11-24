@@ -2,8 +2,8 @@ import React from "react";
 
 export default function ExpenseForm() {
   return (
-    <div className="flex flex-col w-[40%]">
-      <form className="m-5 flex flex-col space-y-3">
+    <div className="flex flex-col w-[80%] lg:w-[40%]">
+      <form className="lg:m-5 flex flex-col space-y-3">
         <label htmlFor="title">
           <h3 className="text-lg font-bold">Title</h3>
           <input
