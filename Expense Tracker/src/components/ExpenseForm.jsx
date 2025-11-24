@@ -15,7 +15,7 @@ export default function ExpenseForm() {
         <label htmlFor="category">
           <h3 className="text-lg font-bold">Category</h3>
           <select
-            className="border w-full outline-0 p-1"
+            className="border w-full outline-0 p-1 cursor-pointer"
             name="category"
             id="category"
           >
@@ -35,7 +35,9 @@ export default function ExpenseForm() {
             id="amount"
           />
         </label>
-        <button className="mt-5 border w-full p-1 cursor-pointer">Add</button>
+        <button className="mt-5 border w-full p-1 cursor-pointer font-bold text-lg">
+          Add
+        </button>
       </form>
     </div>
   );
