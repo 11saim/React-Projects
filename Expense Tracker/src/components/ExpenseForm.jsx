@@ -1,6 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 
 export default function ExpenseForm() {
+  const [record, setRecord] = useState({
+    title: null,
+    category: null,
+    amount: null,
+  });
+  console.log(record);
   return (
     <div className="flex flex-col w-full sm:w-[80%] lg:w-[40%]">
       <form className="lg:m-5 flex flex-col space-y-3">
@@ -10,6 +16,10 @@ export default function ExpenseForm() {
             className="border w-full outline-0 p-1"
             type="text"
             id="title"
+            required
+            onChange={(e) => {
+              setRecord((prev) => ({ ...prev, title: e.target.value }));
+            }}
           />
         </label>
         <label htmlFor="category">
@@ -18,6 +28,10 @@ export default function ExpenseForm() {
             className="border w-full outline-0 p-1 cursor-pointer"
             name="category"
             id="category"
+            required
+            onChange={(e) => {
+              setRecord((prev) => ({ ...prev, category: e.target.value }));
+            }}
           >
             <option value="">Select Category</option>
             <option value="education">Education</option>
@@ -33,6 +47,10 @@ export default function ExpenseForm() {
             className="border w-full outline-0 p-1"
             type="number"
             id="amount"
+            required
+            onChange={(e) => {
+              setRecord((prev) => ({ ...prev, amount: e.target.value }));
+            }}
           />
         </label>
         <button className="mt-5 border w-full p-1 cursor-pointer font-bold text-lg">
