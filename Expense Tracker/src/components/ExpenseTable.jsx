@@ -2,7 +2,7 @@ import React from "react";
 import upArrow from "../assets/up-arrow.png";
 import downArrow from "../assets/down-arrow.png";
 
-export default function ExpenseTable() {
+export default function ExpenseTable({ data }) {
   return (
     <table className="border-2 border-collapse w-full sm:w-[80%] lg:w-[40%] mt-12">
       <thead>
@@ -58,16 +58,15 @@ export default function ExpenseTable() {
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td className="border-2 py-1 px-1 sm:px-3">Milk</td>
-          <td className="border-2 py-1 px-1 sm:px-3">Grocery</td>
-          <td className="border-2 py-1 px-1 sm:px-3">40</td>
-        </tr>
-        <tr>
-          <td className="border-2 py-1 px-1 sm:px-3">Milk</td>
-          <td className="border-2 py-1 px-1 sm:px-3">Grocery</td>
-          <td className="border-2 py-1 px-1 sm:px-3">40</td>
-        </tr>
+        {data.map((item) => {
+          return (
+            <tr>
+              <td className="border-2 py-1 px-1 sm:px-3">{item.title}</td>
+              <td className="border-2 py-1 px-1 sm:px-3">{item.category}</td>
+              <td className="border-2 py-1 px-1 sm:px-3">{item.amount}</td>
+            </tr>
+          );
+        })}
       </tbody>
       <tfoot>
         <tr>
