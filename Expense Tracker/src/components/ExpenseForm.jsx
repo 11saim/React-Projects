@@ -1,15 +1,25 @@
 import React, { useState } from "react";
 
-export default function ExpenseForm() {
+export default function ExpenseForm({ setData }) {
   const [record, setRecord] = useState({
-    title: null,
-    category: null,
-    amount: null,
+    title: "",
+    category: "",
+    amount: "",
   });
-  console.log(record);
   return (
     <div className="flex flex-col w-full sm:w-[80%] lg:w-[40%]">
-      <form className="lg:m-5 flex flex-col space-y-3">
+      <form
+        className="lg:m-5 flex flex-col space-y-3"
+        onSubmit={(e) => {
+          e.preventDefault();
+          setData((prev) => [...prev, record]);
+          setRecord({
+            title: "",
+            category: "",
+            amount: "",
+          });
+        }}
+      >
         <label htmlFor="title">
           <h3 className="text-lg font-bold">Title</h3>
           <input
@@ -17,6 +27,7 @@ export default function ExpenseForm() {
             type="text"
             id="title"
             required
+            value={record.title}
             onChange={(e) => {
               setRecord((prev) => ({ ...prev, title: e.target.value }));
             }}
@@ -29,6 +40,7 @@ export default function ExpenseForm() {
             name="category"
             id="category"
             required
+            value={record.category}
             onChange={(e) => {
               setRecord((prev) => ({ ...prev, category: e.target.value }));
             }}
@@ -48,6 +60,7 @@ export default function ExpenseForm() {
             type="number"
             id="amount"
             required
+            value={record.amount}
             onChange={(e) => {
               setRecord((prev) => ({ ...prev, amount: e.target.value }));
             }}
