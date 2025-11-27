@@ -2,10 +2,12 @@ import React, { useState } from "react";
 
 export default function ExpenseForm({ setData }) {
   const [record, setRecord] = useState({
+    id: crypto.randomUUID(),
     title: "",
     category: "",
     amount: "",
   });
+
   return (
     <div className="flex flex-col w-full sm:w-[80%] lg:w-[40%]">
       <form
@@ -14,6 +16,7 @@ export default function ExpenseForm({ setData }) {
           e.preventDefault();
           setData((prev) => [...prev, record]);
           setRecord({
+            id: crypto.randomUUID(),
             title: "",
             category: "",
             amount: "",

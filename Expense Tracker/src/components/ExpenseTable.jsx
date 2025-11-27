@@ -72,7 +72,7 @@ export default function ExpenseTable({ data }) {
         <tr>
           <td className="border-2 py-1 px-1 sm:px-3 font-bold">Total</td>
           <td></td>
-          <td className="border-2 py-1 px-1 sm:px-3">780</td>
+          <td className="border-2 py-1 px-1 sm:px-3">0</td>
         </tr>
       </tfoot>
     </table>
