@@ -1,9 +1,11 @@
 import React, { useState } from "react";
+import Select from "./Select";
+import Input from "./Input";
 
 export default function ExpenseForm({ setData }) {
   const [error, setError] = useState({});
   const [record, setRecord] = useState({
-    // id: crypto.randomUUID(),
+    id: crypto.randomUUID(),
     title: "",
     category: "",
     amount: "",
@@ -58,7 +60,7 @@ export default function ExpenseForm({ setData }) {
 
     setData((prev) => [...prev, record]);
     setRecord({
-      // id: crypto.randomUUID(),
+      id: crypto.randomUUID(),
       title: "",
       category: "",
       amount: "",
@@ -72,47 +74,15 @@ export default function ExpenseForm({ setData }) {
           handleSubmit(e);
         }}
       >
-        <label htmlFor="title">
-          <h3 className="text-lg font-bold">Title</h3>
-          <input
-            className="border w-full outline-0 p-1"
-            id="title"
-            value={record.title}
-            onChange={(e) => {
-              handleChange(e.target);
-            }}
-          />
-        </label>
-        <label htmlFor="category">
-          <h3 className="text-lg font-bold">Category</h3>
-          <select
-            className="border w-full outline-0 p-1 cursor-pointer"
-            name="category"
-            id="category"
-            value={record.category}
-            onChange={(e) => {
-              handleChange(e.target);
-            }}
-          >
-            <option value="">Select Category</option>
-            <option value="education">Education</option>
-            <option value="bills">Bills</option>
-            <option value="grocery">Grocery</option>
-            <option value="sports">Sports</option>
-            <option value="medicine">Medicine</option>
-          </select>
-        </label>
-        <label htmlFor="amount">
-          <h3 className="text-lg font-bold">Amount</h3>
-          <input
-            className="border w-full outline-0 p-1"
-            id="amount"
-            value={record.amount}
-            onChange={(e) => {
-              handleChange(e.target);
-            }}
-          />
-        </label>
+        <Input title={"Title"} value={record.title} onChange={handleChange} />
+
+        <Select
+          title={"Category"}
+          value={record.category}
+          onChange={handleChange}
+        />
+
+        <Input title={"Amount"} value={record.amount} onChange={handleChange} />
         <button className="mt-5 border w-full p-1 cursor-pointer font-bold text-lg">
           Add
         </button>
