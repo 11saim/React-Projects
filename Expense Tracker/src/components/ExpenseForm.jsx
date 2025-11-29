@@ -16,27 +16,27 @@ export default function ExpenseForm({ setData }) {
     category: [{ required: true, message: "Category Is Required!" }],
     amount: [
       { required: true, message: "Amount Is Required!" },
-      { pattern: /^[1-9]\d*(\.\d+)?$/, message: "Enter Valid Amount!" },
+      { pattern: /^(0|[1-9]\d*)(\.\d+)?$/, message: "Enter Valid Amount!" },
     ],
   };
   const validate = (formData) => {
     const errors = {};
     Object.entries(formData).forEach(([key, value]) => {
-      validations[key].forEach((rule) => {
+      console.log("Key: " + key, "Value: " + value);
+      validations[key].some((rule) => {
         if (rule.required && !value) {
           errors[key] = rule.message;
-          console.log(key);
-          return;
+          return true;
         }
 
-        if (rule.minLength && value.lenght < rule.minLength) {
+        if (rule.minLength && value.length < rule.minLength) {
           errors[key] = rule.message;
-          return;
+          return true;
         }
 
         if (rule.pattern && !rule.pattern.test(value)) {
           errors[key] = rule.message;
-          return;
+          return true;
         }
       });
     });
@@ -44,23 +44,32 @@ export default function ExpenseForm({ setData }) {
     setError(errors);
     return errors;
   };
+
+  function handleChange(field) {
+    const { id, value } = field;
+    setRecord((prev) => ({ ...prev, [id]: value }));
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    const formValidation = validate(record);
+    console.log(formValidation);
+    if (Object.keys(formValidation).length) return;
+
+    setData((prev) => [...prev, record]);
+    setRecord({
+      // id: crypto.randomUUID(),
+      title: "",
+      category: "",
+      amount: "",
+    });
+  }
   return (
     <div className="flex flex-col w-full sm:w-[80%] lg:w-[40%]">
       <form
         className="lg:m-5 flex flex-col space-y-3"
         onSubmit={(e) => {
-          e.preventDefault();
-          const formValidation = validate(record);
-          console.log(formValidation);
-          if (Object.keys(formValidation).length) return;
-
-          setData((prev) => [...prev, record]);
-          setRecord({
-            // id: crypto.randomUUID(),
-            title: "",
-            category: "",
-            amount: "",
-          });
+          handleSubmit(e);
         }}
       >
         <label htmlFor="title">
@@ -70,7 +79,7 @@ export default function ExpenseForm({ setData }) {
             id="title"
             value={record.title}
             onChange={(e) => {
-              setRecord((prev) => ({ ...prev, title: e.target.value }));
+              handleChange(e.target);
             }}
           />
         </label>
@@ -82,7 +91,7 @@ export default function ExpenseForm({ setData }) {
             id="category"
             value={record.category}
             onChange={(e) => {
-              setRecord((prev) => ({ ...prev, category: e.target.value }));
+              handleChange(e.target);
             }}
           >
             <option value="">Select Category</option>
@@ -100,10 +109,7 @@ export default function ExpenseForm({ setData }) {
             id="amount"
             value={record.amount}
             onChange={(e) => {
-              setRecord((prev) => ({
-                ...prev,
-                amount: e.target.value,
-              }));
+              handleChange(e.target);
             }}
           />
         </label>
