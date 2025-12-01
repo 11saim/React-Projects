@@ -24,7 +24,7 @@ export default function ExpenseForm({ setData }) {
   const validate = (formData) => {
     const errors = {};
     Object.entries(formData).forEach(([key, value]) => {
-      console.log("Key: " + key, "Value: " + value);
+      if (key === "id") return false;
       validations[key].some((rule) => {
         if (rule.required && !value) {
           errors[key] = rule.message;
@@ -65,6 +65,11 @@ export default function ExpenseForm({ setData }) {
       category: "",
       amount: "",
     });
+    setError({
+      title: "",
+      category: "",
+      amount: "",
+    });
   }
   return (
     <div className="flex flex-col w-full sm:w-[80%] lg:w-[40%]">
@@ -74,15 +79,27 @@ export default function ExpenseForm({ setData }) {
           handleSubmit(e);
         }}
       >
-        <Input title={"Title"} value={record.title} onChange={handleChange} />
+        <Input
+          title={"Title"}
+          value={record.title}
+          onChange={handleChange}
+          error={error.title}
+        />
 
         <Select
           title={"Category"}
           value={record.category}
           onChange={handleChange}
+          error={error.category}
         />
 
-        <Input title={"Amount"} value={record.amount} onChange={handleChange} />
+        <Input
+          title={"Amount"}
+          value={record.amount}
+          onChange={handleChange}
+          error={error.amount}
+        />
+
         <button className="mt-5 border w-full p-1 cursor-pointer font-bold text-lg">
           Add
         </button>
