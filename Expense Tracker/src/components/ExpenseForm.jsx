@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Input from "./Input";
 
-export default function ExpenseForm({ setData }) {
+export default function ExpenseForm({ setData, setCategories, categories }) {
   const [error, setError] = useState({});
   const [record, setRecord] = useState({
     id: crypto.randomUUID(),
@@ -56,6 +56,13 @@ export default function ExpenseForm({ setData }) {
     const formValidation = validate(record);
     if (Object.keys(formValidation).length) return;
 
+    const isCategoryExists = categories.some(
+      (category) => category.toLowerCase() === record.category.toLowerCase()
+    );
+
+    if (!isCategoryExists) {
+      setCategories((prev) => [...prev, record.category]);
+    }
     setData((prev) => [...prev, record]);
     setRecord({
       id: crypto.randomUUID(),
@@ -63,11 +70,7 @@ export default function ExpenseForm({ setData }) {
       category: "",
       amount: "",
     });
-    setError({
-      title: "",
-      category: "",
-      amount: "",
-    });
+    setError({});
   }
   return (
     <div className="flex flex-col w-full sm:w-[80%] lg:w-[40%]">

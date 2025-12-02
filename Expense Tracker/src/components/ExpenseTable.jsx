@@ -60,7 +60,7 @@ export default function ExpenseTable({ data }) {
       <tbody>
         {data.map((item) => {
           return (
-            <tr>
+            <tr key={item.id}>
               <td className="border-2 py-1 px-1 sm:px-3">{item.title}</td>
               <td className="border-2 py-1 px-1 sm:px-3">{item.category}</td>
               <td className="border-2 py-1 px-1 sm:px-3">{item.amount}</td>
