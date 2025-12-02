@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Select from "./Select";
 import Input from "./Input";
 
 export default function ExpenseForm({ setData }) {
@@ -55,7 +54,6 @@ export default function ExpenseForm({ setData }) {
   function handleSubmit(e) {
     e.preventDefault();
     const formValidation = validate(record);
-    console.log(formValidation);
     if (Object.keys(formValidation).length) return;
 
     setData((prev) => [...prev, record]);
@@ -86,7 +84,7 @@ export default function ExpenseForm({ setData }) {
           error={error.title}
         />
 
-        <Select
+        <Input
           title={"Category"}
           value={record.category}
           onChange={handleChange}
