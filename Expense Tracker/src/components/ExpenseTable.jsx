@@ -70,7 +70,11 @@ export default function ExpenseTable({ data, categories }) {
         <tr>
           <td className="border-2 py-1 px-1 sm:px-3 font-bold">Total</td>
           <td></td>
-          <td className="border-2 py-1 px-1 sm:px-3">0</td>
+          <td className="border-2 py-1 px-1 sm:px-3">
+            {data.reduce((acc, item) => {
+              return acc + parseFloat(item.amount);
+            }, 0)}
+          </td>
         </tr>
       </tfoot>
     </table>
