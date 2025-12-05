@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function Input({ title, value, onChange, error }) {
+export default function Input({ title, value, onChange, error, type }) {
   return (
     <div>
       <label
@@ -13,7 +13,9 @@ export default function Input({ title, value, onChange, error }) {
       <input
         className="border w-full outline-0 p-1"
         id={title.toLowerCase()}
+        name={title.toLowerCase()}
         value={value}
+        type={type}
         onChange={(e) => {
           onChange(e.target);
         }}

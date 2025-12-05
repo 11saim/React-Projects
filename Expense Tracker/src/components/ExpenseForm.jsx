@@ -85,6 +85,7 @@ export default function ExpenseForm({ setData, setCategories, categories }) {
           value={record.title}
           onChange={handleChange}
           error={error.title}
+          type={"text"}
         />
 
         <Input
@@ -92,6 +93,7 @@ export default function ExpenseForm({ setData, setCategories, categories }) {
           value={record.category}
           onChange={handleChange}
           error={error.category}
+          type={"text"}
         />
 
         <Input
@@ -99,6 +101,7 @@ export default function ExpenseForm({ setData, setCategories, categories }) {
           value={record.amount}
           onChange={handleChange}
           error={error.amount}
+          type={"number"}
         />
 
         <button className="mt-5 border w-full p-1 cursor-pointer font-bold text-lg">

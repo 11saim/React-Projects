@@ -5,7 +5,7 @@ import ExpenseTable from "./components/ExpenseTable";
 function App() {
   const [data, setData] = useState([]);
   const [categories, setCategories] = useState([]);
-
+  console.log(categories)
   return (
     <div className="p-3 sm:p-10">
       <h1 className="text-4xl font-bold">Track Your Expense</h1>

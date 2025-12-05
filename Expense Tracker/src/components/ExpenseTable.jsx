@@ -2,7 +2,7 @@ import React from "react";
 import upArrow from "../assets/up-arrow.png";
 import downArrow from "../assets/down-arrow.png";
 
-export default function ExpenseTable({ data }) {
+export default function ExpenseTable({ data, categories }) {
   return (
     <table className="border-2 border-collapse w-full sm:w-[80%] lg:w-[40%] mt-12">
       <thead>
@@ -31,11 +31,9 @@ export default function ExpenseTable({ data }) {
               id="category"
             >
               <option value="">All</option>
-              <option value="education">Education</option>
-              <option value="bills">Bills</option>
-              <option value="grocery">Grocery</option>
-              <option value="sports">Sports</option>
-              <option value="medicine">Medicine</option>
+              {categories.map((category) => {
+                return <option value={category}> {category}</option>;
+              })}
             </select>
           </th>
           <th className="border-2 py-1 px-1 sm:px-2 w-1/3">
