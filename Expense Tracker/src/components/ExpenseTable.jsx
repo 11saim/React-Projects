@@ -1,8 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import upArrow from "../assets/up-arrow.png";
 import downArrow from "../assets/down-arrow.png";
 
-export default function ExpenseTable({ data, categories }) {
+export default function ExpenseTable({ data, categories, setData }) {
+  // products.sort((a, b) => {
+  //   return b.title.localeCompare(a.title);
+  // })
+  const [tempData, setTempData] = useState([]);
+  console.log(tempData);
+  console.log(categories);
   return (
     <table className="border-2 border-collapse w-full sm:w-[80%] lg:w-[40%] mt-12">
       <thead>
@@ -15,6 +21,14 @@ export default function ExpenseTable({ data, categories }) {
                   src={upArrow}
                   alt="up-arrow"
                   className="w-4 h-4 sm:w-5 sm:h-5 cursor-pointer"
+                  onClick={() => {
+                    setTempData(data);
+                    setData(
+                      data.sort((a, b) => {
+                        return b.title.localeCompare(a.title);
+                      })
+                    );
+                  }}
                 />
                 <img
                   src={downArrow}
