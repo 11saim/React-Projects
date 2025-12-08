@@ -1,14 +1,12 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import upArrow from "../assets/up-arrow.png";
 import downArrow from "../assets/down-arrow.png";
 
 export default function ExpenseTable({ data, categories, setData }) {
-  // products.sort((a, b) => {
-  //   return b.title.localeCompare(a.title);
-  // })
   const [tempData, setTempData] = useState([]);
+  let isSorted = useRef(false);
+  console.log(data);
   console.log(tempData);
-  console.log(categories);
   return (
     <table className="border-2 border-collapse w-full sm:w-[80%] lg:w-[40%] mt-12">
       <thead>
@@ -22,18 +20,32 @@ export default function ExpenseTable({ data, categories, setData }) {
                   alt="up-arrow"
                   className="w-4 h-4 sm:w-5 sm:h-5 cursor-pointer"
                   onClick={() => {
-                    setTempData(data);
-                    setData(
-                      data.sort((a, b) => {
+                    if (!isSorted.current) {
+                      setTempData([...data]);
+                      isSorted.current = true;
+                    }
+                    setData([
+                      ...data.sort((a, b) => {
                         return b.title.localeCompare(a.title);
-                      })
-                    );
+                      }),
+                    ]);
                   }}
                 />
                 <img
                   src={downArrow}
                   alt="down-arrow"
                   className="w-4 h-4 sm:w-5 sm:h-5 cursor-pointer"
+                  onClick={() => {
+                    if (!isSorted.current) {
+                      setTempData([...data]);
+                      isSorted.current = true;
+                    }
+                    setData([
+                      ...data.sort((a, b) => {
+                        return a.title.localeCompare(b.title);
+                      }),
+                    ]);
+                  }}
                 />
               </div>
             </div>
@@ -46,7 +58,7 @@ export default function ExpenseTable({ data, categories, setData }) {
             >
               <option value="">All</option>
               {categories.map((category) => {
-                return <option value={category}> {category}</option>;
+                return <option value={category}>{category}</option>;
               })}
             </select>
           </th>
