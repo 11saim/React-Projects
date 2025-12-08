@@ -24,11 +24,11 @@ export default function ExpenseTable({ data, categories, setData }) {
                       setTempData([...data]);
                       isSorted.current = true;
                     }
-                    setData([
-                      ...data.sort((a, b) => {
+                    setData(
+                      [...data].sort((a, b) => {
                         return b.title.localeCompare(a.title);
-                      }),
-                    ]);
+                      })
+                    );
                   }}
                 />
                 <img
@@ -40,11 +40,11 @@ export default function ExpenseTable({ data, categories, setData }) {
                       setTempData([...data]);
                       isSorted.current = true;
                     }
-                    setData([
-                      ...data.sort((a, b) => {
+                    setData(
+                      [...data].sort((a, b) => {
                         return a.title.localeCompare(b.title);
-                      }),
-                    ]);
+                      })
+                    );
                   }}
                 />
               </div>
@@ -58,7 +58,11 @@ export default function ExpenseTable({ data, categories, setData }) {
             >
               <option value="">All</option>
               {categories.map((category) => {
-                return <option value={category}>{category}</option>;
+                return (
+                  <option key={category} value={category}>
+                    {category}
+                  </option>
+                );
               })}
             </select>
           </th>
