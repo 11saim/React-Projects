@@ -5,8 +5,28 @@ import downArrow from "../assets/down-arrow.png";
 export default function ExpenseTable({ data, categories, setData }) {
   const [tempData, setTempData] = useState([]);
   let isSorted = useRef(false);
-  console.log(data);
-  console.log(tempData);
+  let sortBy = useRef(null);
+  function handleSorting(sortedIn, sortMethod) {
+    if (isSorted.current && sortedIn === sortBy.current) {
+      setData([...tempData]);
+      isSorted.current = false;
+      return;
+    }
+
+    if (!isSorted.current) {
+      setTempData([...data]);
+      isSorted.current = true;
+      sortBy.current = sortedIn;
+    }
+
+    setData(
+      [...data].sort((a, b) => {
+        return sortMethod(a, b);
+      })
+    );
+
+    sortBy.current = sortedIn;
+  }
   return (
     <table className="border-2 border-collapse w-full sm:w-[80%] lg:w-[40%] mt-12">
       <thead>
@@ -20,15 +40,9 @@ export default function ExpenseTable({ data, categories, setData }) {
                   alt="up-arrow"
                   className="w-4 h-4 sm:w-5 sm:h-5 cursor-pointer"
                   onClick={() => {
-                    if (!isSorted.current) {
-                      setTempData([...data]);
-                      isSorted.current = true;
-                    }
-                    setData(
-                      [...data].sort((a, b) => {
-                        return b.title.localeCompare(a.title);
-                      })
-                    );
+                    handleSorting("descendingInTitle", (a, b) => {
+                      return b.title.localeCompare(a.title);
+                    });
                   }}
                 />
                 <img
@@ -36,15 +50,9 @@ export default function ExpenseTable({ data, categories, setData }) {
                   alt="down-arrow"
                   className="w-4 h-4 sm:w-5 sm:h-5 cursor-pointer"
                   onClick={() => {
-                    if (!isSorted.current) {
-                      setTempData([...data]);
-                      isSorted.current = true;
-                    }
-                    setData(
-                      [...data].sort((a, b) => {
-                        return a.title.localeCompare(b.title);
-                      })
-                    );
+                    handleSorting("ascendingInTitle", (a, b) => {
+                      return a.title.localeCompare(b.title);
+                    });
                   }}
                 />
               </div>
