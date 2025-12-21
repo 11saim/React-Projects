@@ -82,11 +82,21 @@ export default function ExpenseTable({ data, categories, setData }) {
                   src={upArrow}
                   alt="up-arrow"
                   className="w-4 h-4 sm:w-5 sm:h-5 cursor-pointer"
+                  onClick={() => {
+                    handleSorting("descendingInAmount", (a, b) => {
+                      return b.amount - a.amount;
+                    });
+                  }}
                 />
                 <img
                   src={downArrow}
                   alt="down-arrow"
                   className="w-4 h-4 sm:w-5 sm:h-5 cursor-pointer"
+                  onClick={() => {
+                    handleSorting("ascendingInAmount", (a, b) => {
+                      return a.amount - b.amount;
+                    });
+                  }}
                 />
               </div>
             </div>
