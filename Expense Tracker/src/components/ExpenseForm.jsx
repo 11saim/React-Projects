@@ -1,7 +1,13 @@
 import React, { useState } from "react";
 import Input from "./Input";
 
-export default function ExpenseForm({ setData, setCategories, categories }) {
+export default function ExpenseForm({
+  setData,
+  setCategories,
+  categories,
+  setDataAdded,
+  setTempData,
+}) {
   const [error, setError] = useState({});
   const [record, setRecord] = useState({
     id: crypto.randomUUID(),
@@ -64,6 +70,7 @@ export default function ExpenseForm({ setData, setCategories, categories }) {
       setCategories((prev) => [...prev, record.category]);
     }
     setData((prev) => [...prev, record]);
+    setTempData((prev) => [...prev, record]);
     setRecord({
       id: crypto.randomUUID(),
       title: "",
@@ -71,6 +78,7 @@ export default function ExpenseForm({ setData, setCategories, categories }) {
       amount: "",
     });
     setError({});
+    setDataAdded(true);
   }
   return (
     <div className="flex flex-col w-full sm:w-[80%] lg:w-[40%]">

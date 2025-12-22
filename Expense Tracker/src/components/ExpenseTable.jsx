@@ -1,15 +1,53 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import upArrow from "../assets/up-arrow.png";
 import downArrow from "../assets/down-arrow.png";
 
-export default function ExpenseTable({ data, categories, setData }) {
-  const [tempData, setTempData] = useState([]);
+export default function ExpenseTable({
+  data,
+  categories,
+  setData,
+  dataAdded,
+  setDataAdded,
+  tempData,
+  setTempData,
+}) {
   let isSorted = useRef(false);
   let sortBy = useRef(null);
+  useEffect(() => {
+    if (isSorted.current) {
+      if (sortBy.current === "descendingInTitle") {
+        setData(
+          [...data].sort((a, b) => {
+            return b.title.localeCompare(a.title);
+          })
+        );
+      } else if (sortBy.current === "ascendingInTitle") {
+        setData(
+          [...data].sort((a, b) => {
+            return a.title.localeCompare(b.title);
+          })
+        );
+      } else if (sortBy.current === "descendingInAmount") {
+        setData(
+          [...data].sort((a, b) => {
+            return b.amount - a.amount;
+          })
+        );
+      } else if (sortBy.current === "ascendingInAmount") {
+        setData(
+          [...data].sort((a, b) => {
+            return a.amount - b.amount;
+          })
+        );
+      }
+    }
+    setDataAdded(false);
+  }, [dataAdded]);
   function handleSorting(sortedIn, sortMethod) {
     if (isSorted.current && sortedIn === sortBy.current) {
       setData([...tempData]);
       isSorted.current = false;
+      sortBy.current = null;
       return;
     }
 

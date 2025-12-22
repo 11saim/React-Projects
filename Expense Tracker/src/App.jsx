@@ -42,6 +42,8 @@ function App() {
     "Accessories",
     "Education",
   ]);
+  const [dataAdded, setDataAdded] = useState(false);
+  const [tempData, setTempData] = useState([]);
   return (
     <div className="p-3 sm:p-10">
       <h1 className="text-4xl font-bold">Track Your Expense</h1>
@@ -50,8 +52,18 @@ function App() {
           setData={setData}
           setCategories={setCategories}
           categories={categories}
+          setDataAdded={setDataAdded}
+          setTempData={setTempData}
         />
-        <ExpenseTable data={data} setData={setData} categories={categories} />
+        <ExpenseTable
+          data={data}
+          setData={setData}
+          categories={categories}
+          dataAdded={dataAdded}
+          setDataAdded={setDataAdded}
+          tempData={tempData}
+          setTempData={setTempData}
+        />
       </div>
     </div>
   );
