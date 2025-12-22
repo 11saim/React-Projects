@@ -13,36 +13,32 @@ export default function ExpenseTable({
 }) {
   let isSorted = useRef(false);
   let sortBy = useRef(null);
-  useEffect(() => {
-    if (isSorted.current) {
-      if (sortBy.current === "descendingInTitle") {
-        setData(
-          [...data].sort((a, b) => {
-            return b.title.localeCompare(a.title);
-          })
-        );
-      } else if (sortBy.current === "ascendingInTitle") {
-        setData(
-          [...data].sort((a, b) => {
-            return a.title.localeCompare(b.title);
-          })
-        );
-      } else if (sortBy.current === "descendingInAmount") {
-        setData(
-          [...data].sort((a, b) => {
-            return b.amount - a.amount;
-          })
-        );
-      } else if (sortBy.current === "ascendingInAmount") {
-        setData(
-          [...data].sort((a, b) => {
-            return a.amount - b.amount;
-          })
-        );
-      }
-    }
-    setDataAdded(false);
-  }, [dataAdded]);
+
+  function forTitle(ascending) {
+    return ascending
+      ? (a, b) => {
+          return a.title.localeCompare(b.title);
+        }
+      : (a, b) => {
+          return b.title.localeCompare(a.title);
+        };
+  }
+  function forAmount(ascending) {
+    return ascending
+      ? (a, b) => {
+          return a.amount - b.amount;
+        }
+      : (a, b) => {
+          return b.amount - a.amount;
+        };
+  }
+  function sortData(sortingMethod) {
+    setData(
+      [...data].sort((a, b) => {
+        return sortingMethod(a, b);
+      })
+    );
+  }
   function handleSorting(sortedIn, sortMethod) {
     if (isSorted.current && sortedIn === sortBy.current) {
       setData([...tempData]);
@@ -57,14 +53,26 @@ export default function ExpenseTable({
       sortBy.current = sortedIn;
     }
 
-    setData(
-      [...data].sort((a, b) => {
-        return sortMethod(a, b);
-      })
-    );
+    sortData(sortMethod);
 
     sortBy.current = sortedIn;
   }
+
+  useEffect(() => {
+    if (isSorted.current) {
+      if (sortBy.current === "descendingInTitle") {
+        sortData(forTitle(false));
+      } else if (sortBy.current === "ascendingInTitle") {
+        sortData(forTitle(true));
+      } else if (sortBy.current === "descendingInAmount") {
+        sortData(forAmount(false));
+      } else if (sortBy.current === "ascendingInAmount") {
+        sortData(forAmount(true));
+      }
+    }
+    setDataAdded(false);
+  }, [dataAdded]);
+
   return (
     <table className="border-2 border-collapse w-full sm:w-[80%] lg:w-[40%] mt-12">
       <thead>
@@ -78,9 +86,7 @@ export default function ExpenseTable({
                   alt="up-arrow"
                   className="w-4 h-4 sm:w-5 sm:h-5 cursor-pointer"
                   onClick={() => {
-                    handleSorting("descendingInTitle", (a, b) => {
-                      return b.title.localeCompare(a.title);
-                    });
+                    handleSorting("descendingInTitle", forTitle(false));
                   }}
                 />
                 <img
@@ -88,9 +94,7 @@ export default function ExpenseTable({
                   alt="down-arrow"
                   className="w-4 h-4 sm:w-5 sm:h-5 cursor-pointer"
                   onClick={() => {
-                    handleSorting("ascendingInTitle", (a, b) => {
-                      return a.title.localeCompare(b.title);
-                    });
+                    handleSorting("ascendingInTitle", forTitle(true));
                   }}
                 />
               </div>
@@ -121,9 +125,7 @@ export default function ExpenseTable({
                   alt="up-arrow"
                   className="w-4 h-4 sm:w-5 sm:h-5 cursor-pointer"
                   onClick={() => {
-                    handleSorting("descendingInAmount", (a, b) => {
-                      return b.amount - a.amount;
-                    });
+                    handleSorting("descendingInAmount", forAmount(false));
                   }}
                 />
                 <img
@@ -131,9 +133,7 @@ export default function ExpenseTable({
                   alt="down-arrow"
                   className="w-4 h-4 sm:w-5 sm:h-5 cursor-pointer"
                   onClick={() => {
-                    handleSorting("ascendingInAmount", (a, b) => {
-                      return a.amount - b.amount;
-                    });
+                    handleSorting("ascendingInAmount", forAmount(true));
                   }}
                 />
               </div>
