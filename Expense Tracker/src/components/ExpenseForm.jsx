@@ -83,7 +83,7 @@ export default function ExpenseForm({
   return (
     <div className="flex flex-col w-full sm:w-[80%] lg:w-[40%]">
       <form
-        className="lg:m-5 flex flex-col space-y-3"
+        className=" flex flex-col space-y-3"
         onSubmit={(e) => {
           handleSubmit(e);
         }}
