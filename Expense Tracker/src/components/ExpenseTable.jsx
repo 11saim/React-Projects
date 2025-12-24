@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import upArrow from "../assets/up-arrow.png";
 import downArrow from "../assets/down-arrow.png";
 
@@ -13,6 +13,7 @@ export default function ExpenseTable({
 }) {
   let isSorted = useRef(false);
   let sortBy = useRef(null);
+  let [currCategory, setCurrCategory] = useState("");
 
   function forTitle(ascending) {
     return ascending
@@ -121,6 +122,9 @@ export default function ExpenseTable({
                 className="w-full outline-0 p-1 cursor-pointer"
                 name="category"
                 id="category"
+                onChange={(e) => {
+                  setCurrCategory(e.target.value);
+                }}
               >
                 <option value="">All</option>
                 {categories.map((category) => {
@@ -158,15 +162,21 @@ export default function ExpenseTable({
           </tr>
         </thead>
         <tbody>
-          {data.map((item) => {
-            return (
+          {data.map((item) =>
+            currCategory === "" ? (
               <tr key={item.id}>
                 <td className="border-2 py-1 px-1 sm:px-3">{item.title}</td>
                 <td className="border-2 py-1 px-1 sm:px-3">{item.category}</td>
                 <td className="border-2 py-1 px-1 sm:px-3">{item.amount}</td>
               </tr>
-            );
-          })}
+            ) : item.category === currCategory ? (
+              <tr key={item.id}>
+                <td className="border-2 py-1 px-1 sm:px-3">{item.title}</td>
+                <td className="border-2 py-1 px-1 sm:px-3">{item.category}</td>
+                <td className="border-2 py-1 px-1 sm:px-3">{item.amount}</td>
+              </tr>
+            ) : null
+          )}
         </tbody>
         <tfoot>
           <tr>
@@ -174,7 +184,11 @@ export default function ExpenseTable({
             <td></td>
             <td className="border-2 py-1 px-1 sm:px-3">
               {data.reduce((acc, item) => {
-                return acc + parseFloat(item.amount);
+                return currCategory === ""
+                  ? acc + parseFloat(item.amount)
+                  : item.category === currCategory
+                  ? acc + parseFloat(item.amount)
+                  : acc + 0;
               }, 0)}
             </td>
           </tr>
