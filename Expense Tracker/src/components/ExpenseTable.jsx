@@ -13,7 +13,8 @@ export default function ExpenseTable({
 }) {
   let isSorted = useRef(false);
   let sortBy = useRef(null);
-  let [currCategory, setCurrCategory] = useState("");
+  const [currCategory, setCurrCategory] = useState("");
+  const [clickedField, setClickField] = useState(null);
 
   function forTitle(ascending) {
     return ascending
@@ -164,13 +165,56 @@ export default function ExpenseTable({
         <tbody>
           {data.map((item) =>
             currCategory === "" ? (
-              <tr key={item.id}>
-                <td className="border-2 py-1 px-1 sm:px-3">{item.title}</td>
-                <td className="border-2 py-1 px-1 sm:px-3">{item.category}</td>
-                <td className="border-2 py-1 px-1 sm:px-3">{item.amount}</td>
+              <tr
+                onContextMenu={(e) => {
+                  e.preventDefault();
+                  setClickField(item.id);
+                }}
+                key={item.id}
+              >
+                <td className="border-2 py-1 px-1 sm:px-3">
+                  {clickedField === item.id ? (
+                    <input
+                      className="outline-0"
+                      autoFocus
+                      type="text"
+                      value={item.title}
+                    />
+                  ) : (
+                    item.title
+                  )}
+                </td>
+                <td className="border-2 py-1 px-1 sm:px-3">
+                  {clickedField === item.id ? (
+                    <input
+                      className="outline-0"
+                      type="text"
+                      value={item.category}
+                    />
+                  ) : (
+                    item.category
+                  )}
+                </td>
+                <td className="border-2 py-1 px-1 sm:px-3">
+                  {clickedField === item.id ? (
+                    <input
+                      className="outline-0"
+                      type="text"
+                      value={item.amount}
+                    />
+                  ) : (
+                    item.amount
+                  )}
+                </td>
               </tr>
             ) : item.category === currCategory ? (
-              <tr key={item.id}>
+              <tr
+                onContextMenu={(e) => {
+                  e.preventDefault();
+                  setClickField(item.id);
+                }}
+                key={item.id}
+              >
                 <td className="border-2 py-1 px-1 sm:px-3">{item.title}</td>
                 <td className="border-2 py-1 px-1 sm:px-3">{item.category}</td>
                 <td className="border-2 py-1 px-1 sm:px-3">{item.amount}</td>
