@@ -15,6 +15,11 @@ export default function ExpenseTable({
   let sortBy = useRef(null);
   const [currCategory, setCurrCategory] = useState("");
   const [clickedField, setClickField] = useState(null);
+  const [newUpdatedValues, setNewUpdatedValues] = useState({
+    title: "",
+    category: "",
+    amount: "",
+  });
 
   function forTitle(ascending) {
     return ascending
@@ -76,7 +81,21 @@ export default function ExpenseTable({
   }, [dataAdded]);
 
   return (
-    <div className="w-full sm:w-[80%] lg:w-[40%]">
+    <div
+      onClick={(e) => {
+        e.stopPropagation();
+        if (clickedField) {
+          setData((prev) =>
+            prev.map((item) =>
+              item.id === clickedField ? { ...item, ...newUpdatedValues } : item
+            )
+          );
+
+          setClickField(null);
+        }
+      }}
+      className="w-full sm:w-[80%] lg:w-[40%]"
+    >
       <div className="sorting-detail flex justify-between text-lg">
         <p>
           <span className="font-bold">Sorted In: </span>
@@ -169,6 +188,11 @@ export default function ExpenseTable({
                 onContextMenu={(e) => {
                   e.preventDefault();
                   setClickField(item.id);
+                  setNewUpdatedValues({
+                    title: item.title,
+                    category: item.category,
+                    amount: item.amount,
+                  });
                 }}
                 key={item.id}
               >
@@ -178,7 +202,13 @@ export default function ExpenseTable({
                       className="outline-0"
                       autoFocus
                       type="text"
-                      value={item.title}
+                      value={newUpdatedValues.title}
+                      onChange={(e) =>
+                        setNewUpdatedValues((prev) => ({
+                          ...prev,
+                          title: e.target.value,
+                        }))
+                      }
                     />
                   ) : (
                     item.title
@@ -189,7 +219,13 @@ export default function ExpenseTable({
                     <input
                       className="outline-0"
                       type="text"
-                      value={item.category}
+                      value={newUpdatedValues.category}
+                      onChange={(e) =>
+                        setNewUpdatedValues((prev) => ({
+                          ...prev,
+                          category: e.target.value,
+                        }))
+                      }
                     />
                   ) : (
                     item.category
@@ -200,7 +236,13 @@ export default function ExpenseTable({
                     <input
                       className="outline-0"
                       type="text"
-                      value={item.amount}
+                      value={newUpdatedValues.amount}
+                      onChange={(e) =>
+                        setNewUpdatedValues((prev) => ({
+                          ...prev,
+                          amount: e.target.value,
+                        }))
+                      }
                     />
                   ) : (
                     item.amount
