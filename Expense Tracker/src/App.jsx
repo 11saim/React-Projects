@@ -70,8 +70,12 @@ function App() {
           });
         }
       }}
-      className="p-3 sm:p-10"
+      className="p-3 sm:p-10 min-h-screen"
     >
+      <div className="border contextMenu absolute bg-white w-20 h-20 rounded p-2 space-y-2 flex flex-col justify-center items-start">
+        <p className="border-b cursor-pointer">Edit</p>
+        <p className="border-b cursor-pointer">Delete</p>
+      </div>
       <h1 className="text-3xl md:text-4xl font-bold">Track Your Expense</h1>
       <div className="flex items-center justify-center lg:justify-around flex-col lg:flex-row mt-10">
         <ExpenseForm

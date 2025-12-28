@@ -175,12 +175,13 @@ export default function ExpenseTable({
               <tr
                 onContextMenu={(e) => {
                   e.preventDefault();
-                  setClickField(item.id);
-                  setNewUpdatedValues({
-                    title: item.title,
-                    category: item.category,
-                    amount: item.amount,
-                  });
+                  console.log(e.clientX, e.clientY);
+                  // setClickField(item.id);
+                  // setNewUpdatedValues({
+                  //   title: item.title,
+                  //   category: item.category,
+                  //   amount: item.amount,
+                  // });
                 }}
                 key={item.id}
               >
@@ -241,12 +242,13 @@ export default function ExpenseTable({
               <tr
                 onContextMenu={(e) => {
                   e.preventDefault();
-                  setClickField(item.id);
-                  setNewUpdatedValues({
-                    title: item.title,
-                    category: item.category,
-                    amount: item.amount,
-                  });
+                  console.log(e.clientX, e.clientY);
+                  // setClickField(item.id);
+                  // setNewUpdatedValues({
+                  //   title: item.title,
+                  //   category: item.category,
+                  //   amount: item.amount,
+                  // });
                 }}
                 key={item.id}
               >
