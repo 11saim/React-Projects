@@ -242,12 +242,66 @@ export default function ExpenseTable({
                 onContextMenu={(e) => {
                   e.preventDefault();
                   setClickField(item.id);
+                  setNewUpdatedValues({
+                    title: item.title,
+                    category: item.category,
+                    amount: item.amount,
+                  });
                 }}
                 key={item.id}
               >
-                <td className="border-2 py-1 px-1 sm:px-3">{item.title}</td>
-                <td className="border-2 py-1 px-1 sm:px-3">{item.category}</td>
-                <td className="border-2 py-1 px-1 sm:px-3">{item.amount}</td>
+                <td className="border-2 py-1 px-1 sm:px-3">
+                  {clickedField === item.id ? (
+                    <input
+                      className="outline-0"
+                      autoFocus
+                      type="text"
+                      value={newUpdatedValues.title}
+                      onChange={(e) =>
+                        setNewUpdatedValues((prev) => ({
+                          ...prev,
+                          title: e.target.value,
+                        }))
+                      }
+                    />
+                  ) : (
+                    item.title
+                  )}
+                </td>
+                <td className="border-2 py-1 px-1 sm:px-3">
+                  {clickedField === item.id ? (
+                    <input
+                      className="outline-0"
+                      type="text"
+                      value={newUpdatedValues.category}
+                      onChange={(e) =>
+                        setNewUpdatedValues((prev) => ({
+                          ...prev,
+                          category: e.target.value,
+                        }))
+                      }
+                    />
+                  ) : (
+                    item.category
+                  )}
+                </td>
+                <td className="border-2 py-1 px-1 sm:px-3">
+                  {clickedField === item.id ? (
+                    <input
+                      className="outline-0"
+                      type="text"
+                      value={newUpdatedValues.amount}
+                      onChange={(e) =>
+                        setNewUpdatedValues((prev) => ({
+                          ...prev,
+                          amount: e.target.value,
+                        }))
+                      }
+                    />
+                  ) : (
+                    item.amount
+                  )}
+                </td>
               </tr>
             ) : null
           )}
