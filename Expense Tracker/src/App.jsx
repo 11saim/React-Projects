@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import ExpenseForm from "./components/ExpenseForm";
 import ExpenseTable from "./components/ExpenseTable";
 
@@ -42,10 +42,36 @@ function App() {
     "Accessories",
     "Education",
   ]);
+  const expenseTableRef = useRef(null);
   const [dataAdded, setDataAdded] = useState(false);
   const [tempData, setTempData] = useState([]);
+  const [clickedField, setClickField] = useState(null);
+  const [newUpdatedValues, setNewUpdatedValues] = useState({
+    title: "",
+    category: "",
+    amount: "",
+  });
   return (
-    <div className="p-3 sm:p-10">
+    <div
+      onClick={(e) => {
+        e.stopPropagation();
+        if (clickedField && !expenseTableRef.current.contains(e.target)) {
+          setData((prev) =>
+            prev.map((item) =>
+              item.id === clickedField ? { ...item, ...newUpdatedValues } : item
+            )
+          );
+
+          setClickField(null);
+          setNewUpdatedValues({
+            title: "",
+            category: "",
+            amount: "",
+          });
+        }
+      }}
+      className="p-3 sm:p-10"
+    >
       <h1 className="text-3xl md:text-4xl font-bold">Track Your Expense</h1>
       <div className="flex items-center justify-center lg:justify-around flex-col lg:flex-row mt-10">
         <ExpenseForm
@@ -63,6 +89,11 @@ function App() {
           setDataAdded={setDataAdded}
           tempData={tempData}
           setTempData={setTempData}
+          clickedField={clickedField}
+          setClickField={setClickField}
+          newUpdatedValues={newUpdatedValues}
+          setNewUpdatedValues={setNewUpdatedValues}
+          expenseTableRef={expenseTableRef}
         />
       </div>
     </div>

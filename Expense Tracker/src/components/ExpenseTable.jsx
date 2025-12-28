@@ -10,16 +10,15 @@ export default function ExpenseTable({
   setDataAdded,
   tempData,
   setTempData,
+  clickedField,
+  setClickField,
+  newUpdatedValues,
+  setNewUpdatedValues,
+  expenseTableRef,
 }) {
   let isSorted = useRef(false);
   let sortBy = useRef(null);
   const [currCategory, setCurrCategory] = useState("");
-  const [clickedField, setClickField] = useState(null);
-  const [newUpdatedValues, setNewUpdatedValues] = useState({
-    title: "",
-    category: "",
-    amount: "",
-  });
 
   function forTitle(ascending) {
     return ascending
@@ -82,19 +81,8 @@ export default function ExpenseTable({
 
   return (
     <div
-      onClick={(e) => {
-        e.stopPropagation();
-        if (clickedField) {
-          setData((prev) =>
-            prev.map((item) =>
-              item.id === clickedField ? { ...item, ...newUpdatedValues } : item
-            )
-          );
-
-          setClickField(null);
-        }
-      }}
-      className="w-full sm:w-[80%] lg:w-[40%]"
+      ref={expenseTableRef}
+      className="expenseform w-full sm:w-[80%] lg:w-[40%]"
     >
       <div className="sorting-detail flex justify-between text-lg">
         <p>
