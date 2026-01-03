@@ -15,6 +15,7 @@ export default function ExpenseTable({
   newUpdatedValues,
   setNewUpdatedValues,
   expenseTableRef,
+  setContextMenuDetails,
 }) {
   let isSorted = useRef(false);
   let sortBy = useRef(null);
@@ -175,7 +176,11 @@ export default function ExpenseTable({
               <tr
                 onContextMenu={(e) => {
                   e.preventDefault();
-                  console.log(e.clientX, e.clientY);
+                  setContextMenuDetails({
+                    isOpen: true,
+                    xAxis: e.clientX,
+                    yAxis: e.clientY,
+                  });
                   // setClickField(item.id);
                   // setNewUpdatedValues({
                   //   title: item.title,
@@ -242,7 +247,11 @@ export default function ExpenseTable({
               <tr
                 onContextMenu={(e) => {
                   e.preventDefault();
-                  console.log(e.clientX, e.clientY);
+                  setContextMenuDetails({
+                    isOpen: true,
+                    xAxis: e.clientX,
+                    yAxis: e.clientY,
+                  });
                   // setClickField(item.id);
                   // setNewUpdatedValues({
                   //   title: item.title,

@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ExpenseForm from "./components/ExpenseForm";
 import ExpenseTable from "./components/ExpenseTable";
 
@@ -51,6 +51,27 @@ function App() {
     category: "",
     amount: "",
   });
+  const contextMenu = useRef(null);
+  const [contextMenuDetails, setContextMenuDetails] = useState({
+    isOpen: false,
+    xAxis: null,
+    yAxis: null,
+  });
+  useEffect(() => {
+    if (contextMenu.current) {
+      const menu = contextMenu.current;
+      if (contextMenuDetails.isOpen) {
+        menu.classList.remove("hidden");
+        menu.classList.add("flex");
+
+        menu.style.top = `${contextMenuDetails.yAxis}px`;
+        menu.style.left = `${contextMenuDetails.xAxis}px`;
+      } else {
+        menu.classList.remove("flex");
+        menu.classList.add("hidden");
+      }
+    }
+  }, [contextMenuDetails]);
   return (
     <div
       onClick={(e) => {
@@ -72,9 +93,34 @@ function App() {
       }}
       className="p-3 sm:p-10 min-h-screen"
     >
-      <div className="border contextMenu absolute bg-white w-20 h-20 rounded p-2 space-y-2 flex flex-col justify-center items-start">
-        <p className="border-b cursor-pointer">Edit</p>
-        <p className="border-b cursor-pointer">Delete</p>
+      <div
+        ref={contextMenu}
+        className="border contextMenu absolute bg-white w-20 h-20 rounded p-2 space-y-2 hidden flex-col justify-center items-start"
+      >
+        <p
+          onClick={() => {
+            setContextMenuDetails({
+              isOpen: false,
+              xAxis: 0,
+              yAxis: 0,
+            });
+          }}
+          className="border-b cursor-pointer"
+        >
+          Edit
+        </p>
+        <p
+          onClick={() => {
+            setContextMenuDetails({
+              isOpen: false,
+              xAxis: 0,
+              yAxis: 0,
+            });
+          }}
+          className="border-b cursor-pointer"
+        >
+          Delete
+        </p>
       </div>
       <h1 className="text-3xl md:text-4xl font-bold">Track Your Expense</h1>
       <div className="flex items-center justify-center lg:justify-around flex-col lg:flex-row mt-10">
@@ -98,6 +144,7 @@ function App() {
           newUpdatedValues={newUpdatedValues}
           setNewUpdatedValues={setNewUpdatedValues}
           expenseTableRef={expenseTableRef}
+          setContextMenuDetails={setContextMenuDetails}
         />
       </div>
     </div>
