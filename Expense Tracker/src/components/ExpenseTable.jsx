@@ -16,6 +16,8 @@ export default function ExpenseTable({
   setNewUpdatedValues,
   expenseTableRef,
   setContextMenuDetails,
+  selectedOption,
+  setSelectedOption,
 }) {
   let isSorted = useRef(false);
   let sortBy = useRef(null);
@@ -181,63 +183,78 @@ export default function ExpenseTable({
                     xAxis: e.clientX,
                     yAxis: e.clientY,
                   });
-                  // setClickField(item.id);
-                  // setNewUpdatedValues({
-                  //   title: item.title,
-                  //   category: item.category,
-                  //   amount: item.amount,
-                  // });
+                  setClickField(item.id);
+                  setNewUpdatedValues({
+                    title: item.title,
+                    category: item.category,
+                    amount: item.amount,
+                  });
+                  setSelectedOption(null);
                 }}
                 key={item.id}
               >
                 <td className="border-2 py-1 px-1 sm:px-3">
-                  {clickedField === item.id ? (
-                    <input
-                      className="outline-0"
-                      autoFocus
-                      type="text"
-                      value={newUpdatedValues.title}
-                      onChange={(e) =>
-                        setNewUpdatedValues((prev) => ({
-                          ...prev,
-                          title: e.target.value,
-                        }))
-                      }
-                    />
+                  {clickedField === item.id && selectedOption !== null ? (
+                    selectedOption === "edit" ? (
+                      <input
+                        className="outline-0"
+                        type="text"
+                        value={newUpdatedValues.title}
+                        autoFocus
+                        onChange={(e) =>
+                          setNewUpdatedValues((prev) => ({
+                            ...prev,
+                            title: e.target.value,
+                          }))
+                        }
+                      />
+                    ) : selectedOption === "delete" ? (
+                      console.log("Row Deleted")
+                    ) : (
+                      console.log("Nothing")
+                    )
                   ) : (
                     item.title
                   )}
                 </td>
                 <td className="border-2 py-1 px-1 sm:px-3">
-                  {clickedField === item.id ? (
-                    <input
-                      className="outline-0"
-                      type="text"
-                      value={newUpdatedValues.category}
-                      onChange={(e) =>
-                        setNewUpdatedValues((prev) => ({
-                          ...prev,
-                          category: e.target.value,
-                        }))
-                      }
-                    />
+                  {clickedField === item.id && selectedOption !== null ? (
+                    selectedOption === "edit" ? (
+                      <input
+                        className="outline-0"
+                        type="text"
+                        value={newUpdatedValues.category}
+                        onChange={(e) =>
+                          setNewUpdatedValues((prev) => ({
+                            ...prev,
+                            category: e.target.value,
+                          }))
+                        }
+                      />
+                    ) : selectedOption === "delete" ? (
+                      console.log("Row Deleted")
+                    ) : null
                   ) : (
                     item.category
                   )}
                 </td>
                 <td className="border-2 py-1 px-1 sm:px-3">
-                  {clickedField === item.id ? (
-                    <input
-                      className="outline-0"
-                      type="text"
-                      value={newUpdatedValues.amount}
-                      onChange={(e) =>
-                        setNewUpdatedValues((prev) => ({
-                          ...prev,
-                          amount: e.target.value,
-                        }))
-                      }
-                    />
+                  {clickedField === item.id && selectedOption !== null ? (
+                    selectedOption === "edit" ? (
+                      <input
+                        className="outline-0"
+                        type="text"
+                        value={newUpdatedValues.amount}
+                        onChange={(e) =>
+                          setNewUpdatedValues((prev) => ({
+                            ...prev,
+                            amount: e.target.value,
+                          }))
+                        }
+                      />
+                    ) : selectedOption === "delete" ? (
+                      console.log("Row Deleted")
+                    ) : null
                   ) : (
                     item.amount
                   )}
@@ -252,12 +269,13 @@ export default function ExpenseTable({
                     xAxis: e.clientX,
                     yAxis: e.clientY,
                   });
-                  // setClickField(item.id);
-                  // setNewUpdatedValues({
-                  //   title: item.title,
-                  //   category: item.category,
-                  //   amount: item.amount,
-                  // });
+                  setClickField(item.id);
+                  setNewUpdatedValues({
+                    title: item.title,
+                    category: item.category,
+                    amount: item.amount,
+                  });
+                  setSelectedOption(null);
                 }}
                 key={item.id}
               >
@@ -300,17 +318,18 @@ export default function ExpenseTable({
                   {clickedField === item.id ? (
                     <input
                       className="outline-0"
+                      autoFocus
                       type="text"
-                      value={newUpdatedValues.amount}
+                      value={newUpdatedValues.title}
                       onChange={(e) =>
                         setNewUpdatedValues((prev) => ({
                           ...prev,
-                          amount: e.target.value,
+                          title: e.target.value,
                         }))
                       }
                     />
                   ) : (
-                    item.amount
+                    item.title
                   )}
                 </td>
               </tr>

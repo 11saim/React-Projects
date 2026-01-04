@@ -51,15 +51,15 @@ function App() {
     category: "",
     amount: "",
   });
-  const contextMenu = useRef(null);
+  const contextMenuRef = useRef(null);
   const [contextMenuDetails, setContextMenuDetails] = useState({
     isOpen: false,
     xAxis: null,
     yAxis: null,
   });
   useEffect(() => {
-    if (contextMenu.current) {
-      const menu = contextMenu.current;
+    if (contextMenuRef.current) {
+      const menu = contextMenuRef.current;
       if (contextMenuDetails.isOpen) {
         menu.classList.remove("hidden");
         menu.classList.add("flex");
@@ -72,11 +72,16 @@ function App() {
       }
     }
   }, [contextMenuDetails]);
+  const [selectedOption, setSelectedOption] = useState(null);
   return (
     <div
       onClick={(e) => {
         e.stopPropagation();
-        if (clickedField && !expenseTableRef.current.contains(e.target)) {
+        if (
+          clickedField &&
+          !expenseTableRef.current.contains(e.target) &&
+          !contextMenuRef.current.contains(e.target)
+        ) {
           setData((prev) =>
             prev.map((item) =>
               item.id === clickedField ? { ...item, ...newUpdatedValues } : item
@@ -94,7 +99,7 @@ function App() {
       className="p-3 sm:p-10 min-h-screen"
     >
       <div
-        ref={contextMenu}
+        ref={contextMenuRef}
         className="border contextMenu absolute bg-white w-20 h-20 rounded p-2 space-y-2 hidden flex-col justify-center items-start"
       >
         <p
@@ -104,6 +109,7 @@ function App() {
               xAxis: 0,
               yAxis: 0,
             });
+            setSelectedOption("edit");
           }}
           className="border-b cursor-pointer"
         >
@@ -116,6 +122,7 @@ function App() {
               xAxis: 0,
               yAxis: 0,
             });
+            setSelectedOption("delete");
           }}
           className="border-b cursor-pointer"
         >
@@ -145,6 +152,8 @@ function App() {
           setNewUpdatedValues={setNewUpdatedValues}
           expenseTableRef={expenseTableRef}
           setContextMenuDetails={setContextMenuDetails}
+          selectedOption={selectedOption}
+          setSelectedOption={setSelectedOption}
         />
       </div>
     </div>
