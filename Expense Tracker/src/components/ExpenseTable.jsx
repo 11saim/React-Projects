@@ -18,6 +18,7 @@ export default function ExpenseTable({
   setContextMenuDetails,
   selectedOption,
   setSelectedOption,
+  beforeCategory,
 }) {
   let isSorted = useRef(false);
   let sortBy = useRef(null);
@@ -192,6 +193,7 @@ export default function ExpenseTable({
                       category: item.category,
                       amount: item.amount,
                     });
+                    beforeCategory.current = item.category;
                     setSelectedOption(null);
                   }}
                   key={item.id}
@@ -268,6 +270,7 @@ export default function ExpenseTable({
                       category: item.category,
                       amount: item.amount,
                     });
+                    beforeCategory.current = item.category;
                     setSelectedOption(null);
                   }}
                   key={item.id}

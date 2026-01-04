@@ -73,6 +73,7 @@ function App() {
     }
   }, [contextMenuDetails]);
   const [selectedOption, setSelectedOption] = useState(null);
+  const beforeCategory = useRef(null);
   return (
     <div
       onClick={(e) => {
@@ -85,6 +86,12 @@ function App() {
           setData((prev) =>
             prev.map((item) =>
               item.id === clickedField ? { ...item, ...newUpdatedValues } : item
+            )
+          );
+
+          setCategories((prev) =>
+            prev.map((item) =>
+              item === beforeCategory.current ? newUpdatedValues.category : item
             )
           );
 
@@ -154,6 +161,7 @@ function App() {
           setContextMenuDetails={setContextMenuDetails}
           selectedOption={selectedOption}
           setSelectedOption={setSelectedOption}
+          beforeCategory={beforeCategory}
         />
       </div>
     </div>
