@@ -129,7 +129,7 @@ function App() {
               xAxis: 0,
               yAxis: 0,
             });
-            setSelectedOption("delete");
+            setData((prev) => prev.filter((item) => item.id !== clickedField));
           }}
           className="border-b cursor-pointer"
         >

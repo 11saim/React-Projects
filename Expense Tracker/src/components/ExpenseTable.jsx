@@ -176,159 +176,151 @@ export default function ExpenseTable({
         <tbody>
           {data.map((item) =>
             currCategory === "" ? (
-              selectedOption === "delete" && clickedField === item.id ? (
-                console.log("Delete")
-              ) : (
-                <tr
-                  onContextMenu={(e) => {
-                    e.preventDefault();
-                    setContextMenuDetails({
-                      isOpen: true,
-                      xAxis: e.clientX,
-                      yAxis: e.clientY,
-                    });
-                    setClickField(item.id);
-                    setNewUpdatedValues({
-                      title: item.title,
-                      category: item.category,
-                      amount: item.amount,
-                    });
-                    beforeCategory.current = item.category;
-                    setSelectedOption(null);
-                  }}
-                  key={item.id}
-                >
-                  <td className="border-2 py-1 px-1 sm:px-3">
-                    {clickedField === item.id && selectedOption === "edit" ? (
-                      <input
-                        className="outline-0"
-                        type="text"
-                        value={newUpdatedValues.title}
-                        autoFocus
-                        onChange={(e) =>
-                          setNewUpdatedValues((prev) => ({
-                            ...prev,
-                            title: e.target.value,
-                          }))
-                        }
-                      />
-                    ) : (
-                      item.title
-                    )}
-                  </td>
-                  <td className="border-2 py-1 px-1 sm:px-3">
-                    {clickedField === item.id && selectedOption === "edit" ? (
-                      <input
-                        className="outline-0"
-                        type="text"
-                        value={newUpdatedValues.category}
-                        onChange={(e) =>
-                          setNewUpdatedValues((prev) => ({
-                            ...prev,
-                            category: e.target.value,
-                          }))
-                        }
-                      />
-                    ) : (
-                      item.category
-                    )}
-                  </td>
-                  <td className="border-2 py-1 px-1 sm:px-3">
-                    {clickedField === item.id && selectedOption === "edit" ? (
-                      <input
-                        className="outline-0"
-                        type="text"
-                        value={newUpdatedValues.amount}
-                        onChange={(e) =>
-                          setNewUpdatedValues((prev) => ({
-                            ...prev,
-                            amount: e.target.value,
-                          }))
-                        }
-                      />
-                    ) : (
-                      item.amount
-                    )}
-                  </td>
-                </tr>
-              )
+              <tr
+                onContextMenu={(e) => {
+                  e.preventDefault();
+                  setContextMenuDetails({
+                    isOpen: true,
+                    xAxis: e.clientX,
+                    yAxis: e.clientY,
+                  });
+                  setClickField(item.id);
+                  setNewUpdatedValues({
+                    title: item.title,
+                    category: item.category,
+                    amount: item.amount,
+                  });
+                  beforeCategory.current = item.category;
+                  setSelectedOption(null);
+                }}
+                key={item.id}
+              >
+                <td className="border-2 py-1 px-1 sm:px-3">
+                  {clickedField === item.id && selectedOption === "edit" ? (
+                    <input
+                      className="outline-0"
+                      type="text"
+                      value={newUpdatedValues.title}
+                      autoFocus
+                      onChange={(e) =>
+                        setNewUpdatedValues((prev) => ({
+                          ...prev,
+                          title: e.target.value,
+                        }))
+                      }
+                    />
+                  ) : (
+                    item.title
+                  )}
+                </td>
+                <td className="border-2 py-1 px-1 sm:px-3">
+                  {clickedField === item.id && selectedOption === "edit" ? (
+                    <input
+                      className="outline-0"
+                      type="text"
+                      value={newUpdatedValues.category}
+                      onChange={(e) =>
+                        setNewUpdatedValues((prev) => ({
+                          ...prev,
+                          category: e.target.value,
+                        }))
+                      }
+                    />
+                  ) : (
+                    item.category
+                  )}
+                </td>
+                <td className="border-2 py-1 px-1 sm:px-3">
+                  {clickedField === item.id && selectedOption === "edit" ? (
+                    <input
+                      className="outline-0"
+                      type="text"
+                      value={newUpdatedValues.amount}
+                      onChange={(e) =>
+                        setNewUpdatedValues((prev) => ({
+                          ...prev,
+                          amount: e.target.value,
+                        }))
+                      }
+                    />
+                  ) : (
+                    item.amount
+                  )}
+                </td>
+              </tr>
             ) : item.category === currCategory ? (
-              selectedOption === "delete" && clickedField === item.id ? (
-                console.log("Delete")
-              ) : (
-                <tr
-                  onContextMenu={(e) => {
-                    e.preventDefault();
-                    setContextMenuDetails({
-                      isOpen: true,
-                      xAxis: e.clientX,
-                      yAxis: e.clientY,
-                    });
-                    setClickField(item.id);
-                    setNewUpdatedValues({
-                      title: item.title,
-                      category: item.category,
-                      amount: item.amount,
-                    });
-                    beforeCategory.current = item.category;
-                    setSelectedOption(null);
-                  }}
-                  key={item.id}
-                >
-                  <td className="border-2 py-1 px-1 sm:px-3">
-                    {clickedField === item.id && selectedOption === "edit" ? (
-                      <input
-                        className="outline-0"
-                        type="text"
-                        value={newUpdatedValues.title}
-                        autoFocus
-                        onChange={(e) =>
-                          setNewUpdatedValues((prev) => ({
-                            ...prev,
-                            title: e.target.value,
-                          }))
-                        }
-                      />
-                    ) : (
-                      item.title
-                    )}
-                  </td>
-                  <td className="border-2 py-1 px-1 sm:px-3">
-                    {clickedField === item.id && selectedOption === "edit" ? (
-                      <input
-                        className="outline-0"
-                        type="text"
-                        value={newUpdatedValues.category}
-                        onChange={(e) =>
-                          setNewUpdatedValues((prev) => ({
-                            ...prev,
-                            category: e.target.value,
-                          }))
-                        }
-                      />
-                    ) : (
-                      item.category
-                    )}
-                  </td>
-                  <td className="border-2 py-1 px-1 sm:px-3">
-                    {clickedField === item.id && selectedOption === "edit" ? (
-                      <input
-                        className="outline-0"
-                        type="text"
-                        value={newUpdatedValues.amount}
-                        onChange={(e) =>
-                          setNewUpdatedValues((prev) => ({
-                            ...prev,
-                            amount: e.target.value,
-                          }))
-                        }
-                      />
-                    ) : (
-                      item.amount
-                    )}
-                  </td>
-                </tr>
-              )
+              <tr
+                onContextMenu={(e) => {
+                  e.preventDefault();
+                  setContextMenuDetails({
+                    isOpen: true,
+                    xAxis: e.clientX,
+                    yAxis: e.clientY,
+                  });
+                  setClickField(item.id);
+                  setNewUpdatedValues({
+                    title: item.title,
+                    category: item.category,
+                    amount: item.amount,
+                  });
+                  beforeCategory.current = item.category;
+                  setSelectedOption(null);
+                }}
+                key={item.id}
+              >
+                <td className="border-2 py-1 px-1 sm:px-3">
+                  {clickedField === item.id && selectedOption === "edit" ? (
+                    <input
+                      className="outline-0"
+                      type="text"
+                      value={newUpdatedValues.title}
+                      autoFocus
+                      onChange={(e) =>
+                        setNewUpdatedValues((prev) => ({
+                          ...prev,
+                          title: e.target.value,
+                        }))
+                      }
+                    />
+                  ) : (
+                    item.title
+                  )}
+                </td>
+                <td className="border-2 py-1 px-1 sm:px-3">
+                  {clickedField === item.id && selectedOption === "edit" ? (
+                    <input
+                      className="outline-0"
+                      type="text"
+                      value={newUpdatedValues.category}
+                      onChange={(e) =>
+                        setNewUpdatedValues((prev) => ({
+                          ...prev,
+                          category: e.target.value,
+                        }))
+                      }
+                    />
+                  ) : (
+                    item.category
+                  )}
+                </td>
+                <td className="border-2 py-1 px-1 sm:px-3">
+                  {clickedField === item.id && selectedOption === "edit" ? (
+                    <input
+                      className="outline-0"
+                      type="text"
+                      value={newUpdatedValues.amount}
+                      onChange={(e) =>
+                        setNewUpdatedValues((prev) => ({
+                          ...prev,
+                          amount: e.target.value,
+                        }))
+                      }
+                    />
+                  ) : (
+                    item.amount
+                  )}
+                </td>
+              </tr>
             ) : null
           )}
         </tbody>
