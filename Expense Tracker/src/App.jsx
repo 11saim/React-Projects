@@ -36,11 +36,26 @@ function App() {
     },
   ]);
   const [categories, setCategories] = useState([
-    "Electronics",
-    "Fashion",
-    "Home Appliances",
-    "Accessories",
-    "Education",
+    {
+      category: "Electronics",
+      availProducts: 1,
+    },
+    {
+      category: "Fashion",
+      availProducts: 1,
+    },
+    {
+      category: "Home Appliances",
+      availProducts: 1,
+    },
+    {
+      category: "Accessories",
+      availProducts: 1,
+    },
+    {
+      category: "Education",
+      availProducts: 1,
+    },
   ]);
   const expenseTableRef = useRef(null);
   const [dataAdded, setDataAdded] = useState(false);
