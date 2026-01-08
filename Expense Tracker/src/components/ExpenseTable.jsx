@@ -141,8 +141,8 @@ export default function ExpenseTable({
                 <option value="">All</option>
                 {categories.map((category) => {
                   return (
-                    <option key={category} value={category}>
-                      {category}
+                    <option key={category.category} value={category.category}>
+                      {category.category}
                     </option>
                   );
                 })}

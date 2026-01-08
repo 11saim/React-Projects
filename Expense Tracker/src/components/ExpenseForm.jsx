@@ -63,11 +63,23 @@ export default function ExpenseForm({
     if (Object.keys(formValidation).length) return;
 
     const isCategoryExists = categories.some(
-      (category) => category.toLowerCase() === record.category.toLowerCase()
+      (category) =>
+        category.category.toLowerCase() === record.category.toLowerCase()
     );
 
     if (!isCategoryExists) {
-      setCategories((prev) => [...prev, record.category]);
+      setCategories((prev) => [
+        ...prev,
+        { category: record.category, availProducts: 1 },
+      ]);
+    } else {
+      setCategories((prev) =>
+        prev.map((item) =>
+          item.category === record.category
+            ? { category: item.category, availProducts: item.availProducts + 1 }
+            : item
+        )
+      );
     }
     setData((prev) => [...prev, record]);
     setTempData((prev) => [...prev, record]);

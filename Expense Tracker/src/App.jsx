@@ -104,11 +104,41 @@ function App() {
             )
           );
 
-          setCategories((prev) =>
-            prev.map((item) =>
-              item === beforeCategory.current ? newUpdatedValues.category : item
-            )
-          );
+          if (beforeCategory.current !== newUpdatedValues.category) {
+            setCategories((prev) => {
+              if (beforeCategory.current === newUpdatedValues.category)
+                return prev;
+
+              let tempPrev = [...prev];
+
+              const beforeIndex = tempPrev.findIndex(
+                (category) => category.category === beforeCategory.current
+              );
+
+              if (beforeIndex !== -1) {
+                tempPrev[beforeIndex].availProducts -= 1;
+
+                if (tempPrev[beforeIndex].availProducts === 0) {
+                  tempPrev.splice(beforeIndex, 1);
+                }
+              }
+
+              const newIndex = tempPrev.findIndex(
+                (category) => category.category === newUpdatedValues.category
+              );
+
+              if (newIndex !== -1) {
+                tempPrev[newIndex].availProducts += 1;
+              } else {
+                tempPrev.push({
+                  category: newUpdatedValues.category,
+                  availProducts: 1,
+                });
+              }
+
+              return tempPrev;
+            });
+          }
 
           setClickField(null);
           setNewUpdatedValues({
