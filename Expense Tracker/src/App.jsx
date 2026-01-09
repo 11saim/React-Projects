@@ -178,7 +178,24 @@ function App() {
               yAxis: 0,
             });
             setData((prev) => prev.filter((item) => item.id !== clickedField));
-            setCurrCategory("");
+            setCategories((prev) => {
+              let tempPrev = [...prev];
+
+              const beforeIndex = tempPrev.findIndex(
+                (category) => category.category === beforeCategory.current
+              );
+
+              if (beforeIndex !== -1) {
+                tempPrev[beforeIndex].availProducts -= 1;
+
+                if (tempPrev[beforeIndex].availProducts === 0) {
+                  tempPrev.splice(beforeIndex, 1);
+                  setCurrCategory("");
+                }
+              }
+
+              return tempPrev;
+            });
           }}
           className="border-b cursor-pointer"
         >
