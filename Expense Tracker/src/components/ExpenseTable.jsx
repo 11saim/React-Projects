@@ -19,10 +19,11 @@ export default function ExpenseTable({
   selectedOption,
   setSelectedOption,
   beforeCategory,
+  currCategory,
+  setCurrCategory
 }) {
   let isSorted = useRef(false);
   let sortBy = useRef(null);
-  const [currCategory, setCurrCategory] = useState("");
 
   function forTitle(ascending) {
     return ascending

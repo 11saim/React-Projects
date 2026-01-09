@@ -89,6 +89,8 @@ function App() {
   }, [contextMenuDetails]);
   const [selectedOption, setSelectedOption] = useState(null);
   const beforeCategory = useRef(null);
+
+  const [currCategory, setCurrCategory] = useState("");
   return (
     <div
       onClick={(e) => {
@@ -120,6 +122,7 @@ function App() {
 
                 if (tempPrev[beforeIndex].availProducts === 0) {
                   tempPrev.splice(beforeIndex, 1);
+                  setCurrCategory("");
                 }
               }
 
@@ -175,6 +178,7 @@ function App() {
               yAxis: 0,
             });
             setData((prev) => prev.filter((item) => item.id !== clickedField));
+            setCurrCategory("");
           }}
           className="border-b cursor-pointer"
         >
@@ -207,6 +211,8 @@ function App() {
           selectedOption={selectedOption}
           setSelectedOption={setSelectedOption}
           beforeCategory={beforeCategory}
+          currCategory={currCategory}
+          setCurrCategory={setCurrCategory}
         />
       </div>
     </div>
