@@ -20,7 +20,7 @@ export default function ExpenseTable({
   setSelectedOption,
   beforeCategory,
   currCategory,
-  setCurrCategory
+  setCurrCategory,
 }) {
   let isSorted = useRef(false);
   let sortBy = useRef(null);
@@ -34,6 +34,7 @@ export default function ExpenseTable({
           return b.title.localeCompare(a.title);
         };
   }
+
   function forAmount(ascending) {
     return ascending
       ? (a, b) => {
@@ -43,6 +44,7 @@ export default function ExpenseTable({
           return b.amount - a.amount;
         };
   }
+
   function sortData(sortingMethod) {
     setData(
       [...data].sort((a, b) => {
@@ -50,6 +52,7 @@ export default function ExpenseTable({
       })
     );
   }
+
   function handleSorting(sortedIn, sortMethod) {
     if (isSorted.current && sortedIn === sortBy.current) {
       setData([...tempData]);
@@ -67,6 +70,42 @@ export default function ExpenseTable({
     sortData(sortMethod);
 
     sortBy.current = sortedIn;
+  }
+
+  function handleContextMenu(e, item) {
+    e.preventDefault();
+    setContextMenuDetails({
+      isOpen: true,
+      xAxis: e.clientX,
+      yAxis: e.clientY,
+    });
+    setClickField(item.id);
+    setNewUpdatedValues({
+      title: item.title,
+      category: item.category,
+      amount: item.amount,
+    });
+    beforeCategory.current = item.category;
+    setSelectedOption(null);
+  }
+
+  function handleTableData(item, value, property, field) {
+    return clickedField === item.id && selectedOption === "edit" ? (
+      <input
+        className="outline-0"
+        type="text"
+        value={value}
+        autoFocus
+        onChange={(e) =>
+          setNewUpdatedValues((prev) => ({
+            ...prev,
+            [property]: e.target.value,
+          }))
+        }
+      />
+    ) : (
+      field
+    );
   }
 
   useEffect(() => {
@@ -179,72 +218,31 @@ export default function ExpenseTable({
             currCategory === "" ? (
               <tr
                 onContextMenu={(e) => {
-                  e.preventDefault();
-                  setContextMenuDetails({
-                    isOpen: true,
-                    xAxis: e.clientX,
-                    yAxis: e.clientY,
-                  });
-                  setClickField(item.id);
-                  setNewUpdatedValues({
-                    title: item.title,
-                    category: item.category,
-                    amount: item.amount,
-                  });
-                  beforeCategory.current = item.category;
-                  setSelectedOption(null);
+                  handleContextMenu(e, item);
                 }}
                 key={item.id}
               >
                 <td className="border-2 py-1 px-1 sm:px-3">
-                  {clickedField === item.id && selectedOption === "edit" ? (
-                    <input
-                      className="outline-0"
-                      type="text"
-                      value={newUpdatedValues.title}
-                      autoFocus
-                      onChange={(e) =>
-                        setNewUpdatedValues((prev) => ({
-                          ...prev,
-                          title: e.target.value,
-                        }))
-                      }
-                    />
-                  ) : (
+                  {handleTableData(
+                    item,
+                    newUpdatedValues.title,
+                    "title",
                     item.title
                   )}
                 </td>
                 <td className="border-2 py-1 px-1 sm:px-3">
-                  {clickedField === item.id && selectedOption === "edit" ? (
-                    <input
-                      className="outline-0"
-                      type="text"
-                      value={newUpdatedValues.category}
-                      onChange={(e) =>
-                        setNewUpdatedValues((prev) => ({
-                          ...prev,
-                          category: e.target.value,
-                        }))
-                      }
-                    />
-                  ) : (
+                  {handleTableData(
+                    item,
+                    newUpdatedValues.category,
+                    "category",
                     item.category
                   )}
                 </td>
                 <td className="border-2 py-1 px-1 sm:px-3">
-                  {clickedField === item.id && selectedOption === "edit" ? (
-                    <input
-                      className="outline-0"
-                      type="text"
-                      value={newUpdatedValues.amount}
-                      onChange={(e) =>
-                        setNewUpdatedValues((prev) => ({
-                          ...prev,
-                          amount: e.target.value,
-                        }))
-                      }
-                    />
-                  ) : (
+                  {handleTableData(
+                    item,
+                    newUpdatedValues.amount,
+                    "amount",
                     item.amount
                   )}
                 </td>
@@ -252,72 +250,31 @@ export default function ExpenseTable({
             ) : item.category === currCategory ? (
               <tr
                 onContextMenu={(e) => {
-                  e.preventDefault();
-                  setContextMenuDetails({
-                    isOpen: true,
-                    xAxis: e.clientX,
-                    yAxis: e.clientY,
-                  });
-                  setClickField(item.id);
-                  setNewUpdatedValues({
-                    title: item.title,
-                    category: item.category,
-                    amount: item.amount,
-                  });
-                  beforeCategory.current = item.category;
-                  setSelectedOption(null);
+                  handleContextMenu(e, item);
                 }}
                 key={item.id}
               >
                 <td className="border-2 py-1 px-1 sm:px-3">
-                  {clickedField === item.id && selectedOption === "edit" ? (
-                    <input
-                      className="outline-0"
-                      type="text"
-                      value={newUpdatedValues.title}
-                      autoFocus
-                      onChange={(e) =>
-                        setNewUpdatedValues((prev) => ({
-                          ...prev,
-                          title: e.target.value,
-                        }))
-                      }
-                    />
-                  ) : (
+                  {handleTableData(
+                    item,
+                    newUpdatedValues.title,
+                    "title",
                     item.title
                   )}
                 </td>
                 <td className="border-2 py-1 px-1 sm:px-3">
-                  {clickedField === item.id && selectedOption === "edit" ? (
-                    <input
-                      className="outline-0"
-                      type="text"
-                      value={newUpdatedValues.category}
-                      onChange={(e) =>
-                        setNewUpdatedValues((prev) => ({
-                          ...prev,
-                          category: e.target.value,
-                        }))
-                      }
-                    />
-                  ) : (
+                  {handleTableData(
+                    item,
+                    newUpdatedValues.category,
+                    "category",
                     item.category
                   )}
                 </td>
                 <td className="border-2 py-1 px-1 sm:px-3">
-                  {clickedField === item.id && selectedOption === "edit" ? (
-                    <input
-                      className="outline-0"
-                      type="text"
-                      value={newUpdatedValues.amount}
-                      onChange={(e) =>
-                        setNewUpdatedValues((prev) => ({
-                          ...prev,
-                          amount: e.target.value,
-                        }))
-                      }
-                    />
-                  ) : (
+                  {handleTableData(
+                    item,
+                    newUpdatedValues.amount,
+                    "amount",
                     item.amount
                   )}
                 </td>

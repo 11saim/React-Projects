@@ -59,6 +59,7 @@ export default function ExpenseForm({
 
   function handleSubmit(e) {
     e.preventDefault();
+
     const formValidation = validate(record);
     if (Object.keys(formValidation).length) return;
 
@@ -81,16 +82,17 @@ export default function ExpenseForm({
         )
       );
     }
+
     setData((prev) => [...prev, record]);
     setTempData((prev) => [...prev, record]);
+    setError({});
+    setDataAdded(true);
     setRecord({
       id: crypto.randomUUID(),
       title: "",
       category: "",
       amount: "",
     });
-    setError({});
-    setDataAdded(true);
   }
   return (
     <div className="flex flex-col w-full sm:w-[80%] lg:w-[40%]">
