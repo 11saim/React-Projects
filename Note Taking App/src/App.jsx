@@ -1,7 +1,15 @@
+import SideBar from "./components/SideBar";
+import NotesFolder from "./components/NotesFolder";
+import NoteViewer from "./components/NoteViewer";
+
 function App() {
-  return <h1 class="text-3xl font-bold underline bg-slate-500">
-    Hello world!
-  </h1>;
+  return (
+    <div>
+      <SideBar />
+      <NotesFolder />
+      <NoteViewer />
+    </div>
+  );
 }
 
 export default App;
