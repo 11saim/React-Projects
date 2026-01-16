@@ -7,7 +7,7 @@ import More from "./More";
 
 export default function Sidebar() {
   return (
-    <div className="Sidebar bg-amber-700">
+    <div>
       <Navbar />
       <AddNote />
       <Recents />
