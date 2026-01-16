@@ -7,7 +7,7 @@ import More from "./More";
 
 export default function Sidebar() {
   return (
-    <div>
+    <div className="Sidebar w-1/5 bg-[#181818] text-white">
       <Navbar />
       <AddNote />
       <Recents />

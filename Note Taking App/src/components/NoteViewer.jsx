@@ -6,7 +6,7 @@ import Content from "./Content";
 
 export default function NoteViewer() {
   return (
-    <div className="NoteViewer">
+    <div className="NoteViewer w-[60%] bg-[#181818] text-white">
       <NoteTitle />
       <NoteDetails />
       <Tools />

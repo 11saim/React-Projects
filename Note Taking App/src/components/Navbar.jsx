@@ -4,7 +4,7 @@ import searchIcon from "../assets/search-icon.png";
 
 export default function Navbar() {
   return (
-    <div className="Navbar">
+    <div className="Navbar p-5 flex justify-between items-center">
       <div className="logo">
         <img src={logo} alt="logo" />
       </div>

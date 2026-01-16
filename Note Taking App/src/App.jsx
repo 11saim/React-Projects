@@ -4,7 +4,7 @@ import NoteViewer from "./components/NoteViewer";
 
 function App() {
   return (
-    <div className="bg-amber-500">
+    <div className="bg-amber-500 flex w-full">
       <SideBar />
       <NotesFolder />
       <NoteViewer />
