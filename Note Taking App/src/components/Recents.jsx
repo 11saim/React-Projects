@@ -4,7 +4,7 @@ import greyNoteIcon from "../assets/grey-note-icon.png";
 
 export default function Recents() {
   return (
-    <div className="recents-section py-7 text-[#a3a3a3]">
+    <div className="recents-section py-4 text-[#a3a3a3]">
       <div className="head px-3 py-2">
         <div className="heading">
           <h4>Recents</h4>

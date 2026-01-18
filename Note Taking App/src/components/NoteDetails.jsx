@@ -1,6 +1,6 @@
 import React from "react";
 import date from "../assets/date.png";
-import folder from "../assets/folder-icon.png";
+import folder from "../assets/open-folder-icon.png";
 
 export default function NoteDetails() {
   return (
