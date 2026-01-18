@@ -20,8 +20,8 @@ const options = [
 
 export default function More() {
   return (
-    <div className="more-section">
-      <div className="head">
+    <div className="more-section py-3 text-[#a3a3a3]">
+      <div className="head px-3 py-2">
         <div className="heading">
           <h4>More</h4>
         </div>
@@ -29,7 +29,7 @@ export default function More() {
       <div className="options">
         {options.map((option) => {
           return (
-            <div className="option">
+            <div className="option flex p-3 space-x-3 items-center">
               <div className="icon">
                 <img src={option.icon} alt={option.title} />
               </div>
