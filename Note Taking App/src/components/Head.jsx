@@ -4,7 +4,7 @@ export default function Head() {
   return (
     <div className="head">
       <div className="heading">
-        <h1>Personal</h1>
+        <p className="text-2xl">Personal</p>
       </div>
     </div>
   );

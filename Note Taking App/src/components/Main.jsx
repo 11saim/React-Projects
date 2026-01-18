@@ -3,8 +3,8 @@ import Folder from "./Folder";
 
 export default function Main() {
   return (
-    <div className="main">
-      <div className="folders">
+    <div className="main py-3">
+      <div className="folders flex flex-col items-center">
         <Folder />
         <Folder />
         <Folder />
