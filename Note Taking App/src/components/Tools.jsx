@@ -6,7 +6,7 @@ import Table from "./Table";
 
 export default function Tools() {
   return (
-    <div className="tools">
+    <div className="tools flex">
       <TextOptions />
       <TextStyle />
       <Media />
