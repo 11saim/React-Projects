@@ -5,15 +5,15 @@ import underLine from "../assets/underline.png";
 
 export default function TextStyle() {
   return (
-    <div className="text-style flex">
+    <div className="text-style flex space-x-2">
       <div className="bold">
-        <img src={bold} alt="bold" width={25} height={25}/>
+        <img src={bold} alt="bold" width={25} height={25} />
       </div>
       <div className="italic">
-        <img src={italic} alt="italic" width={25} height={25}/>
+        <img src={italic} alt="italic" width={25} height={25} />
       </div>
       <div className="under-line">
-        <img src={underLine} alt="under-line" width={25} height={25}/>
+        <img src={underLine} alt="under-line" width={25} height={25} />
       </div>
     </div>
   );
