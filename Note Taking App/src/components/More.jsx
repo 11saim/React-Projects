@@ -31,7 +31,7 @@ export default function More() {
           return (
             <div className="option flex p-3 space-x-3 items-center">
               <div className="icon">
-                <img src={option.icon} alt={option.title} />
+                <img src={option.icon} alt={option.title} width={20} />
               </div>
               <div className="title">{option.title}</div>
             </div>
