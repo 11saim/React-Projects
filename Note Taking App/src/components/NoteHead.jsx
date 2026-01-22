@@ -1,5 +1,8 @@
 import React from "react";
 import closedOptions from "../assets/closed-options.png";
+import favoriteIcon from "../assets/favorite-icon.png";
+import archivedIcon from "../assets/archived-icon.png";
+import trashIcon from "../assets/trash-icon.png";
 
 export default function NoteHead() {
   return (
@@ -7,8 +10,36 @@ export default function NoteHead() {
       <div className="note-title">
         <p className="text-4xl">Reflection on the Month of June</p>
       </div>
-      <div className="options">
+      <div className="options relative">
         <img src={closedOptions} alt="closed-options" width={40} height={40} />
+        <div className="options-modal bg-[#333333] p-4 rounded-md hidden top-13 right-1 w-48 space-y-5">
+          <div className="top-options space-y-4 border-b-2 border-b-[#3d3d3d]">
+            <div className="add-to-favorite flex space-x-2">
+              <img
+                src={favoriteIcon}
+                alt="favorite-icon"
+                width={25}
+                height={25}
+              />
+              <p>Add to Favorites</p>
+            </div>
+            <div className="archived flex space-x-2 mb-2">
+              <img
+                src={archivedIcon}
+                alt="archived-icon"
+                width={25}
+                height={25}
+              />
+              <p>Archived</p>
+            </div>
+          </div>
+          <div className="bottom-options">
+            <div className="delete flex space-x-2">
+              <img src={trashIcon} alt="trash-icon" width={25} height={25} />
+              <p>Delete</p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
