@@ -4,9 +4,11 @@ import NoteViewer from "./components/NoteViewer";
 
 function App() {
   return (
-    <div className="bg-amber-500 flex w-full">
-      <SideBar />
-      <NotesFolder />
+    <div className="flex w-full max-h-screen xl:max-h-full">
+      <div className="flex flex-col w-[40%] xl:flex-row h-auto">
+        <SideBar />
+        <NotesFolder />
+      </div>
       <NoteViewer />
     </div>
   );

@@ -7,12 +7,14 @@ import More from "./More";
 
 export default function Sidebar() {
   return (
-    <div className="Sidebar w-1/5 bg-[#181818] text-white">
+    <div className="Sidebar h-1/2 xl:h-auto w-full xl:w-1/2 bg-[#181818] text-white">
       <Navbar />
       <AddNote />
-      <Recents />
-      <Folders />
-      <More />
+      <div className="h-1/2 xl:h-auto overflow-auto xl:overflow-visible">
+        <Recents />
+        <Folders />
+        <More />
+      </div>
     </div>
   );
 }

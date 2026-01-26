@@ -15,19 +15,19 @@ export default function Recents() {
           <div className="note-icon">
             <img src={whiteNoteIcon} alt="note-icon" width={20} height={20} />
           </div>
-          <div className="note-title">Reflection on the Month of June</div>
+          <div className="note-title line-clamp-1">Reflection on the Month of June</div>
         </div>
         <div className="note flex p-3 space-x-2 items-center">
           <div className="note-icon">
             <img src={greyNoteIcon} alt="note-icon" width={20} height={20} />
           </div>
-          <div className="note-title]">Project proposal</div>
+          <div className="note-title line-clamp-1">Project proposal</div>
         </div>
         <div className="note flex p-3 space-x-2 items-center">
           <div className="note-icon">
             <img src={greyNoteIcon} alt="note-icon" width={20} height={20} />
           </div>
-          <div className="note-title">Travel itinerary</div>
+          <div className="note-title line-clamp-1">Travel itinerary</div>
         </div>
       </div>
     </div>
