@@ -8,9 +8,11 @@ import More from "./More";
 export default function Sidebar() {
   return (
     <div className="Sidebar h-1/2 xl:h-auto w-full xl:w-1/2 bg-[#181818] text-white">
-      <Navbar />
-      <AddNote />
-      <div className="h-1/2 xl:h-auto overflow-auto xl:overflow-visible">
+      <div className="h-[30%] xl:h-auto ">
+        <Navbar />
+        <AddNote />
+      </div>
+      <div className="h-[70%] xl:h-auto overflow-auto xl:overflow-visible">
         <Recents />
         <Folders />
         <More />
