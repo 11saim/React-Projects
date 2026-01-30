@@ -3,9 +3,9 @@ import arrow from "../assets/arrow.png";
 
 export default function TextOptions() {
   return (
-    <div className="text-options flex space-x-3">
+    <div className="text-options flex space-x-7 lg:space-x-3">
       <div className="select text-select relative">
-        <div className="selected-option flex space-x-9">
+        <div className="selected-option flex space-x-4 lg:space-x-9">
           <p>Paragraph</p>
           <img src={arrow} alt="arrow" width={25} height={25} />
         </div>

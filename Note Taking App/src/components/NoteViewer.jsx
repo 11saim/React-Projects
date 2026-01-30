@@ -6,8 +6,8 @@ import Content from "./Content";
 
 export default function NoteViewer() {
   return (
-    <div className="NoteViewer w-[60%] bg-[#181818] text-white p-10 h-auto">
-      <div className="h-[35%] xl:h-auto">
+    <div className="NoteViewer w-full sm:w-[60%] bg-[#181818] text-white p-5 lg:p-10 h-auto">
+      <div className="h-auto">
         <NoteHead />
         <NoteDetails />
         <Tools />

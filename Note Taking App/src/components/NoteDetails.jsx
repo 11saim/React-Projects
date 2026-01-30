@@ -5,7 +5,7 @@ import folder from "../assets/close-folder-icon.png";
 export default function NoteDetails() {
   return (
     <div className="note-details">
-      <div className="date flex pt-7 pb-4 border-b-2 border-b-[#2f2f2f] space-x-32">
+      <div className="date flex pt-7 pb-4 border-b-2 border-b-[#2f2f2f] space-x-15 md:space-x-32">
         <div className="title flex space-x-7">
           <img src={date} alt="date" width={25} height={25} />
           <p className="text-[#a3a3a3]">Date</p>
@@ -14,7 +14,7 @@ export default function NoteDetails() {
           <p className="underline">1/1/2025</p>
         </div>
       </div>
-      <div className="folder flex pt-4 pb-7 space-x-30">
+      <div className="folder flex pt-4 pb-7 space-x-13 md:space-x-30">
         <div className="title flex space-x-7">
           <img src={folder} alt="folder" width={25} height={25} />
           <p className="text-[#a3a3a3]">Folder</p>

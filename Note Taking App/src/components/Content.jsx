@@ -2,7 +2,7 @@ import React from "react";
 
 export default function Content() {
   return (
-    <div className="content h-[65%] xl:h-auto overflow-auto">
+    <div className="content h-[60%] xl:h-auto overflow-auto">
       <p>
         It's hard to believe that June is already over! Looking back on the
         month, there were a few highlights that stand out to me. One of the best

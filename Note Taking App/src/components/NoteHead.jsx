@@ -8,7 +8,9 @@ export default function NoteHead() {
   return (
     <div className="note-head flex justify-between items-end">
       <div className="note-title">
-        <p className="text-4xl">Reflection on the Month of June</p>
+        <p className="text-2xl lg:text-4xl line-clamp-1">
+          Reflection on the Month of June
+        </p>
       </div>
       <div className="options relative">
         <img src={closedOptions} alt="closed-options" width={40} height={40} />
