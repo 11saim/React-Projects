@@ -40,7 +40,7 @@ export default function TextOptions() {
           <img src={arrow} alt="arrow" width={25} height={25} />
         </div>
         {isOptionSelect && (
-          <ul className="options bg-[#1f1f1f] mt-3 absolute w-15">
+          <ul className="options bg-[#1f1f1f] mt-3 absolute w-15 h-90 overflow-auto xl:h-auto">
             <li className="hover:bg-[#312EB5] p-2 cursor-pointer">8</li>
             <li className="hover:bg-[#312EB5] p-2 cursor-pointer">9</li>
             <li className="hover:bg-[#312EB5] p-2 cursor-pointer">10</li>
