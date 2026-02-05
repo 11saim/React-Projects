@@ -1,4 +1,3 @@
-import React, { useState, useEffect } from "react";
 import Navbar from "./Navbar";
 import AddNote from "./AddNote";
 import Recents from "./Recents";
@@ -6,24 +5,12 @@ import Folders from "./Folders";
 import More from "./More";
 import Menu from "../assets/menu.png";
 
-export default function Sidebar() {
-  const [isSidebar, setIsSidebar] = useState(window.innerWidth >= 640);
-
-  useEffect(() => {
-    function handleResize() {
-      if (window.innerWidth >= 640) {
-        setIsSidebar(true);
-      } else {
-        setIsSidebar(false);
-      }
-    }
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+export default function Sidebar({ isDesktop, activePanel, setActivePanel }) {
+  const shouldOpen = isDesktop || activePanel === "sidebar";
 
   return (
     <>
-      {isSidebar && (
+      {shouldOpen && (
         <div className="Sidebar fixed z-50 sm:static max-h-screen sm:h-1/2 overflow-auto xl:h-auto w-full xl:w-1/2 bg-[#181818] text-white sm:max-h-full">
           <div className="h-[30%] xl:h-auto ">
             <Navbar />
@@ -37,7 +24,9 @@ export default function Sidebar() {
         </div>
       )}
       <div
-        onClick={() => setIsSidebar(!isSidebar)}
+        onClick={() =>
+          setActivePanel((prev) => (prev === "sidebar" ? null : "sidebar"))
+        }
         className="z-100 cursor-pointer fixed sm:hidden bg-amber-700 bottom-5 left-5 p-2 rounded-4xl"
       >
         <img src={Menu} alt="Menu" width={25} height={25} />
