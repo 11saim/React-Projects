@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import openFolderIcon from "../assets/open-folder-icon.png";
 import closeFolderIcon from "../assets/close-folder-icon.png";
 import addFolderIcon from "../assets/add-folder-icon.png";
 
 export default function Folders() {
   const [isModal, setIsModal] = useState(false);
+  const inputRef = useRef(null);
   return (
     <>
       <div className="folders-section py-3 text-[#a3a3a3]">
@@ -45,13 +46,13 @@ export default function Folders() {
         </div>
       </div>
       {isModal && (
-        <div class="fixed inset-0 z-50 flex items-center justify-center bg-white/10">
-          <div class="relative w-96 bg-[#181818] p-3 sm:p-4 rounded-2xl mx-3">
-            <div class="flex items-center justify-between">
-              <h2 class="text-xl font-semibold">Folder Name:</h2>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/10">
+          <div className="relative w-96 bg-[#181818] p-3 sm:p-4 rounded-2xl mx-3">
+            <div className="flex items-center justify-between">
+              <h2 className="text-xl font-semibold">Folder Name:</h2>
 
               <button
-                class="text-gray-500 cursor-pointer text-2xl font-bold"
+                className="text-gray-500 cursor-pointer text-2xl font-bold"
                 aria-label="Close"
                 onClick={() => setIsModal(false)}
               >
@@ -59,17 +60,24 @@ export default function Folders() {
               </button>
             </div>
 
-            <div class="py-4">
+            <div className="py-4">
               <input
                 className="bg-[#232323] w-full px-5 py-3 outline-0"
                 type="text"
                 name="foldername"
                 placeholder="Enter Here"
+                ref={inputRef}
               />
             </div>
 
-            <div class="w-full flex justify-end">
-              <button class="px-2 py-1 sm:px-4 sm:py-2 rounded bg-blue-600 text-white hover:bg-blue-700 cursor-pointer">
+            <div className="w-full flex justify-end">
+              <button
+                onClick={() => {
+                  console.log(inputRef.current.value);
+                  setIsModal(false);
+                }}
+                className="px-2 py-1 sm:px-4 sm:py-2 rounded bg-blue-600 text-white hover:bg-blue-700 cursor-pointer"
+              >
                 Save
               </button>
             </div>

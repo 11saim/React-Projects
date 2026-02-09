@@ -26,7 +26,7 @@ export default function NoteHead() {
         />
 
         {isModel && (
-          <div className="options-modal bg-[#333333] p-4 rounded-md absolute top-13 right-1 w-48 space-y-5">
+          <div className="options-modal z-50 bg-[#333333] p-4 rounded-md absolute top-13 right-1 w-48 space-y-5">
             <div className="top-options space-y-4 border-b-2 border-b-[#3d3d3d]">
               <div className="add-to-favorite flex space-x-2 cursor-pointer">
                 <img

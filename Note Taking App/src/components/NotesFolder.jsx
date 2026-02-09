@@ -23,7 +23,7 @@ export default function NotesFolder({
             prev === "notesfolder" ? null : "notesfolder",
           )
         }
-        className="z-100 cursor-pointer fixed sm:hidden bg-amber-700 bottom-5 right-5 p-2 rounded-4xl"
+        className="z-100 cursor-pointer fixed sm:hidden bg-[#4e4848] bottom-5 right-5 p-2 rounded-4xl"
       >
         <img src={Menu} alt="Menu" width={25} height={25} />
       </div>
