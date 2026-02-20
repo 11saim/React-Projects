@@ -1,11 +1,16 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import openFolderIcon from "../assets/open-folder-icon.png";
+import editIcon from "../assets/edit.png";
+import whiteEditIcon from "../assets/whiteEditIcon.png";
 import closeFolderIcon from "../assets/close-folder-icon.png";
 import addFolderIcon from "../assets/add-folder-icon.png";
 
 export default function Folders() {
   const [isModal, setIsModal] = useState(false);
   const inputRef = useRef(null);
+  const [activeFolder, setActiveFolder] = useState("");
+  const folders = [{ name: "Personal" }, { name: "Work" }];
+
   return (
     <>
       <div className="folders-section py-3 text-[#a3a3a3]">
@@ -21,62 +26,80 @@ export default function Folders() {
           </div>
         </div>
         <div className="folders">
-          <div className="folder flex p-3 space-x-3 items-center bg-[#1f1f1f] text-white">
-            <div className="folder-icon">
-              <img
-                src={openFolderIcon}
-                alt="folder-icon"
-                width={20}
-                height={20}
-              />
+          {folders.map((folder) => (
+            <div
+              key={folder.name}
+              onClick={() =>
+                setActiveFolder((prev) =>
+                  prev === folder.name ? "" : folder.name,
+                )
+              }
+              className={`group flex p-3 justify-between items-center 
+          text-white cursor-pointer transition-colors duration-200
+          ${
+            activeFolder === folder.name ? "bg-[#312EB5]" : "hover:bg-[#2a2a2a]"
+          }`}
+            >
+              <div className="flex items-center space-x-3">
+                <img
+                  src={
+                    activeFolder === folder.name
+                      ? openFolderIcon
+                      : closeFolderIcon
+                  }
+                  alt="folder-icon"
+                  width={20}
+                  height={20}
+                />
+                <span>{folder.name}</span>
+              </div>
+              <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                <img
+                  src={activeFolder === folder.name ? whiteEditIcon : editIcon}
+                  alt="edit-icon"
+                  width={20}
+                  height={20}
+                />
+              </div>
             </div>
-            <div className="folder-title">Personal</div>
-          </div>
-          <div className="folder flex p-3 space-x-3 items-center hover:bg-[#1f1f1f]">
-            <div className="folder-icon">
-              <img
-                src={closeFolderIcon}
-                alt="folder-icon"
-                width={20}
-                height={20}
-              />
-            </div>
-            <div className="folder-title">Work</div>
-          </div>
+          ))}
         </div>
       </div>
       {isModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/10">
-          <div className="relative w-96 bg-[#181818] p-3 sm:p-4 rounded-2xl mx-3">
-            <div className="flex items-center justify-between">
-              <h2 className="text-xl font-semibold">Folder Name:</h2>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/10 backdrop-blur-sm">
+          <div className="relative w-96 mx-3 bg-[#181818] rounded-2xl shadow-xl border border-[#232323] p-5 sm:p-6">
+            <div className="flex items-center justify-between border-b border-[#232323] pb-3">
+              <h2 className="text-lg sm:text-xl font-semibold text-white">
+                Folder Name:
+              </h2>
 
               <button
-                className="text-gray-500 cursor-pointer text-2xl font-bold"
-                aria-label="Close"
                 onClick={() => setIsModal(false)}
+                aria-label="Close"
+                className="text-gray-500 hover:text-white text-2xl font-bold transition-colors duration-200"
               >
                 ×
               </button>
             </div>
-
-            <div className="py-4">
+            <div className="py-5">
               <input
-                className="bg-[#232323] w-full px-5 py-3 outline-0"
+                ref={inputRef}
                 type="text"
                 name="foldername"
                 placeholder="Enter Here"
-                ref={inputRef}
+                className="w-full bg-[#232323] text-white px-4 py-3 rounded-lg 
+                   outline-none focus:ring-2 focus:ring-blue-600 
+                   transition-all duration-200"
               />
             </div>
-
-            <div className="w-full flex justify-end">
+            <div className="flex justify-end">
               <button
                 onClick={() => {
                   console.log(inputRef.current.value);
                   setIsModal(false);
                 }}
-                className="px-2 py-1 sm:px-4 sm:py-2 rounded bg-blue-600 text-white hover:bg-blue-700 cursor-pointer"
+                className="px-4 py-2 rounded-lg bg-blue-600 text-white 
+                   hover:bg-blue-700 transition-colors duration-200"
               >
                 Save
               </button>
