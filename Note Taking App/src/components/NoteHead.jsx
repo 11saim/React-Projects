@@ -3,19 +3,23 @@ import closedOptions from "../assets/closed-options.png";
 import favoriteIcon from "../assets/favorite-icon.png";
 import archivedIcon from "../assets/archived-icon.png";
 import trashIcon from "../assets/trash-icon.png";
+import whiteEditIcon from "../assets/whiteEditIcon.png";
 
 export default function NoteHead() {
   const [isModel, setIsModel] = useState(false);
 
   return (
-    <div className="note-head flex justify-between items-end">
-      <div className="note-title">
+    <div className="note-head flex justify-between items-center">
+      <div className="note-title flex items-center">
         <p className="text-2xl lg:text-4xl line-clamp-1">
           Reflection on the Month of June
         </p>
+        <div className="edit mx-2 cursor-pointer">
+          <img src={whiteEditIcon} alt="edit-icon" width={30} height={30} />
+        </div>
       </div>
 
-      <div className="options relative">
+      <div className="options">
         <img
           onClick={() => setIsModel(!isModel)}
           src={closedOptions}

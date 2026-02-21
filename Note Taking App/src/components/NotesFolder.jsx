@@ -12,7 +12,7 @@ export default function NotesFolder({
   return (
     <>
       {shouldOpen && (
-        <div className="NotesFolder fixed sm:static sm:h-1/2 z-25 max-h-screen sm:max-h-full overflow-auto xl:h-auto w-full xl:w-1/2 bg-[#1C1C1C] text-white px-4 py-7">
+        <div className="NotesFolder fixed sm:static sm:h-1/2 max-h-screen sm:max-h-full overflow-auto xl:h-auto w-full xl:w-1/2 bg-[#1C1C1C] text-white px-4 py-7">
           <Head />
           <Main />
         </div>

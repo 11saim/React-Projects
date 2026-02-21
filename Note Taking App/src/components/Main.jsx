@@ -6,13 +6,6 @@ export default function Main() {
     <div className="main">
       <div className="folders flex flex-col items-center">
         <Folder />
-        <Folder />
-        <Folder />
-        <Folder />
-        <Folder />
-        <Folder />
-        <Folder />
-        <Folder />
       </div>
     </div>
   );

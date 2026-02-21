@@ -18,10 +18,7 @@ export default function Folders() {
           <div className="heading">
             <h4>Folders</h4>
           </div>
-          <div
-            onClick={() => setIsModal(true)}
-            className="icon hover:scale-120 transition-all cursor-pointer"
-          >
+          <div onClick={() => setIsModal(true)} className="icon cursor-pointer">
             <img src={addFolderIcon} alt="add-folder" />
           </div>
         </div>
@@ -66,7 +63,7 @@ export default function Folders() {
         </div>
       </div>
       {isModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/10 backdrop-blur-sm">
+        <div className="fixed inset-0 flex items-center justify-center bg-white/10 backdrop-blur-sm">
           <div className="relative w-96 mx-3 bg-[#181818] rounded-2xl shadow-xl border border-[#232323] p-5 sm:p-6">
             <div className="flex items-center justify-between border-b border-[#232323] pb-3">
               <h2 className="text-lg sm:text-xl font-semibold text-white">

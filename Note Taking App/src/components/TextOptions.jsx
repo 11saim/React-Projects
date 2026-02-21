@@ -6,7 +6,7 @@ export default function TextOptions() {
   const [isOptionSelect, setIsOptionSelect] = useState(false);
   return (
     <div className="text-options flex space-x-7 lg:space-x-3">
-      <div className="select text-select relative">
+      <div className="select text-select">
         <div
           onClick={() => setIsTextSelect(!isTextSelect)}
           className="selected-option flex space-x-4 lg:space-x-9 cursor-pointer"
@@ -31,7 +31,7 @@ export default function TextOptions() {
           </ul>
         )}
       </div>
-      <div className="select option-select relative">
+      <div className="select option-select">
         <div
           onClick={() => setIsOptionSelect(!isOptionSelect)}
           className="selected-option flex space-x-5 cursor-pointer"

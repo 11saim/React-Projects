@@ -11,7 +11,7 @@ export default function Sidebar({ isDesktop, activePanel, setActivePanel }) {
   return (
     <>
       {shouldOpen && (
-        <div className="Sidebar fixed z-50 sm:static max-h-screen sm:h-1/2 overflow-auto xl:h-auto w-full xl:w-1/2 bg-[#181818] text-white sm:max-h-full">
+        <div className="Sidebar fixed sm:static max-h-screen sm:h-1/2 overflow-auto xl:h-auto w-full xl:w-1/2 bg-[#181818] text-white sm:max-h-full">
           <div>
             <Navbar />
             <AddNote />
