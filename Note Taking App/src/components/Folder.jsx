@@ -1,7 +1,6 @@
-import React, { useState } from "react";
 import whiteEditIcon from "../assets/whiteEditIcon.png";
 
-const folders = [
+const notes = [
   {
     _id: 1,
     title: "My Goals for the Next Year",
@@ -40,19 +39,17 @@ const folders = [
   },
 ];
 
-export default function FolderSection() {
-  const [activeFolder, setActiveFolder] = useState(null);
-
+export default function FolderSection({ activeNote, setActiveNote }) {
   return (
     <div className="folder-section py-4">
       <div className="space-y-3">
-        {folders.map((folder) => {
-          const isActive = activeFolder === folder._id;
+        {notes.map((note) => {
+          const isActive = activeNote === note._id;
 
           return (
             <div
-              key={folder._id}
-              onClick={() => setActiveFolder(isActive ? null : folder._id)}
+              key={note._id}
+              onClick={() => setActiveNote(isActive ? null : note._id)}
               className={`group folder w-full p-5 cursor-pointer transition-colors duration-200
                 ${
                   isActive ? "bg-[#312EB5]" : "bg-[#232323] hover:bg-[#2a2a2a]"
@@ -62,7 +59,7 @@ export default function FolderSection() {
                 <div
                   className={`title line-clamp-1 text-white transition-colors duration-200`}
                 >
-                  {folder.title}
+                  {note.title}
                 </div>
                 <div className="edit">
                   <img
@@ -80,14 +77,14 @@ export default function FolderSection() {
                     isActive ? "text-white" : "text-[#7b7b7b]"
                   }`}
                 >
-                  {folder.date}
+                  {note.date}
                 </div>
                 <div
                   className={`subtitle line-clamp-1 transition-colors duration-200 ${
                     isActive ? "text-white" : "text-[#a7a7a7]"
                   }`}
                 >
-                  {folder.subtitle}
+                  {note.subtitle}
                 </div>
               </div>
             </div>

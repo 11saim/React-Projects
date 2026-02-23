@@ -3,9 +3,12 @@ import whiteNoteIcon from "../assets/white-note-icon.png";
 import greyNoteIcon from "../assets/grey-note-icon.png";
 import { useState } from "react";
 
-export default function Recents() {
-  const [activeNote, setActiveNote] = useState("");
-
+export default function Recents({
+  activeNote,
+  setActiveNote,
+  activeFolder,
+  setActiveFolder,
+}) {
   const notes = [
     "Reflection on the Month of June",
     "Project proposal",

@@ -18,9 +18,7 @@ const options = [
   },
 ];
 
-export default function More() {
-  const [activeOption, setActiveOption] = useState("");
-
+export default function More({ activeFolder, setActiveFolder }) {
   return (
     <div className="more-section py-4 text-[#a3a3a3]">
       {/* Header */}
@@ -31,13 +29,13 @@ export default function More() {
       {/* Options */}
       <div className="space-y-1">
         {options.map((option) => {
-          const isActive = activeOption === option.title;
+          const isActive = activeFolder === option.title;
 
           return (
             <div
               key={option.title}
               onClick={() =>
-                setActiveOption((prev) =>
+                setActiveFolder((prev) =>
                   option.title === prev ? "" : option.title,
                 )
               }

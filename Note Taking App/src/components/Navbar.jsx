@@ -1,7 +1,5 @@
 import React from "react";
 import logo from "../assets/logo.png";
-import searchIcon from "../assets/search-icon.png";
-import whiteSearchIcon from "../assets/white-search-icon.png";
 
 export default function Navbar() {
   return (

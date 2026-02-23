@@ -1,7 +1,7 @@
 import React from "react";
 import searchIcon from "../assets/search-icon.png";
 
-export default function AddNote() {
+export default function SearchNote() {
   return (
     <form
       onSubmit={(e) => e.preventDefault()}

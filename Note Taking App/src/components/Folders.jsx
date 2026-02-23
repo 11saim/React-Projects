@@ -5,10 +5,9 @@ import whiteEditIcon from "../assets/whiteEditIcon.png";
 import closeFolderIcon from "../assets/close-folder-icon.png";
 import addFolderIcon from "../assets/add-folder-icon.png";
 
-export default function Folders() {
+export default function Folders({ activeFolder, setActiveFolder }) {
   const [isModal, setIsModal] = useState(false);
   const inputRef = useRef(null);
-  const [activeFolder, setActiveFolder] = useState("");
   const folders = [{ name: "Personal" }, { name: "Work" }];
 
   return (

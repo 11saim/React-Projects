@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 function App() {
   const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 640);
   const [activePanel, setActivePanel] = useState(null);
+  const [activeNote, setActiveNote] = useState("");
 
   useEffect(() => {
     function handleResize() {
@@ -24,11 +25,15 @@ function App() {
           isDesktop={isDesktop}
           activePanel={activePanel}
           setActivePanel={setActivePanel}
+          activeNote={activeNote}
+          setActiveNote={setActiveNote}
         />
         <NotesFolder
           isDesktop={isDesktop}
           activePanel={activePanel}
           setActivePanel={setActivePanel}
+          activeNote={activeNote}
+          setActiveNote={setActiveNote}
         />
       </div>
       <NoteViewer />
