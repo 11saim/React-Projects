@@ -7,6 +7,7 @@ function App() {
   const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 640);
   const [activePanel, setActivePanel] = useState(null);
   const [activeNote, setActiveNote] = useState("");
+  const [activeFolder, setActiveFolder] = useState("");
 
   useEffect(() => {
     function handleResize() {
@@ -27,6 +28,8 @@ function App() {
           setActivePanel={setActivePanel}
           activeNote={activeNote}
           setActiveNote={setActiveNote}
+          activeFolder={activeFolder}
+          setActiveFolder={setActiveFolder}
         />
         <NotesFolder
           isDesktop={isDesktop}
@@ -34,9 +37,10 @@ function App() {
           setActivePanel={setActivePanel}
           activeNote={activeNote}
           setActiveNote={setActiveNote}
+          activeFolder={activeFolder}
         />
       </div>
-      <NoteViewer />
+      <NoteViewer activeNote={activeNote} />
     </div>
   );
 }

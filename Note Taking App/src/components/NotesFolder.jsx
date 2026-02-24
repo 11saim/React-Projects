@@ -1,5 +1,6 @@
 import Head from "./Head";
 import Main from "./Main";
+import folderIcon from "../assets/close-folder-icon.png";
 import Menu from "../assets/menu.png";
 
 export default function NotesFolder({
@@ -8,17 +9,25 @@ export default function NotesFolder({
   setActivePanel,
   activeNote,
   setActiveNote,
+  activeFolder,
 }) {
   const shouldOpen = isDesktop || activePanel === "notesfolder";
 
   return (
     <>
-      {shouldOpen && (
-        <div className="NotesFolder fixed sm:static sm:h-1/2 h-full overflow-auto xl:h-auto w-full xl:w-1/2 bg-[#1C1C1C] text-white px-4 py-7">
-          <Head />
-          <Main activeNote={activeNote} setActiveNote={setActiveNote} />
-        </div>
-      )}
+      {shouldOpen &&
+        (!activeFolder ? (
+          <div className="fixed sm:static sm:h-1/2 h-full overflow-auto flex flex-col justify-center items-center xl:h-auto w-full xl:w-1/2 bg-[#1C1C1C] text-white px-4 py-7">
+            <img src={folderIcon} alt="folder" width={60} height={60} />
+            <p>Select a folder to View Notes</p>
+          </div>
+        ) : (
+          <div className="NotesFolder fixed sm:static sm:h-1/2 h-full overflow-auto xl:h-auto w-full xl:w-1/2 bg-[#1C1C1C] text-white px-4 py-7">
+            <Head />
+            <Main activeNote={activeNote} setActiveNote={setActiveNote} />
+          </div>
+        ))}
+
       <div
         onClick={() =>
           setActivePanel((prev) =>
