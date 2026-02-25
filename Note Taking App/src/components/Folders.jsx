@@ -4,12 +4,15 @@ import editIcon from "../assets/edit.png";
 import whiteEditIcon from "../assets/whiteEditIcon.png";
 import closeFolderIcon from "../assets/close-folder-icon.png";
 import addFolderIcon from "../assets/add-folder-icon.png";
+import deleteIcon from "../assets/grey-trash-icon.png";
+import whiteDeleteIcon from "../assets/trash-icon.png";
 import Loader from "./Loader";
 
 export default function Folders({ activeFolder, setActiveFolder }) {
   const [isModal, setIsModal] = useState(false);
   const inputRef = useRef(null);
   const [folders, setFolders] = useState(null);
+  const [deleteAlert, setDeleteAlert] = useState(null);
 
   useEffect(() => {
     const fetchFolders = async () => {
@@ -20,6 +23,25 @@ export default function Folders({ activeFolder, setActiveFolder }) {
 
     fetchFolders();
   }, []);
+
+  const handleAddFolder = async () => {
+    const folderName = inputRef.current.value;
+
+    if (!folderName) return;
+
+    const response = await fetch("http://localhost:3000/api/folders/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ name: folderName }),
+    });
+
+    const data = await response.json();
+    if (data.success) {
+      setFolders((prev) => [...prev, data.data]);
+    }
+  };
 
   return (
     <>
@@ -70,10 +92,20 @@ export default function Folders({ activeFolder, setActiveFolder }) {
                   <span>{folder.name}</span>
                 </div>
 
-                <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                <div className="flex justify-center items-center space-x-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                   <img
                     src={
                       activeFolder === folder.name ? whiteEditIcon : editIcon
+                    }
+                    alt="edit-icon"
+                    width={20}
+                    height={20}
+                  />
+                  <img
+                    src={
+                      activeFolder === folder.name
+                        ? whiteDeleteIcon
+                        : deleteIcon
                     }
                     alt="edit-icon"
                     width={20}
@@ -116,7 +148,7 @@ export default function Folders({ activeFolder, setActiveFolder }) {
             <div className="flex justify-end">
               <button
                 onClick={() => {
-                  console.log(inputRef.current.value);
+                  handleAddFolder();
                   setIsModal(false);
                 }}
                 className="px-4 py-2 rounded-lg bg-blue-600 text-white 
