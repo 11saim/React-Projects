@@ -4,7 +4,6 @@ import Recents from "./Recents";
 import Folders from "./Folders";
 import More from "./More";
 import Menu from "../assets/menu.png";
-import { useState } from "react";
 
 export default function Sidebar({
   isDesktop,

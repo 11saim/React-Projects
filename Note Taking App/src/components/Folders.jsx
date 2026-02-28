@@ -7,9 +7,12 @@ import addFolderIcon from "../assets/add-folder-icon.png";
 import deleteIcon from "../assets/grey-trash-icon.png";
 import whiteDeleteIcon from "../assets/trash-icon.png";
 import Loader from "./Loader";
+import Modal from "../components/Modal";
+import DeleteModal from "../components/DeleteModal";
 
 export default function Folders({ activeFolder, setActiveFolder }) {
   const [isModal, setIsModal] = useState(false);
+  const [modalProps, setModalProps] = useState({});
   const inputRef = useRef(null);
   const [folders, setFolders] = useState(null);
   const [deleteAlert, setDeleteAlert] = useState(null);
@@ -43,6 +46,41 @@ export default function Folders({ activeFolder, setActiveFolder }) {
     }
   };
 
+  const handleDeleteFolder = async (id, name) => {
+    const response = await fetch(`http://localhost:3000/api/folders/${id}`, {
+      method: "DELETE",
+    });
+
+    const data = await response.json();
+    if (data.success) {
+      setFolders((prev) => prev.filter((folder) => folder._id != id));
+      setActiveFolder((prev) => (prev === name ? "" : prev));
+    }
+  };
+
+  const handleUpdateFolder = async (id) => {
+    const updatedFolderName = inputRef.current.value;
+
+    if (!updatedFolderName) return;
+
+    const response = await fetch(`http://localhost:3000/api/folders/${id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ name: updatedFolderName }),
+    });
+
+    const data = await response.json();
+    if (data.success) {
+      setFolders((prev) =>
+        prev.map((folder) =>
+          folder._id === id ? { ...folder, name: updatedFolderName } : folder,
+        ),
+      );
+    }
+  };
+
   return (
     <>
       <div className="folders-section py-3 text-[#a3a3a3]">
@@ -51,7 +89,20 @@ export default function Folders({ activeFolder, setActiveFolder }) {
             <h4>Folders</h4>
           </div>
           <div
-            onClick={() => setIsModal(() => (folders === null ? false : true))}
+            onClick={() => {
+              setModalProps(() =>
+                folders === null
+                  ? {}
+                  : {
+                      title: "Folder Name:",
+                      setIsModal,
+                      inputRef,
+                      btnText: "Add",
+                      handler: () => handleAddFolder(),
+                    },
+              );
+              setIsModal(() => (folders === null ? false : true));
+            }}
             className="icon cursor-pointer"
           >
             <img src={addFolderIcon} alt="add-folder" />
@@ -64,7 +115,7 @@ export default function Folders({ activeFolder, setActiveFolder }) {
           ) : (
             folders.map((folder) => (
               <div
-                key={folder.name}
+                key={folder._id}
                 onClick={() =>
                   setActiveFolder((prev) =>
                     prev === folder.name ? "" : folder.name,
@@ -89,15 +140,28 @@ export default function Folders({ activeFolder, setActiveFolder }) {
                     width={20}
                     height={20}
                   />
-                  <span>{folder.name}</span>
+                  <span className="line-clamp-1 pr-5">{folder.name}</span>
                 </div>
 
-                <div className="flex justify-center items-center space-x-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                <div
+                  className="flex justify-center items-center space-x-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                  onClick={(e) => e.stopPropagation()}
+                >
                   <img
                     src={
                       activeFolder === folder.name ? whiteEditIcon : editIcon
                     }
                     alt="edit-icon"
+                    onClick={() => {
+                      setModalProps({
+                        title: "Update Folder Name:",
+                        setIsModal,
+                        inputRef,
+                        btnText: "Update",
+                        handler: () => handleUpdateFolder(folder._id),
+                      });
+                      setIsModal(true);
+                    }}
                     width={20}
                     height={20}
                   />
@@ -108,6 +172,12 @@ export default function Folders({ activeFolder, setActiveFolder }) {
                         : deleteIcon
                     }
                     alt="edit-icon"
+                    onClick={() =>
+                      setDeleteAlert({
+                        id: folder._id,
+                        name: folder.name,
+                      })
+                    }
                     width={20}
                     height={20}
                   />
@@ -118,47 +188,12 @@ export default function Folders({ activeFolder, setActiveFolder }) {
         </div>
       </div>
 
-      {isModal && (
-        <div className="fixed inset-0 flex items-center justify-center bg-white/10 backdrop-blur-sm">
-          <div className="relative w-96 mx-3 bg-[#181818] rounded-2xl shadow-xl border border-[#232323] p-5 sm:p-6">
-            <div className="flex items-center justify-between border-b border-[#232323] pb-3">
-              <h2 className="text-lg sm:text-xl font-semibold text-white">
-                Folder Name:
-              </h2>
-
-              <button
-                onClick={() => setIsModal(false)}
-                className="text-gray-500 hover:text-white text-2xl font-bold transition-colors duration-200"
-              >
-                ×
-              </button>
-            </div>
-
-            <div className="py-5">
-              <input
-                ref={inputRef}
-                type="text"
-                placeholder="Enter Here"
-                className="w-full bg-[#232323] text-white px-4 py-3 rounded-lg 
-                  outline-none focus:ring-2 focus:ring-blue-600 
-                  transition-all duration-200"
-              />
-            </div>
-
-            <div className="flex justify-end">
-              <button
-                onClick={() => {
-                  handleAddFolder();
-                  setIsModal(false);
-                }}
-                className="px-4 py-2 rounded-lg bg-blue-600 text-white 
-                  hover:bg-blue-700 transition-colors duration-200"
-              >
-                Save
-              </button>
-            </div>
-          </div>
-        </div>
+      {isModal && <Modal {...modalProps} />}
+      {deleteAlert && (
+        <DeleteModal
+          setDeleteAlert={setDeleteAlert}
+          handler={() => handleDeleteFolder(deleteAlert.id, deleteAlert.name)}
+        />
       )}
     </>
   );
