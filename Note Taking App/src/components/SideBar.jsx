@@ -12,7 +12,7 @@ export default function Sidebar({
   activeNote,
   setActiveNote,
   activeFolder,
-  setActiveFolder
+  setActiveFolder,
 }) {
   const shouldOpen = isDesktop || activePanel === "sidebar";
 

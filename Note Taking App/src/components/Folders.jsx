@@ -46,7 +46,7 @@ export default function Folders({ activeFolder, setActiveFolder }) {
     }
   };
 
-  const handleDeleteFolder = async (id, name) => {
+  const handleDeleteFolder = async (id) => {
     const response = await fetch(`http://localhost:3000/api/folders/${id}`, {
       method: "DELETE",
     });
@@ -54,7 +54,7 @@ export default function Folders({ activeFolder, setActiveFolder }) {
     const data = await response.json();
     if (data.success) {
       setFolders((prev) => prev.filter((folder) => folder._id != id));
-      setActiveFolder((prev) => (prev === name ? "" : prev));
+      setActiveFolder((prev) => (prev === id ? "" : prev));
     }
   };
 
@@ -118,13 +118,13 @@ export default function Folders({ activeFolder, setActiveFolder }) {
                 key={folder._id}
                 onClick={() =>
                   setActiveFolder((prev) =>
-                    prev === folder.name ? "" : folder.name,
+                    prev === folder._id ? "" : folder._id,
                   )
                 }
                 className={`group flex p-3 justify-between items-center 
                 text-white cursor-pointer transition-colors duration-200
                 ${
-                  activeFolder === folder.name
+                  activeFolder === folder._id
                     ? "bg-[#312EB5]"
                     : "hover:bg-[#2a2a2a]"
                 }`}
@@ -132,7 +132,7 @@ export default function Folders({ activeFolder, setActiveFolder }) {
                 <div className="flex items-center space-x-3">
                   <img
                     src={
-                      activeFolder === folder.name
+                      activeFolder === folder._id
                         ? openFolderIcon
                         : closeFolderIcon
                     }
@@ -148,9 +148,7 @@ export default function Folders({ activeFolder, setActiveFolder }) {
                   onClick={(e) => e.stopPropagation()}
                 >
                   <img
-                    src={
-                      activeFolder === folder.name ? whiteEditIcon : editIcon
-                    }
+                    src={activeFolder === folder._id ? whiteEditIcon : editIcon}
                     alt="edit-icon"
                     onClick={() => {
                       setModalProps({
@@ -167,15 +165,12 @@ export default function Folders({ activeFolder, setActiveFolder }) {
                   />
                   <img
                     src={
-                      activeFolder === folder.name
-                        ? whiteDeleteIcon
-                        : deleteIcon
+                      activeFolder === folder._id ? whiteDeleteIcon : deleteIcon
                     }
                     alt="edit-icon"
                     onClick={() =>
                       setDeleteAlert({
                         id: folder._id,
-                        name: folder.name,
                       })
                     }
                     width={20}

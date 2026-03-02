@@ -2,14 +2,14 @@ import React from "react";
 import { useState, useRef } from "react";
 import addIcon from "../assets/plus.png";
 
-export default function Head() {
+export default function Head({ folder }) {
   const [isModal, setIsModal] = useState(false);
   const inputRef = useRef(null);
   return (
     <>
       <div className="head flex items-center justify-between">
         <div className="heading">
-          <p className="text-2xl">Personal</p>
+          <p className="text-2xl">{folder}</p>
         </div>
         <div
           onClick={() => setIsModal(!isModal)}

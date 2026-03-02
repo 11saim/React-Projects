@@ -2,6 +2,7 @@ import Head from "./Head";
 import Main from "./Main";
 import folderIcon from "../assets/close-folder-icon.png";
 import Menu from "../assets/menu.png";
+import { useEffect, useState } from "react";
 
 export default function NotesFolder({
   isDesktop,
@@ -12,6 +13,30 @@ export default function NotesFolder({
   activeFolder,
 }) {
   const shouldOpen = isDesktop || activePanel === "notesfolder";
+  const [notes, setNotes] = useState({});
+
+  useEffect(() => {
+    if (!activeFolder) return;
+
+    let API_URL = null;
+    if (activeFolder === "Favorite") {
+      API_URL = "http://localhost:3000/api/notes/?favorite=true";
+    } else if (activeFolder === "Archived") {
+      API_URL = "http://localhost:3000/api/notes/?archived=true";
+    } else if (activeFolder === "Trash") {
+      API_URL = "http://localhost:3000/api/notes/?trash=true";
+    } else {
+      API_URL = `http://localhost:3000/api/notes/folders/${activeFolder}`;
+    }
+
+    const fetchNotes = async (URL) => {
+      const response = await fetch(URL);
+      const data = await response.json();
+      setNotes(data.data);
+    };
+
+    fetchNotes(API_URL);
+  }, [activeFolder]);
 
   return (
     <>
@@ -23,8 +48,12 @@ export default function NotesFolder({
           </div>
         ) : (
           <div className="NotesFolder fixed sm:static sm:h-1/2 h-full overflow-auto xl:h-auto w-full xl:w-1/2 bg-[#1C1C1C] text-white px-4 py-7">
-            <Head />
-            <Main activeNote={activeNote} setActiveNote={setActiveNote} />
+            <Head folder={notes.folder} />
+            <Main
+              notes={[]}
+              activeNote={activeNote}
+              setActiveNote={setActiveNote}
+            />
           </div>
         ))}
 
