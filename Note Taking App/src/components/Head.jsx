@@ -2,21 +2,50 @@ import React from "react";
 import { useState, useRef } from "react";
 import addIcon from "../assets/plus.png";
 
-export default function Head({ folder }) {
+export default function Head({ folder, activeFolder }) {
   const [isModal, setIsModal] = useState(false);
   const inputRef = useRef(null);
+
+  const handleAddNote = async () => {
+    const noteName = inputRef.current.value;
+
+    if (!noteName) return;
+
+    const response = await fetch(
+      `http://localhost:3000/api/notes/folders/${activeFolder}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          title: noteName,
+          content: "",
+        }),
+      },
+    );
+    const data = await response.json();
+    if (data.success) {
+      console.log(data);
+    }
+  };
+
   return (
     <>
       <div className="head flex items-center justify-between">
         <div className="heading">
           <p className="text-2xl">{folder}</p>
         </div>
-        <div
-          onClick={() => setIsModal(!isModal)}
-          className="add-note cursor-pointer"
-        >
-          <img src={addIcon} alt="add-icon" width={25} height={25} />
-        </div>
+        {activeFolder != "Favorite" &&
+          activeFolder != "Trash" &&
+          activeFolder != "Archived" && (
+            <div
+              onClick={() => setIsModal(!isModal)}
+              className="add-note cursor-pointer"
+            >
+              <img src={addIcon} alt="add-icon" width={25} height={25} />
+            </div>
+          )}
       </div>
       {isModal && (
         <div className="fixed inset-0 flex items-center justify-center bg-white/10 backdrop-blur-sm">
@@ -48,7 +77,7 @@ export default function Head({ folder }) {
             <div className="flex justify-end">
               <button
                 onClick={() => {
-                  console.log(inputRef.current.value);
+                  handleAddNote();
                   setIsModal(false);
                 }}
                 className="px-4 py-2 rounded-lg bg-blue-600 text-white 

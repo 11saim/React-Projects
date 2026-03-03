@@ -2,11 +2,21 @@ import React from "react";
 import whiteEditIcon from "../assets/whiteEditIcon.png";
 
 export default function Main({ notes, activeNote, setActiveNote }) {
+  const getDate = (timeStamp) => {
+    const dateObj = new Date(parseInt(timeStamp));
+
+    const formattedDate = `${dateObj.getDate()}/${
+      dateObj.getMonth() + 1
+    }/${dateObj.getFullYear()}`;
+
+    return formattedDate;
+  };
+
   return (
     <div className="main">
       <div className="folders flex flex-col items-center">
-        <div className="folder-section py-4">
-          <div className="space-y-3">
+        <div className="w-full folder-section py-4">
+          <div className="w-full space-y-3">
             {notes.length != 0 ? (
               notes.map((note) => {
                 const isActive = activeNote === note._id;
@@ -44,21 +54,23 @@ export default function Main({ notes, activeNote, setActiveNote }) {
                           isActive ? "text-white" : "text-[#7b7b7b]"
                         }`}
                       >
-                        {note.date}
+                        {getDate(note.createdAt)}
                       </div>
                       <div
                         className={`subtitle line-clamp-1 transition-colors duration-200 ${
                           isActive ? "text-white" : "text-[#a7a7a7]"
                         }`}
                       >
-                        {note.subtitle}
+                        {note.content === ""
+                          ? "This note is empty..."
+                          : note.content}
                       </div>
                     </div>
                   </div>
                 );
               })
             ) : (
-              <p className="text-[#a7a7a7] text-xl font-semibold">No Notes</p>
+              <p className="text-[#a7a7a7] text-xl font-semibold text-center">No Notes</p>
             )}
           </div>
         </div>

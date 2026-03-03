@@ -13,7 +13,10 @@ export default function NotesFolder({
   activeFolder,
 }) {
   const shouldOpen = isDesktop || activePanel === "notesfolder";
-  const [notes, setNotes] = useState({});
+  const [notes, setNotes] = useState({
+    folder: "",
+    notes: [],
+  });
 
   useEffect(() => {
     if (!activeFolder) return;
@@ -48,9 +51,13 @@ export default function NotesFolder({
           </div>
         ) : (
           <div className="NotesFolder fixed sm:static sm:h-1/2 h-full overflow-auto xl:h-auto w-full xl:w-1/2 bg-[#1C1C1C] text-white px-4 py-7">
-            <Head folder={notes.folder} />
+            <Head
+              folder={notes.folder}
+              activeFolder={activeFolder}
+              setNotes={setNotes}
+            />
             <Main
-              notes={[]}
+              notes={notes.notes}
               activeNote={activeNote}
               setActiveNote={setActiveNote}
             />
