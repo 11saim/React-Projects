@@ -2,7 +2,7 @@ import React from "react";
 import { useState, useRef } from "react";
 import addIcon from "../assets/plus.png";
 
-export default function Head({ folder, activeFolder }) {
+export default function Head({ folder, activeFolder, setNotes }) {
   const [isModal, setIsModal] = useState(false);
   const inputRef = useRef(null);
 
@@ -25,8 +25,9 @@ export default function Head({ folder, activeFolder }) {
       },
     );
     const data = await response.json();
+
     if (data.success) {
-      console.log(data);
+      setNotes((prev) => ({ folder, notes: [...prev.notes, data.data] }));
     }
   };
 
