@@ -12,6 +12,7 @@ export default function NotesFolder({
   setActiveNote,
   activeFolder,
 }) {
+  
   const shouldOpen = isDesktop || activePanel === "notesfolder";
   const [notes, setNotes] = useState({
     folder: "",
@@ -35,7 +36,6 @@ export default function NotesFolder({
     const fetchNotes = async (URL) => {
       const response = await fetch(URL);
       const data = await response.json();
-      console.log(data.data);
       setNotes(data.data);
     };
 
@@ -63,6 +63,7 @@ export default function NotesFolder({
               setNotes={setNotes}
               activeNote={activeNote}
               setActiveNote={setActiveNote}
+              activeFolder={activeFolder}
             />
           </div>
         ))}

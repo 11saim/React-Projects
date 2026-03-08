@@ -11,6 +11,7 @@ import Modal from "../components/Modal";
 import DeleteModal from "../components/DeleteModal";
 
 export default function Folders({ activeFolder, setActiveFolder }) {
+  
   const [isModal, setIsModal] = useState(false);
   const [modalProps, setModalProps] = useState({});
   const inputRef = useRef(null);
@@ -74,9 +75,7 @@ export default function Folders({ activeFolder, setActiveFolder }) {
     const data = await response.json();
     if (data.success) {
       setFolders((prev) =>
-        prev.map((folder) =>
-          folder._id === id ? { ...folder, name: updatedFolderName } : folder,
-        ),
+        prev.map((folder) => (folder._id === id ? data.data : folder)),
       );
     }
   };
