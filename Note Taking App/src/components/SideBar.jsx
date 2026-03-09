@@ -34,6 +34,7 @@ export default function Sidebar({
             <Folders
               activeFolder={activeFolder}
               setActiveFolder={setActiveFolder}
+              setActiveNote={setActiveNote}
             />
             <More
               activeFolder={activeFolder}

@@ -10,8 +10,11 @@ import Loader from "./Loader";
 import Modal from "../components/Modal";
 import DeleteModal from "../components/DeleteModal";
 
-export default function Folders({ activeFolder, setActiveFolder }) {
-  
+export default function Folders({
+  activeFolder,
+  setActiveFolder,
+  setActiveNote,
+}) {
   const [isModal, setIsModal] = useState(false);
   const [modalProps, setModalProps] = useState({});
   const inputRef = useRef(null);
@@ -55,7 +58,14 @@ export default function Folders({ activeFolder, setActiveFolder }) {
     const data = await response.json();
     if (data.success) {
       setFolders((prev) => prev.filter((folder) => folder._id != id));
-      setActiveFolder((prev) => (prev === id ? "" : prev));
+      setActiveFolder((prev) =>
+        prev === id
+          ? () => {
+              setActiveNote(null);
+              return "";
+            }
+          : prev,
+      );
     }
   };
 
@@ -115,11 +125,12 @@ export default function Folders({ activeFolder, setActiveFolder }) {
             folders.map((folder) => (
               <div
                 key={folder._id}
-                onClick={() =>
+                onClick={() => {
                   setActiveFolder((prev) =>
                     prev === folder._id ? "" : folder._id,
-                  )
-                }
+                  );
+                  setActiveNote(null);
+                }}
                 className={`group flex p-3 justify-between items-center 
                 text-white cursor-pointer transition-colors duration-200
                 ${

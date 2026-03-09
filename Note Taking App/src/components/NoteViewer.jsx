@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import NoteHead from "./NoteHead";
 import NoteDetails from "./NoteDetails";
 import Tools from "./Tools";
@@ -6,6 +6,23 @@ import Content from "./Content";
 import noteIcon from "../assets/note.png";
 
 export default function NoteViewer({ activeNote }) {
+  const [noteDetails, setNoteDetails] = useState({});
+
+  useEffect(() => {
+    if (!activeNote) return;
+    const fetchNoteDetails = async () => {
+      const response = await fetch(
+        `http://localhost:3000/api/notes/${activeNote}`,
+      );
+      const data = await response.json();
+
+      if (data.success) {
+        setNoteDetails(data.data);
+      }
+    };
+    fetchNoteDetails();
+  }, [activeNote]);
+
   return !activeNote ? (
     <div className="space-y-3 flex justify-center items-center flex-col w-full sm:w-[60%] bg-[#181818] text-white p-5 lg:p-10 min-h-screen h-auto">
       <img src={noteIcon} alt="note" width={100} height={100} />
@@ -16,13 +33,13 @@ export default function NoteViewer({ activeNote }) {
       </p>
     </div>
   ) : (
-    <div className="NoteViewer w-full sm:w-[60%] bg-[#181818] text-white p-5 lg:p-10 h-auto">
-      <div className="h-auto">
-        <NoteHead />
-        <NoteDetails />
+    <div className="NoteViewer w-full sm:w-[60%] bg-[#181818] text-white p-5 lg:p-10 min-h-screen h-auto">
+      <div>
+        <NoteHead title={noteDetails.title} />
+        <NoteDetails date={noteDetails.createdAt} folder={noteDetails.folder} />
         <Tools />
       </div>
-      <Content />
+      <Content content={noteDetails.content} />
     </div>
   );
 }
