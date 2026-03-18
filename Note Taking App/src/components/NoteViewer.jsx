@@ -3,7 +3,7 @@ import NoteHead from "./NoteHead";
 import NoteDetails from "./NoteDetails";
 import Tools from "./Tools";
 import Content from "./Content";
-import Editor from "./Editor";
+import NoteEditor from "./NoteEditor";
 import noteIcon from "../assets/note.png";
 
 export default function NoteViewer({ activeNote }) {
@@ -41,7 +41,7 @@ export default function NoteViewer({ activeNote }) {
         {/* <Tools /> */}
       </div>
       {/* <Content content={noteDetails.content} /> */}
-      <Editor />
+      <NoteEditor />
     </div>
   );
 }
