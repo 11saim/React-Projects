@@ -10,10 +10,17 @@ export default function NoteHead({ title }) {
 
   return (
     <div className="note-head flex justify-between items-center">
-      <div className="note-title flex items-center">
-        <p className="text-2xl lg:text-4xl line-clamp-1">{title}</p>
-        <div className="edit mx-2 cursor-pointer">
-          <img src={whiteEditIcon} alt="edit-icon" width={30} height={30} />
+      <div className="note-title flex items-center pb-2 gap-2">
+        <p className="flex-1 text-lg sm:text-xl lg:text-3xl leading-normal truncate">
+          {title}
+        </p>
+
+        <div className="edit shrink-0 cursor-pointer">
+          <img
+            src={whiteEditIcon}
+            alt="edit-icon"
+            className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7"
+          />
         </div>
       </div>
 

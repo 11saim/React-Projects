@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import NoteHead from "./NoteHead";
 import NoteDetails from "./NoteDetails";
-import Tools from "./Tools";
-import Content from "./Content";
 import NoteEditor from "./NoteEditor";
 import noteIcon from "../assets/note.png";
 
@@ -38,10 +36,8 @@ export default function NoteViewer({ activeNote }) {
       <div>
         <NoteHead title={noteDetails.title} />
         <NoteDetails date={noteDetails.createdAt} folder={noteDetails.folder} />
-        {/* <Tools /> */}
       </div>
-      {/* <Content content={noteDetails.content} /> */}
-      <NoteEditor />
+      <NoteEditor key={noteDetails._id} initialContent={noteDetails.content} />
     </div>
   );
 }
