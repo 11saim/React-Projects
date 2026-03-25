@@ -4,7 +4,13 @@ import NoteDetails from "./NoteDetails";
 import NoteEditor from "./NoteEditor";
 import noteIcon from "../assets/note.png";
 
-export default function NoteViewer({ activeNote }) {
+export default function NoteViewer({
+  activeNote,
+  setActiveNote,
+  notes,
+  folder,
+  setNotes,
+}) {
   const [noteDetails, setNoteDetails] = useState({});
 
   useEffect(() => {
@@ -37,7 +43,15 @@ export default function NoteViewer({ activeNote }) {
         <NoteHead title={noteDetails.title} />
         <NoteDetails date={noteDetails.createdAt} folder={noteDetails.folder} />
       </div>
-      <NoteEditor key={noteDetails._id} initialContent={noteDetails.content} />
+      <NoteEditor
+        key={noteDetails._id}
+        initialContent={noteDetails.content}
+        activeNote={activeNote}
+        setActiveNote={setActiveNote}
+        notes={notes}
+        folder={folder}
+        setNotes={setNotes}
+      />
     </div>
   );
 }

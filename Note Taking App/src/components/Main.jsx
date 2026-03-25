@@ -53,7 +53,6 @@ export default function Main({
           setActiveNote(false);
         }
       } else {
-        console.log(data.data);
         setNotes({
           folder,
           notes: notes.map((note) => (note._id === id ? data.data : note)),
@@ -154,7 +153,7 @@ export default function Main({
                         >
                           {note.content === ""
                             ? "This note is empty..."
-                            : note.content}
+                            : note.plainText}
                         </div>
                       </div>
                     </div>

@@ -347,7 +347,15 @@ function TableGridPicker({ onSelect, onClose }) {
 }
 
 // ── Main Editor ──────────────────────────────────────────────────────────────
-export default function TiptapEditor({ key, initialContent = "" }) {
+export default function TiptapEditor({
+  key,
+  initialContent = "",
+  activeNote,
+  setActiveNote,
+  notes,
+  folder,
+  setNotes,
+}) {
   const [showLinkModal, setShowLinkModal] = useState(false);
   const [showImageModal, setShowImageModal] = useState(false);
   const [linkUrl, setLinkUrl] = useState("");
@@ -464,8 +472,37 @@ export default function TiptapEditor({ key, initialContent = "" }) {
     </button>
   );
 
-  const handleSave = () => {
-    console.log(editor.getHTML());
+  const handleSave = async (id, body) => {
+    if (!body) return;
+
+    const response = await fetch(`http://localhost:3000/api/notes/${id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    });
+    const data = await response.json();
+    if (data.success) {
+      if (
+        body.status === "trash" ||
+        body.status === "archived" ||
+        body.isFavorite === true
+      ) {
+        setNotes({
+          folder,
+          notes: notes.filter((note) => note._id != id),
+        });
+      } else {
+        setNotes({
+          folder,
+          notes: notes.map((note) => (note._id === id ? data.data : note)),
+        });
+      }
+      if (activeNote === id) {
+        setActiveNote(false);
+      }
+    }
   };
 
   if (!editor) return null;
@@ -987,8 +1024,14 @@ export default function TiptapEditor({ key, initialContent = "" }) {
           </div>
         </div>
       )}
+
       <button
-        onClick={handleSave}
+        onClick={() =>
+          handleSave(activeNote, {
+            content: editor.getHTML(),
+            plainText: editor.getText(),
+          })
+        }
         className="bg-[#312eb5] py-3 outline-0 px-8 rounded-md cursor-pointer"
       >
         Save

@@ -2,7 +2,7 @@ import Head from "./Head";
 import Main from "./Main";
 import folderIcon from "../assets/close-folder-icon.png";
 import Menu from "../assets/menu.png";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 export default function NotesFolder({
   isDesktop,
@@ -11,13 +11,11 @@ export default function NotesFolder({
   activeNote,
   setActiveNote,
   activeFolder,
+  notes,
+  setNotes
 }) {
   
   const shouldOpen = isDesktop || activePanel === "notesfolder";
-  const [notes, setNotes] = useState({
-    folder: "",
-    notes: [],
-  });
 
   useEffect(() => {
     if (!activeFolder) return;

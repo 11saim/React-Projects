@@ -8,6 +8,10 @@ function App() {
   const [activePanel, setActivePanel] = useState(null);
   const [activeNote, setActiveNote] = useState("");
   const [activeFolder, setActiveFolder] = useState("");
+  const [notes, setNotes] = useState({
+    folder: "",
+    notes: [],
+  });
 
   useEffect(() => {
     function handleResize() {
@@ -38,9 +42,17 @@ function App() {
           activeNote={activeNote}
           setActiveNote={setActiveNote}
           activeFolder={activeFolder}
+          notes={notes}
+          setNotes={setNotes}
         />
       </div>
-      <NoteViewer activeNote={activeNote} />
+      <NoteViewer
+        activeNote={activeNote}
+        setActiveNote={setActiveNote}
+        notes={notes.notes}
+        folder={notes.folder}
+        setNotes={setNotes}
+      />
     </div>
   );
 }
