@@ -12,18 +12,21 @@ export default function NoteViewer({
   setNotes,
 }) {
   const [noteDetails, setNoteDetails] = useState({});
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (!activeNote) return;
+    setLoading(true);
+    setNoteDetails({});
     const fetchNoteDetails = async () => {
       const response = await fetch(
         `http://localhost:3000/api/notes/${activeNote}`,
       );
       const data = await response.json();
-
       if (data.success) {
         setNoteDetails(data.data);
       }
+      setLoading(false);
     };
     fetchNoteDetails();
   }, [activeNote]);
@@ -43,15 +46,19 @@ export default function NoteViewer({
         <NoteHead title={noteDetails.title} />
         <NoteDetails date={noteDetails.createdAt} folder={noteDetails.folder} />
       </div>
-      <NoteEditor
-        key={noteDetails._id}
-        initialContent={noteDetails.content}
-        activeNote={activeNote}
-        setActiveNote={setActiveNote}
-        notes={notes}
-        folder={folder}
-        setNotes={setNotes}
-      />
+      {loading ? (
+        <div className="text-[#a3a3a3] mt-10 text-center">Loading...</div>
+      ) : (
+        <NoteEditor
+          key={noteDetails._id}
+          initialContent={noteDetails.content}
+          activeNote={activeNote}
+          setActiveNote={setActiveNote}
+          notes={notes}
+          folder={folder}
+          setNotes={setNotes}
+        />
+      )}
     </div>
   );
 }

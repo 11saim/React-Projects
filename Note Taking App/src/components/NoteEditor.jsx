@@ -354,7 +354,7 @@ export default function TiptapEditor({
   setActiveNote,
   notes,
   folder,
-  setNotes,
+  setNotes, 
 }) {
   const [showLinkModal, setShowLinkModal] = useState(false);
   const [showImageModal, setShowImageModal] = useState(false);
