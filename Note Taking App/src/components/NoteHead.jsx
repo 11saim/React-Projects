@@ -3,7 +3,6 @@ import closedOptions from "../assets/closed-options.png";
 import favoriteIcon from "../assets/favorite-icon.png";
 import archivedIcon from "../assets/archived-icon.png";
 import trashIcon from "../assets/trash-icon.png";
-import whiteEditIcon from "../assets/whiteEditIcon.png";
 
 export default function NoteHead({ title }) {
   const [isModel, setIsModel] = useState(false);
@@ -14,14 +13,6 @@ export default function NoteHead({ title }) {
         <p className="flex-1 text-lg sm:text-xl lg:text-3xl leading-normal truncate">
           {title}
         </p>
-
-        <div className="edit shrink-0 cursor-pointer">
-          <img
-            src={whiteEditIcon}
-            alt="edit-icon"
-            className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7"
-          />
-        </div>
       </div>
 
       <div className="options">

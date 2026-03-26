@@ -151,7 +151,7 @@ export default function Main({
                             isActive ? "text-white" : "text-[#a7a7a7]"
                           }`}
                         >
-                          {note.content === ""
+                          {!note.plainText
                             ? "This note is empty..."
                             : note.plainText}
                         </div>

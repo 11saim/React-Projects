@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import whiteNoteIcon from "../assets/white-note-icon.png";
 import greyNoteIcon from "../assets/grey-note-icon.png";
-import { useState } from "react";
+import Loader from "./Loader";
 
 export default function Recents({
   activeNote,
@@ -9,11 +9,19 @@ export default function Recents({
   activeFolder,
   setActiveFolder,
 }) {
-  const notes = [
-    "Reflection on the Month of June",
-    "Project proposal",
-    "Travel itinerary",
-  ];
+  const [recentNotes, setRecentNotes] = useState(null);
+  useEffect(() => {
+    const fetchRecentNotes = async () => {
+      const response = await fetch(
+        `http://localhost:3000/api/notes/?recent=true`,
+      );
+      const data = await response.json();
+      if (data.success) {
+        setRecentNotes([...data.data.notes]);
+      }
+    };
+    fetchRecentNotes();
+  }, []);
 
   return (
     <div className="recents-section py-4 text-[#a3a3a3]">
@@ -21,30 +29,34 @@ export default function Recents({
         <h4>Recents</h4>
       </div>
 
-      <div className="space-y-1">
-        {notes.map((note) => {
-          const isActive = activeNote === note;
+      {recentNotes ? (
+        <div className="space-y-1 h-38 overflow-auto">
+          {recentNotes.map((note) => {
+            const isActive = activeNote === note;
 
-          return (
-            <div
-              key={note}
-              onClick={() =>
-                setActiveNote((prev) => (note === prev ? "" : note))
-              }
-              className={`flex items-center space-x-3 p-3 cursor-pointer transition-colors duration-200
+            return (
+              <div
+                key={note}
+                onClick={() =>
+                  setActiveNote((prev) => (note._id === prev ? "" : note._id))
+                }
+                className={`flex items-center space-x-3 p-3 cursor-pointer transition-colors duration-200
                 ${isActive ? "bg-[#312EB5] text-white" : "hover:bg-[#232323]"}`}
-            >
-              <img
-                src={isActive ? whiteNoteIcon : greyNoteIcon}
-                alt="note-icon"
-                width={20}
-                height={20}
-              />
-              <span className="line-clamp-1">{note}</span>
-            </div>
-          );
-        })}
-      </div>
+              >
+                <img
+                  src={isActive ? whiteNoteIcon : greyNoteIcon}
+                  alt="note-icon"
+                  width={20}
+                  height={20}
+                />
+                <span className="line-clamp-1">{note.title}</span>
+              </div>
+            );
+          })}
+        </div>
+      ) : (
+        <Loader />
+      )}
     </div>
   );
 }
