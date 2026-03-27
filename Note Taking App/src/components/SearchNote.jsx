@@ -17,6 +17,7 @@ export default function SearchNote({ setNotes, setActiveFolder }) {
     const fetchNotes = async (URL) => {
       const response = await fetch(URL);
       const data = await response.json();
+      console.log(data.data)
       setNotes(data.data);
       setActiveFolder("Search");
     };

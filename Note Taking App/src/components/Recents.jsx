@@ -38,9 +38,10 @@ export default function Recents({
             return (
               <div
                 key={note._id}
-                onClick={() =>
-                  setActiveNote((prev) => (note._id === prev ? "" : note._id))
-                }
+                onClick={() => {
+                  setActiveNote((prev) => (note._id === prev ? "" : note._id));
+                  setActiveFolder(note.folder._id);
+                }}
                 className={`flex items-center space-x-3 p-3 cursor-pointer transition-colors duration-200
                 ${isActive ? "bg-[#312EB5] text-white" : "hover:bg-[#232323]"}`}
               >
