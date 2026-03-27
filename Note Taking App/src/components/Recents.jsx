@@ -8,6 +8,7 @@ export default function Recents({
   setActiveNote,
   activeFolder,
   setActiveFolder,
+  notes,
 }) {
   const [recentNotes, setRecentNotes] = useState(null);
   useEffect(() => {
@@ -21,7 +22,7 @@ export default function Recents({
       }
     };
     fetchRecentNotes();
-  }, []);
+  }, [notes]);
 
   return (
     <div className="recents-section py-4 text-[#a3a3a3]">
@@ -36,7 +37,7 @@ export default function Recents({
 
             return (
               <div
-                key={note}
+                key={note._id}
                 onClick={() =>
                   setActiveNote((prev) => (note._id === prev ? "" : note._id))
                 }

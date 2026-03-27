@@ -12,13 +12,12 @@ export default function NotesFolder({
   setActiveNote,
   activeFolder,
   notes,
-  setNotes
+  setNotes,
 }) {
-  
   const shouldOpen = isDesktop || activePanel === "notesfolder";
 
   useEffect(() => {
-    if (!activeFolder) return;
+    if (!activeFolder || activeFolder === "Search") return;
 
     let API_URL = null;
     if (activeFolder === "Favorite") {

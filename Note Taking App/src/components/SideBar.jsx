@@ -13,6 +13,8 @@ export default function Sidebar({
   setActiveNote,
   activeFolder,
   setActiveFolder,
+  setNotes,
+  notes,
 }) {
   const shouldOpen = isDesktop || activePanel === "sidebar";
 
@@ -22,7 +24,7 @@ export default function Sidebar({
         <div className="Sidebar fixed sm:static h-full sm:h-1/2 overflow-auto xl:h-auto w-full xl:w-1/2 bg-[#181818] text-white">
           <div>
             <Navbar />
-            <SeacrhNote />
+            <SeacrhNote setNotes={setNotes} setActiveFolder={setActiveFolder} />
           </div>
           <div>
             <Recents
@@ -30,6 +32,7 @@ export default function Sidebar({
               setActiveFolder={setActiveFolder}
               activeNote={activeNote}
               setActiveNote={setActiveNote}
+              notes={notes}
             />
             <Folders
               activeFolder={activeFolder}

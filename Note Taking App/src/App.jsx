@@ -34,6 +34,8 @@ function App() {
           setActiveNote={setActiveNote}
           activeFolder={activeFolder}
           setActiveFolder={setActiveFolder}
+          notes={notes}
+          setNotes={setNotes}
         />
         <NotesFolder
           isDesktop={isDesktop}
