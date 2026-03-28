@@ -13,6 +13,8 @@ export default function NotesFolder({
   activeFolder,
   notes,
   setNotes,
+  folders,
+  setFolders,
 }) {
   const shouldOpen = isDesktop || activePanel === "notesfolder";
 
@@ -62,6 +64,8 @@ export default function NotesFolder({
               activeNote={activeNote}
               setActiveNote={setActiveNote}
               activeFolder={activeFolder}
+              folders={folders}
+              setFolders={setFolders}
             />
           </div>
         ))}

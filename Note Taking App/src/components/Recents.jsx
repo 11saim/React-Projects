@@ -31,7 +31,7 @@ export default function Recents({
 
       {recentNotes ? (
         recentNotes.length > 0 ? (
-          <div className="space-y-1 h-38 overflow-auto">
+          <div className="space-y-1 h-auto max-h-38 overflow-auto">
             {recentNotes.map((note) => {
               const isActive = activeNote === note._id;
 

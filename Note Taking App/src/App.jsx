@@ -8,6 +8,8 @@ function App() {
   const [activePanel, setActivePanel] = useState(null);
   const [activeNote, setActiveNote] = useState("");
   const [activeFolder, setActiveFolder] = useState("");
+
+  const [folders, setFolders] = useState(null);
   const [notes, setNotes] = useState({
     folder: "",
     notes: [],
@@ -36,6 +38,8 @@ function App() {
           setActiveFolder={setActiveFolder}
           notes={notes}
           setNotes={setNotes}
+           folders={folders}
+              setFolders={setFolders}
         />
         <NotesFolder
           isDesktop={isDesktop}
@@ -46,6 +50,8 @@ function App() {
           activeFolder={activeFolder}
           notes={notes}
           setNotes={setNotes}
+           folders={folders}
+              setFolders={setFolders}
         />
       </div>
       <NoteViewer

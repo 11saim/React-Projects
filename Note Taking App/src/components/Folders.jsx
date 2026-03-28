@@ -14,11 +14,12 @@ export default function Folders({
   activeFolder,
   setActiveFolder,
   setActiveNote,
+  folders,
+  setFolders,
 }) {
   const [isModal, setIsModal] = useState(false);
   const [modalProps, setModalProps] = useState({});
   const inputRef = useRef(null);
-  const [folders, setFolders] = useState(null);
   const [deleteAlert, setDeleteAlert] = useState(null);
 
   useEffect(() => {
@@ -121,8 +122,8 @@ export default function Folders({
         <div className="folders">
           {folders === null ? (
             <Loader />
-          ) : (
-            folders.length > 0 ? (folders.map((folder) => (
+          ) : folders.length > 0 ? (
+            folders.map((folder) => (
               <div
                 key={folder._id}
                 onClick={() => {
@@ -188,9 +189,9 @@ export default function Folders({
                   />
                 </div>
               </div>
-            ))) : (<p className="text-lg font-semibold text-center">
-                  No Folders
-                </p>)
+            ))
+          ) : (
+            <p className="text-lg font-semibold text-center">No Folders</p>
           )}
         </div>
       </div>
