@@ -122,7 +122,7 @@ export default function Folders({
           {folders === null ? (
             <Loader />
           ) : (
-            folders.map((folder) => (
+            folders.length > 0 ? (folders.map((folder) => (
               <div
                 key={folder._id}
                 onClick={() => {
@@ -188,7 +188,9 @@ export default function Folders({
                   />
                 </div>
               </div>
-            ))
+            ))) : (<p className="text-lg font-semibold text-center">
+                  No Folders
+                </p>)
           )}
         </div>
       </div>

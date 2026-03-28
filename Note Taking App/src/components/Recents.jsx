@@ -6,7 +6,6 @@ import Loader from "./Loader";
 export default function Recents({
   activeNote,
   setActiveNote,
-  activeFolder,
   setActiveFolder,
   notes,
 }) {
@@ -31,31 +30,37 @@ export default function Recents({
       </div>
 
       {recentNotes ? (
-        <div className="space-y-1 h-38 overflow-auto">
-          {recentNotes.map((note) => {
-            const isActive = activeNote === note;
+        recentNotes.length > 0 ? (
+          <div className="space-y-1 h-38 overflow-auto">
+            {recentNotes.map((note) => {
+              const isActive = activeNote === note._id;
 
-            return (
-              <div
-                key={note._id}
-                onClick={() => {
-                  setActiveNote((prev) => (note._id === prev ? "" : note._id));
-                  setActiveFolder(note.folder._id);
-                }}
-                className={`flex items-center space-x-3 p-3 cursor-pointer transition-colors duration-200
+              return (
+                <div
+                  key={note._id}
+                  onClick={() => {
+                    setActiveNote((prev) =>
+                      note._id === prev ? "" : note._id,
+                    );
+                    setActiveFolder(note.folder._id);
+                  }}
+                  className={`flex items-center space-x-3 p-3 cursor-pointer transition-colors duration-200
                 ${isActive ? "bg-[#312EB5] text-white" : "hover:bg-[#232323]"}`}
-              >
-                <img
-                  src={isActive ? whiteNoteIcon : greyNoteIcon}
-                  alt="note-icon"
-                  width={20}
-                  height={20}
-                />
-                <span className="line-clamp-1">{note.title}</span>
-              </div>
-            );
-          })}
-        </div>
+                >
+                  <img
+                    src={isActive ? whiteNoteIcon : greyNoteIcon}
+                    alt="note-icon"
+                    width={20}
+                    height={20}
+                  />
+                  <span className="line-clamp-1">{note.title}</span>
+                </div>
+              );
+            })}
+          </div>
+        ) : (
+          <p className="text-lg font-semibold text-center">No Notes</p>
+        )
       ) : (
         <Loader />
       )}
