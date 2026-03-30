@@ -24,9 +24,13 @@ export default function Folders({
 
   useEffect(() => {
     const fetchFolders = async () => {
-      const response = await fetch("http://localhost:3000/api/folders/");
+      const response = await fetch(
+        "http://localhost:3000/api/folders/?active=true",
+      );
       const data = await response.json();
-      setFolders([...data.data]);
+      if (data.success) {
+        setFolders([...data.data]);
+      }
     };
 
     fetchFolders();

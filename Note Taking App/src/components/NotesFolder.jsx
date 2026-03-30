@@ -17,6 +17,16 @@ export default function NotesFolder({
   setFolders,
 }) {
   const shouldOpen = isDesktop || activePanel === "notesfolder";
+  const fetchFolders = async () => {
+    const response = await fetch(
+      "http://localhost:3000/api/folders/?trash=true",
+    );
+    const data = await response.json();
+    if (data.success) {
+      console.log(data.data);
+      setFolders([...data.data]);
+    }
+  };
 
   useEffect(() => {
     if (!activeFolder || activeFolder === "Search") return;
@@ -28,6 +38,7 @@ export default function NotesFolder({
       API_URL = "http://localhost:3000/api/notes/?archived=true";
     } else if (activeFolder === "Trash") {
       API_URL = "http://localhost:3000/api/notes/?trash=true";
+      fetchFolders();
     } else {
       API_URL = `http://localhost:3000/api/notes/folders/${activeFolder}`;
     }
@@ -35,7 +46,6 @@ export default function NotesFolder({
     const fetchNotes = async (URL) => {
       const response = await fetch(URL);
       const data = await response.json();
-      console.log(data.data);
       setNotes(data.data);
     };
 

@@ -19,6 +19,7 @@ const options = [
 ];
 
 export default function More({ activeFolder, setActiveFolder }) {
+
   return (
     <div className="more-section py-4 text-[#a3a3a3]">
       <div className="px-3 py-2">
