@@ -51,43 +51,33 @@ export default function Folders({
     }
   };
 
-  const handleDeleteFolder = async (id) => {
-    const response = await fetch(`http://localhost:3000/api/folders/${id}`, {
-      method: "DELETE",
-    });
-
-    const data = await response.json();
-    if (data.success) {
-      setFolders((prev) => prev.filter((folder) => folder._id != id));
-      setActiveFolder((prev) =>
-        prev === id
-          ? () => {
-              setActiveNote(null);
-              return "";
-            }
-          : prev,
-      );
-    }
-  };
-
-  const handleUpdateFolder = async (id) => {
-    const updatedFolderName = inputRef.current.value;
-
-    if (!updatedFolderName) return;
-
+  const handleUpdateFolder = async (id, body) => {
     const response = await fetch(`http://localhost:3000/api/folders/${id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ name: updatedFolderName }),
+      body: JSON.stringify(body),
     });
 
     const data = await response.json();
     if (data.success) {
-      setFolders((prev) =>
-        prev.map((folder) => (folder._id === id ? data.data : folder)),
-      );
+      if (body.name) {
+        setFolders((prev) =>
+          prev.map((folder) => (folder._id === id ? data.data : folder)),
+        );
+      }
+      if (body.status) {
+        setFolders((prev) => prev.filter((folder) => folder._id != id));
+        setActiveFolder((prev) =>
+          prev === id
+            ? () => {
+                setActiveNote(null);
+                return "";
+              }
+            : prev,
+        );
+      }
     }
   };
 
@@ -167,7 +157,14 @@ export default function Folders({
                         setIsModal,
                         inputRef,
                         btnText: "Update",
-                        handler: () => handleUpdateFolder(folder._id),
+                        handler: () => {
+                          const updatedFolderName = inputRef.current.value;
+                          console.log(updatedFolderName);
+                          if (!updatedFolderName) return;
+                          handleUpdateFolder(folder._id, {
+                            name: updatedFolderName,
+                          });
+                        },
                       });
                       setIsModal(true);
                     }}
@@ -200,7 +197,9 @@ export default function Folders({
       {deleteAlert && (
         <DeleteModal
           setDeleteAlert={setDeleteAlert}
-          handler={() => handleDeleteFolder(deleteAlert.id, deleteAlert.name)}
+          handler={() =>
+            handleUpdateFolder(deleteAlert.id, { status: "trash" })
+          }
         />
       )}
     </>

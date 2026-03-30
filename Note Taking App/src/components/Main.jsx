@@ -204,64 +204,67 @@ export default function Main({
                 </p>
               )}
               {activeFolder === "Trash" && <p>Folders</p>}
-              {notes.length != 0 ? (
-                notes.map((folder) => {
-                  return (
-                    <div
-                      key={folder._id}
-                      className={`group flex p-3 justify-between items-center 
-                                    text-white cursor-pointer transition-colors duration-200 bg-[#232323]`}
-                    >
-                      <div className="flex items-center space-x-3">
-                        <img
-                          src={closeFolderIcon}
-                          alt="folder-icon"
-                          width={20}
-                          height={20}
-                        />
-                        <span className="line-clamp-1 pr-5">{folder.name}</span>
-                      </div>
-
+              {activeFolder === "Trash" &&
+                (notes.length != 0 ? (
+                  notes.map((folder) => {
+                    return (
                       <div
-                        className="flex justify-center items-center space-x-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-                        onClick={(e) => e.stopPropagation()}
+                        key={folder._id}
+                        className={`group flex p-3 justify-between items-center 
+                                    text-white cursor-pointer transition-colors duration-200 bg-[#232323]`}
                       >
-                        <img
-                          src={editIcon}
-                          alt="edit-icon"
-                          onClick={() => {
-                            setModalProps({
-                              title: "Update Folder Name:",
-                              setIsModal,
-                              inputRef,
-                              btnText: "Update",
-                              handler: () => handleUpdateFolder(folder._id),
-                            });
-                            setIsModal(true);
-                          }}
-                          width={20}
-                          height={20}
-                        />
-                        <img
-                          src={deleteIcon}
-                          alt="edit-icon"
-                          // onClick={() =>
-                          //   setDeleteAlert({
-                          //     id: folder._id,
-                          //   })
-                          // }
-                          width={20}
-                          height={20}
-                        />
+                        <div className="flex items-center space-x-3">
+                          <img
+                            src={closeFolderIcon}
+                            alt="folder-icon"
+                            width={20}
+                            height={20}
+                          />
+                          <span className="line-clamp-1 pr-5">
+                            {folder.name}
+                          </span>
+                        </div>
+
+                        <div
+                          className="flex justify-center items-center space-x-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          <img
+                            src={editIcon}
+                            alt="edit-icon"
+                            onClick={() => {
+                              setModalProps({
+                                title: "Update Folder Name:",
+                                setIsModal,
+                                inputRef,
+                                btnText: "Update",
+                                handler: () => handleUpdateFolder(folder._id),
+                              });
+                              setIsModal(true);
+                            }}
+                            width={20}
+                            height={20}
+                          />
+                          <img
+                            src={deleteIcon}
+                            alt="edit-icon"
+                            // onClick={() =>
+                            //   setDeleteAlert({
+                            //     id: folder._id,
+                            //   })
+                            // }
+                            width={20}
+                            height={20}
+                          />
+                        </div>
                       </div>
-                    </div>
-                  );
-                })
-              ) : (
-                <p className="text-[#a7a7a7] text-xl font-semibold text-center">
-                  No Folders
-                </p>
-              )}
+                    );
+                  })
+                ) : (
+                  <p className="text-[#a7a7a7] text-xl font-semibold text-center">
+                    No Folders
+                  </p>
+                ))}
             </div>
           </div>
         </div>
