@@ -44,6 +44,7 @@ export default function Main({
     const data = await response.json();
     if (data.success) {
       if (
+        body.status === "active" ||
         body.status === "trash" ||
         body.status === "archived" ||
         body.isFavorite === true
@@ -231,9 +232,10 @@ export default function Main({
                           {activeFolder === "Trash" && (
                             <div
                               className="extraIcon"
-                              // onClick={() =>
-                              //   updateNote(note._id, { status: "trash" })
-                              // }
+                              onClick={() => {
+                                console.log("Trigger");
+                                updateNote(note._id, { status: "active" });
+                              }}
                             >
                               <img
                                 src={
