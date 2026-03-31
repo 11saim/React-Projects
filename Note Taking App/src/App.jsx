@@ -9,6 +9,8 @@ function App() {
   const [activeNote, setActiveNote] = useState("");
   const [activeFolder, setActiveFolder] = useState("");
   const [folders, setFolders] = useState(null);
+  const [trashedFolders, setTrashedFolders] = useState([]);
+  const [deleteAlert, setDeleteAlert] = useState(null);
   const [notes, setNotes] = useState({
     folder: "",
     notes: [],
@@ -39,6 +41,9 @@ function App() {
           setNotes={setNotes}
           folders={folders}
           setFolders={setFolders}
+          deleteAlert={deleteAlert}
+          setDeleteAlert={setDeleteAlert}
+          trashedFolders={trashedFolders}
         />
         <NotesFolder
           isDesktop={isDesktop}
@@ -50,6 +55,9 @@ function App() {
           notes={notes}
           setNotes={setNotes}
           folders={folders}
+          setDeleteAlert={setDeleteAlert}
+          trashedFolders={trashedFolders}
+          setTrashedFolders={setTrashedFolders}
         />
       </div>
       <NoteViewer

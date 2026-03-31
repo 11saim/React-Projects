@@ -16,6 +16,7 @@ export default function Main({
   activeFolder,
   trashedFolders,
   setTrashedFolders,
+  setDeleteAlert,
 }) {
   const [isModal, setIsModal] = useState(false);
   const inputRef = useRef(null);
@@ -65,24 +66,24 @@ export default function Main({
     }
   };
 
-  const handleUpdateFolder = async (id) => {
-    const updatedFolderName = inputRef.current.value;
-
-    if (!updatedFolderName) return;
-
+  const handleUpdateFolder = async (id, body) => {
     const response = await fetch(`http://localhost:3000/api/folders/${id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ name: updatedFolderName }),
+      body: JSON.stringify(body),
     });
 
     const data = await response.json();
     if (data.success) {
-      setTrashedFolders((prev) =>
-        prev.map((folder) => (folder._id === id ? data.data : folder)),
-      );
+      if (body.name) {
+        setTrashedFolders((prev) =>
+          prev.map((folder) => (folder._id === id ? data.data : folder)),
+        );
+      } else if (body.status) {
+        setTrashedFolders((prev) => prev.filter((folder) => folder._id !== id));
+      }
     }
   };
 
@@ -127,7 +128,16 @@ export default function Main({
                                 setIsModal,
                                 inputRef,
                                 btnText: "Update",
-                                handler: () => handleUpdateFolder(folder._id),
+                                handler: () => {
+                                  const updatedFolderName =
+                                    inputRef.current.value;
+
+                                  if (!updatedFolderName) return;
+
+                                  handleUpdateFolder(folder._id, {
+                                    name: updatedFolderName,
+                                  });
+                                },
                               });
                               setIsModal(true);
                             }}
@@ -136,12 +146,14 @@ export default function Main({
                           />
                           <img
                             src={deleteIcon}
-                            alt="edit-icon"
-                            // onClick={() =>
-                            //   setDeleteAlert({
-                            //     id: folder._id,
-                            //   })
-                            // }
+                            alt="delete-icon"
+                            onClick={() =>
+                              activeFolder !== "Trash"
+                                ? setDeleteAlert({
+                                    id: folder._id,
+                                  })
+                                : alert("Folder Deleted!")
+                            }
                             width={20}
                             height={20}
                           />
@@ -152,6 +164,11 @@ export default function Main({
                                 : activeFolder === "Favorite"
                                   ? unfavoriteIcon
                                   : activeFolder === "Archived" && unarchiveIcon
+                            }
+                            onClick={() =>
+                              handleUpdateFolder(folder._id, {
+                                status: "active",
+                              })
                             }
                             alt="Icon"
                             className="opacity-0 group-hover:opacity-100 transition-opacity duration-200"

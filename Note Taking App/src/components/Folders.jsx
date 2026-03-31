@@ -16,11 +16,13 @@ export default function Folders({
   setActiveNote,
   folders,
   setFolders,
+  deleteAlert,
+  setDeleteAlert,
+  trashedFolders,
 }) {
   const [isModal, setIsModal] = useState(false);
   const [modalProps, setModalProps] = useState({});
   const inputRef = useRef(null);
-  const [deleteAlert, setDeleteAlert] = useState(null);
 
   useEffect(() => {
     const fetchFolders = async () => {
@@ -34,7 +36,7 @@ export default function Folders({
     };
 
     fetchFolders();
-  }, []);
+  }, [trashedFolders]);
 
   const handleAddFolder = async () => {
     const folderName = inputRef.current.value;

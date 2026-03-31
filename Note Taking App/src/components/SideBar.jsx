@@ -17,6 +17,9 @@ export default function Sidebar({
   notes,
   folders,
   setFolders,
+  deleteAlert,
+  setDeleteAlert,
+  trashedFolders,
 }) {
   const shouldOpen = isDesktop || activePanel === "sidebar";
 
@@ -43,6 +46,9 @@ export default function Sidebar({
               setActiveNote={setActiveNote}
               folders={folders}
               setFolders={setFolders}
+              deleteAlert={deleteAlert}
+              setDeleteAlert={setDeleteAlert}
+              trashedFolders={trashedFolders}
             />
             <More
               activeFolder={activeFolder}

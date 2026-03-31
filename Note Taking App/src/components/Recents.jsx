@@ -18,7 +18,6 @@ export default function Recents({
       );
       const data = await response.json();
       if (data.success) {
-        console.log(data.data)
         setRecentNotes([...data.data.notes]);
       }
     };

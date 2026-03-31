@@ -13,8 +13,11 @@ export default function NotesFolder({
   activeFolder,
   notes,
   setNotes,
+  setDeleteAlert,
+  trashedFolders,
+  setTrashedFolders,
+  folders,
 }) {
-  const [trashedFolders, setTrashedFolders] = useState([]);
   const shouldOpen = isDesktop || activePanel === "notesfolder";
   const fetchFolders = async () => {
     const response = await fetch(
@@ -48,7 +51,7 @@ export default function NotesFolder({
     };
 
     fetchNotes(API_URL);
-  }, [activeFolder]);
+  }, [activeFolder,folders]);
 
   return (
     <>
@@ -74,6 +77,7 @@ export default function NotesFolder({
               activeFolder={activeFolder}
               trashedFolders={trashedFolders}
               setTrashedFolders={setTrashedFolders}
+              setDeleteAlert={setDeleteAlert}
             />
           </div>
         ))}
