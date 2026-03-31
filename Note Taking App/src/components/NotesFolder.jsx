@@ -2,7 +2,7 @@ import Head from "./Head";
 import Main from "./Main";
 import folderIcon from "../assets/close-folder-icon.png";
 import Menu from "../assets/menu.png";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function NotesFolder({
   isDesktop,
@@ -13,9 +13,8 @@ export default function NotesFolder({
   activeFolder,
   notes,
   setNotes,
-  folders,
-  setFolders,
 }) {
+  const [trashedFolders, setTrashedFolders] = useState([]);
   const shouldOpen = isDesktop || activePanel === "notesfolder";
   const fetchFolders = async () => {
     const response = await fetch(
@@ -23,8 +22,7 @@ export default function NotesFolder({
     );
     const data = await response.json();
     if (data.success) {
-      console.log(data.data);
-      setFolders([...data.data]);
+      setTrashedFolders([...data.data]);
     }
   };
 
@@ -74,8 +72,8 @@ export default function NotesFolder({
               activeNote={activeNote}
               setActiveNote={setActiveNote}
               activeFolder={activeFolder}
-              folders={folders}
-              setFolders={setFolders}
+              trashedFolders={trashedFolders}
+              setTrashedFolders={setTrashedFolders}
             />
           </div>
         ))}

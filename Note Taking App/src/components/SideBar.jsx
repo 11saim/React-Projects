@@ -35,6 +35,7 @@ export default function Sidebar({
               activeNote={activeNote}
               setActiveNote={setActiveNote}
               notes={notes}
+              folders={folders}
             />
             <Folders
               activeFolder={activeFolder}

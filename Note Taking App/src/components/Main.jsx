@@ -14,8 +14,8 @@ export default function Main({
   setNotes,
   folder,
   activeFolder,
-  folders,
-  setFolders,
+  trashedFolders,
+  setTrashedFolders,
 }) {
   const [isModal, setIsModal] = useState(false);
   const inputRef = useRef(null);
@@ -79,7 +79,7 @@ export default function Main({
 
     const data = await response.json();
     if (data.success) {
-      setFolders((prev) =>
+      setTrashedFolders((prev) =>
         prev.map((folder) => (folder._id === id ? data.data : folder)),
       );
     }
@@ -93,8 +93,8 @@ export default function Main({
             <div className="w-full space-y-3">
               {activeFolder === "Trash" && <p>Folders</p>}
               {activeFolder === "Trash" &&
-                (folders.length != 0 ? (
-                  folders.map((folder) => {
+                (trashedFolders.length != 0 ? (
+                  trashedFolders.map((folder) => {
                     return (
                       <div
                         key={folder._id}
@@ -228,27 +228,29 @@ export default function Main({
                               height={20}
                             />
                           </div>
-                          <div
-                            className="extraIcon"
-                            // onClick={() =>
-                            //   updateNote(note._id, { status: "trash" })
-                            // }
-                          >
-                            <img
-                              src={
-                                activeFolder === "Trash"
-                                  ? restoreIcon
-                                  : activeFolder === "Favorite"
-                                    ? unfavoriteIcon
-                                    : activeFolder === "Archived" &&
-                                      unarchiveIcon
-                              }
-                              alt="Icon"
-                              className="opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-                              width={20}
-                              height={20}
-                            />
-                          </div>
+                          {activeFolder === "Trash" && (
+                            <div
+                              className="extraIcon"
+                              // onClick={() =>
+                              //   updateNote(note._id, { status: "trash" })
+                              // }
+                            >
+                              <img
+                                src={
+                                  activeFolder === "Trash"
+                                    ? restoreIcon
+                                    : activeFolder === "Favorite"
+                                      ? unfavoriteIcon
+                                      : activeFolder === "Archived" &&
+                                        unarchiveIcon
+                                }
+                                alt="Icon"
+                                className="opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                                width={20}
+                                height={20}
+                              />
+                            </div>
+                          )}
                         </div>
                       </div>
                       <div className="details flex items-center text-[13px] space-x-3 mt-2">
