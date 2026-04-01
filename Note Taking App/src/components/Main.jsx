@@ -87,6 +87,17 @@ export default function Main({
     }
   };
 
+  const handleDeleteFolder = async (id) => {
+    const response = await fetch(`http://localhost:3000/api/folders/${id}`, {
+      method: "DELETE",
+    });
+
+    const data = await response.json();
+    if (data.success) {
+      setTrashedFolders((prev) => prev.filter((folder) => folder._id !== id));
+    }
+  };
+
   return (
     <>
       <div className="main">
@@ -152,7 +163,7 @@ export default function Main({
                                 ? setDeleteAlert({
                                     id: folder._id,
                                   })
-                                : alert("Folder Deleted!")
+                                : handleDeleteFolder(folder._id)
                             }
                             width={20}
                             height={20}
