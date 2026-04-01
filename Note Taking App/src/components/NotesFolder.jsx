@@ -51,7 +51,7 @@ export default function NotesFolder({
     };
 
     fetchNotes(API_URL);
-  }, [activeFolder,folders]);
+  }, [activeFolder, folders]);
 
   return (
     <>

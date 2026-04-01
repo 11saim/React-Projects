@@ -74,15 +74,13 @@ export default function Folders({
         );
       }
       if (body.status) {
-        setFolders((prev) => prev.filter((folder) => folder._id != id));
-        setActiveFolder((prev) =>
-          prev === id
-            ? () => {
-                setActiveNote(null);
-                return "";
-              }
-            : prev,
-        );
+        if (body.status) {
+          setFolders((prev) => prev.filter((folder) => folder._id != id));
+          if (activeFolder === id) {
+            setActiveNote(null);
+            setActiveFolder("");
+          }
+        }
       }
     }
   };
@@ -165,7 +163,6 @@ export default function Folders({
                         btnText: "Update",
                         handler: () => {
                           const updatedFolderName = inputRef.current.value;
-                          console.log(updatedFolderName);
                           if (!updatedFolderName) return;
                           handleUpdateFolder(folder._id, {
                             name: updatedFolderName,
@@ -181,7 +178,7 @@ export default function Folders({
                     src={
                       activeFolder === folder._id ? whiteDeleteIcon : deleteIcon
                     }
-                    alt="edit-icon"
+                    alt="delete-icon"
                     onClick={() =>
                       setDeleteAlert({
                         id: folder._id,

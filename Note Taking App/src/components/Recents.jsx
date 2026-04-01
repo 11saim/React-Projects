@@ -8,7 +8,7 @@ export default function Recents({
   setActiveNote,
   setActiveFolder,
   notes,
-  folders
+  folders,
 }) {
   const [recentNotes, setRecentNotes] = useState(null);
   useEffect(() => {
@@ -22,7 +22,7 @@ export default function Recents({
       }
     };
     fetchRecentNotes();
-  }, [notes,folders]);
+  }, [notes, folders]);
 
   return (
     <div className="recents-section py-4 text-[#a3a3a3]">
