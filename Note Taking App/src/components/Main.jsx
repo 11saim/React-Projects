@@ -98,6 +98,20 @@ export default function Main({
     }
   };
 
+  const handleDeleteNote = async (id) => {
+    const response = await fetch(`http://localhost:3000/api/notes/${id}`, {
+      method: "DELETE",
+    });
+
+    const data = await response.json();
+    if (data.success) {
+      setNotes({
+        folder,
+        notes: notes.filter((note) => note._id != id),
+      });
+    }
+  };
+
   return (
     <>
       <div className="main">
@@ -246,7 +260,9 @@ export default function Main({
                           <div
                             className="delete"
                             onClick={() =>
-                              updateNote(note._id, { status: "trash" })
+                              activeFolder === "Trash"
+                                ? handleDeleteNote(note._id)
+                                : updateNote(note._id, { status: "trash" })
                             }
                           >
                             <img
@@ -261,7 +277,6 @@ export default function Main({
                             <div
                               className="extraIcon"
                               onClick={() => {
-                                console.log("Trigger");
                                 updateNote(note._id, { status: "active" });
                               }}
                             >
