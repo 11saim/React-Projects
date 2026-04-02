@@ -354,7 +354,7 @@ export default function TiptapEditor({
   setActiveNote,
   notes,
   folder,
-  setNotes, 
+  setNotes,
 }) {
   const [showLinkModal, setShowLinkModal] = useState(false);
   const [showImageModal, setShowImageModal] = useState(false);
@@ -364,6 +364,22 @@ export default function TiptapEditor({
   const [showTableGrid, setShowTableGrid] = useState(false);
   const [showTableOps, setShowTableOps] = useState(false);
   const [, forceUpdate] = useState(0);
+  const colorPickerRef = useRef(null);
+
+  useEffect(() => {
+    const handler = (e) => {
+      if (
+        colorPickerRef.current &&
+        !colorPickerRef.current.contains(e.target)
+      ) {
+        setShowColorPicker(false);
+      }
+    };
+    if (showColorPicker) {
+      setTimeout(() => document.addEventListener("mousedown", handler), 0);
+    }
+    return () => document.removeEventListener("mousedown", handler);
+  }, [showColorPicker]);
 
   const editor = useEditor({
     extensions: [
@@ -687,6 +703,7 @@ export default function TiptapEditor({
               </Btn>
               {showColorPicker && (
                 <div
+                  ref={colorPickerRef}
                   style={{
                     position: "absolute",
                     top: 38,
@@ -711,8 +728,6 @@ export default function TiptapEditor({
                         className="cswatch"
                         style={{
                           background: c,
-                          boxShadow:
-                            c === "#ffffff" ? "inset 0 0 0 1px #444" : "none",
                         }}
                         onMouseDown={(e) => {
                           e.preventDefault();

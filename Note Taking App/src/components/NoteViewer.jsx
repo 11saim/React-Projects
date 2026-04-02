@@ -43,7 +43,14 @@ export default function NoteViewer({
   ) : (
     <div className="NoteViewer w-full sm:w-[60%] bg-[#181818] text-white p-5 lg:p-10 min-h-screen h-auto">
       <div>
-        <NoteHead title={noteDetails.title} />
+        <NoteHead
+          title={noteDetails.title}
+          activeNote={activeNote}
+          setActiveNote={setActiveNote}
+          folder={folder}
+          notes={notes}
+          setNotes={setNotes}
+        />
         <NoteDetails date={noteDetails.createdAt} folder={noteDetails.folder} />
       </div>
       {loading ? (
