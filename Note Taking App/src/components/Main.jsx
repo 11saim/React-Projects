@@ -48,7 +48,7 @@ export default function Main({
         body.status === "active" ||
         body.status === "trash" ||
         body.status === "archived" ||
-        body.isFavorite === true
+        body.isFavourite === false
       ) {
         setNotes({
           folder,
@@ -273,11 +273,17 @@ export default function Main({
                               height={20}
                             />
                           </div>
-                          {activeFolder === "Trash" && (
+                          {(activeFolder === "Trash" ||
+                            activeFolder === "Archived" ||
+                            activeFolder === "Favorite") && (
                             <div
                               className="extraIcon"
                               onClick={() => {
-                                updateNote(note._id, { status: "active" });
+                                activeFolder === "Favorite"
+                                  ? updateNote(note._id, {
+                                      isFavourite: false,
+                                    })
+                                  : updateNote(note._id, { status: "active" });
                               }}
                             >
                               <img

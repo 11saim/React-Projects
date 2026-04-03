@@ -18,8 +18,7 @@ const options = [
   },
 ];
 
-export default function More({ activeFolder, setActiveFolder }) {
-
+export default function More({ activeFolder, setActiveFolder, setActiveNote }) {
   return (
     <div className="more-section py-4 text-[#a3a3a3]">
       <div className="px-3 py-2">
@@ -33,11 +32,12 @@ export default function More({ activeFolder, setActiveFolder }) {
           return (
             <div
               key={option.title}
-              onClick={() =>
+              onClick={() => {
                 setActiveFolder((prev) =>
                   option.title === prev ? "" : option.title,
-                )
-              }
+                );
+                setActiveNote(null);
+              }}
               className={`flex items-center space-x-3 p-3 cursor-pointer transition-colors duration-200
                 ${isActive ? "bg-[#312EB5] text-white" : "hover:bg-[#232323]"}`}
             >

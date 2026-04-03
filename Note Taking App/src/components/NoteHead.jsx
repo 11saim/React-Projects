@@ -44,8 +44,9 @@ export default function NoteHead({
         body.status === "active" ||
         body.status === "trash" ||
         body.status === "archived" ||
-        body.isFavorite === true
+        body.isFavourite === true
       ) {
+        console.log("Triggered");
         setNotes({
           folder,
           notes: notes.filter((note) => note._id != id),
@@ -60,7 +61,7 @@ export default function NoteHead({
         });
       }
     }
-    console.log(data)
+    console.log(data);
   };
 
   return (

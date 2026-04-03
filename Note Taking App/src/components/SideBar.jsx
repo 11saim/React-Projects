@@ -53,6 +53,7 @@ export default function Sidebar({
             <More
               activeFolder={activeFolder}
               setActiveFolder={setActiveFolder}
+              setActiveNote={setActiveNote}
             />
           </div>
         </div>
