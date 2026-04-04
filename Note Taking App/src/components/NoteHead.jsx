@@ -61,7 +61,6 @@ export default function NoteHead({
         });
       }
     }
-    console.log(data);
   };
 
   return (

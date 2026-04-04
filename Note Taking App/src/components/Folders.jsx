@@ -67,6 +67,7 @@ export default function Folders({
     });
 
     const data = await response.json();
+
     if (data.success) {
       if (body.name) {
         setFolders((prev) =>
@@ -74,12 +75,10 @@ export default function Folders({
         );
       }
       if (body.status) {
-        if (body.status) {
-          setFolders((prev) => prev.filter((folder) => folder._id != id));
-          if (activeFolder === id) {
-            setActiveNote(null);
-            setActiveFolder("");
-          }
+        setFolders((prev) => prev.filter((folder) => folder._id != id));
+        if (activeFolder === id) {
+          setActiveFolder("");
+          setActiveNote(null);
         }
       }
     }

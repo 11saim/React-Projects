@@ -39,7 +39,8 @@ export default function Head({ folder, activeFolder, setNotes }) {
         </div>
         {activeFolder != "Favorite" &&
           activeFolder != "Trash" &&
-          activeFolder != "Archived" && (
+          activeFolder != "Archived" &&
+          activeFolder != "Search" && (
             <div
               onClick={() => setIsModal(!isModal)}
               className="add-note cursor-pointer"

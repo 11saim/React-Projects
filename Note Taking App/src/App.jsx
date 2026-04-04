@@ -66,6 +66,8 @@ function App() {
         notes={notes.notes}
         folder={notes.folder}
         setNotes={setNotes}
+        folders={folders}
+        activeFolder={activeFolder}
       />
     </div>
   );

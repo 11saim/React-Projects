@@ -10,6 +10,8 @@ export default function NoteViewer({
   notes,
   folder,
   setNotes,
+  folders,
+  activeFolder,
 }) {
   const [noteDetails, setNoteDetails] = useState({});
   const [loading, setLoading] = useState(false);
@@ -23,13 +25,30 @@ export default function NoteViewer({
         `http://localhost:3000/api/notes/${activeNote}`,
       );
       const data = await response.json();
-      if (data.success) {
-        setNoteDetails(data.data);
-      }
+      if (data.success) setNoteDetails(data.data);
       setLoading(false);
     };
     fetchNoteDetails();
   }, [activeNote]);
+
+  useEffect(() => {
+    if (!activeNote || !notes?.length) return;
+    const updatedNote = notes.find((n) => n._id === activeNote);
+    if (updatedNote) {
+      const { folder, ...rest } = updatedNote;
+      setNoteDetails((prev) => ({ ...prev, ...rest }));
+    }
+  }, [notes]);
+
+  useEffect(() => {
+    if (!noteDetails.folder || !folders?.length) return;
+    const updatedFolder = folders.find(
+      (f) => f._id === noteDetails.folder?._id,
+    );
+    if (updatedFolder) {
+      setNoteDetails((prev) => ({ ...prev, folder: updatedFolder }));
+    }
+  }, [folders]);
 
   return !activeNote ? (
     <div className="space-y-3 flex justify-center items-center flex-col w-full sm:w-[60%] bg-[#181818] text-white p-5 lg:p-10 min-h-screen h-auto">

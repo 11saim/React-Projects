@@ -29,7 +29,11 @@ export default function Sidebar({
         <div className="Sidebar fixed sm:static h-full sm:h-1/2 overflow-auto xl:h-auto w-full xl:w-1/2 bg-[#181818] text-white">
           <div>
             <Navbar />
-            <SeacrhNote setNotes={setNotes} setActiveFolder={setActiveFolder} />
+            <SeacrhNote
+              setNotes={setNotes}
+              setActiveFolder={setActiveFolder}
+              notes={notes}
+            />
           </div>
           <div>
             <Recents
