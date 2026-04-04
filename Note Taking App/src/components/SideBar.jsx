@@ -25,43 +25,44 @@ export default function Sidebar({
 
   return (
     <>
-      {shouldOpen && (
-        <div className="Sidebar fixed sm:static h-full sm:h-1/2 overflow-auto xl:h-auto w-full xl:w-1/2 bg-[#181818] text-white">
-          <div>
-            <Navbar />
-            <SeacrhNote
-              setNotes={setNotes}
-              setActiveFolder={setActiveFolder}
-              notes={notes}
-            />
-          </div>
-          <div>
-            <Recents
-              activeFolder={activeFolder}
-              setActiveFolder={setActiveFolder}
-              activeNote={activeNote}
-              setActiveNote={setActiveNote}
-              notes={notes}
-              folders={folders}
-            />
-            <Folders
-              activeFolder={activeFolder}
-              setActiveFolder={setActiveFolder}
-              setActiveNote={setActiveNote}
-              folders={folders}
-              setFolders={setFolders}
-              deleteAlert={deleteAlert}
-              setDeleteAlert={setDeleteAlert}
-              trashedFolders={trashedFolders}
-            />
-            <More
-              activeFolder={activeFolder}
-              setActiveFolder={setActiveFolder}
-              setActiveNote={setActiveNote}
-            />
-          </div>
+      <div
+        className={`Sidebar fixed sm:static h-full sm:h-1/2 z-90 overflow-auto xl:h-auto w-full xl:w-1/2 bg-[#181818] text-white ${shouldOpen ? "" : "hidden"}`}
+      >
+        <div>
+          <Navbar />
+          <SeacrhNote
+            setNotes={setNotes}
+            setActiveFolder={setActiveFolder}
+            notes={notes}
+          />
         </div>
-      )}
+        <div>
+          <Recents
+            activeFolder={activeFolder}
+            setActiveFolder={setActiveFolder}
+            activeNote={activeNote}
+            setActiveNote={setActiveNote}
+            notes={notes}
+            folders={folders}
+          />
+          <Folders
+            activeFolder={activeFolder}
+            setActiveFolder={setActiveFolder}
+            setActiveNote={setActiveNote}
+            folders={folders}
+            setFolders={setFolders}
+            deleteAlert={deleteAlert}
+            setDeleteAlert={setDeleteAlert}
+            trashedFolders={trashedFolders}
+          />
+          <More
+            activeFolder={activeFolder}
+            setActiveFolder={setActiveFolder}
+            setActiveNote={setActiveNote}
+          />
+        </div>
+      </div>
+
       <div
         onClick={() =>
           setActivePanel((prev) => (prev === "sidebar" ? null : "sidebar"))

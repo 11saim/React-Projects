@@ -284,7 +284,6 @@ function TableGridPicker({ onSelect, onClose }) {
         position: "absolute",
         top: 38,
         left: 0,
-        zIndex: 200,
         background: "#1a1a1a",
         border: "1px solid #2e2e2e",
         borderRadius: 10,
@@ -408,7 +407,7 @@ export default function TiptapEditor({
     editorProps: {
       attributes: {
         style:
-          "outline:none;min-height:420px;padding:24px 28px;font-size:16px;line-height:1.85;color:#e2e2e2;font-family:Georgia,serif;",
+          "outline:none;padding:24px 28px;font-size:16px;line-height:1.85;color:#e2e2e2;font-family:Georgia,serif;",
       },
     },
   });
@@ -712,7 +711,6 @@ export default function TiptapEditor({
                     border: "1px solid #2e2e2e",
                     borderRadius: 9,
                     padding: 12,
-                    zIndex: 200,
                     boxShadow: "0 10px 28px rgba(0,0,0,.55)",
                   }}
                 >
@@ -909,9 +907,22 @@ export default function TiptapEditor({
           onMouseDown={(e) => {
             if (e.target === e.currentTarget) closeAll();
           }}
+          // style={{ height: "calc(90vh - 350px)", overflowY: "auto" }}
+          className="h-[calc(90vh-350px)] sm:h-[calc(90vh-300px)] overflow-y-auto"
         >
           <EditorContent editor={editor} />
         </div>
+        <button
+          onClick={() =>
+            handleSave(activeNote, {
+              content: editor.getHTML(),
+              plainText: editor.getText(),
+            })
+          }
+          className="bg-[#312eb5] py-3 outline-0 px-8 rounded-md cursor-pointer"
+        >
+          Save
+        </button>
       </div>
 
       {/* ── Link modal ── */}
@@ -1039,18 +1050,6 @@ export default function TiptapEditor({
           </div>
         </div>
       )}
-
-      <button
-        onClick={() =>
-          handleSave(activeNote, {
-            content: editor.getHTML(),
-            plainText: editor.getText(),
-          })
-        }
-        className="bg-[#312eb5] py-3 outline-0 px-8 rounded-md cursor-pointer"
-      >
-        Save
-      </button>
     </div>
   );
 }

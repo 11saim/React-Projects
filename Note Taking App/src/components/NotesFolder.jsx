@@ -55,14 +55,16 @@ export default function NotesFolder({
 
   return (
     <>
-      {shouldOpen &&
-        (!activeFolder ? (
-          <div className="fixed sm:static sm:h-1/2 h-full overflow-auto flex flex-col justify-center items-center xl:h-auto w-full xl:w-1/2 bg-[#1C1C1C] text-white px-4 py-7">
+      <div
+        className={`z-90 fixed sm:static sm:h-1/2 h-full overflow-auto xl:h-auto w-full xl:w-1/2 bg-[#1C1C1C] text-white px-4 py-7 ${shouldOpen ? "" : "hidden"}`}
+      >
+        {!activeFolder ? (
+          <div className="h-full flex flex-col justify-center items-center">
             <img src={folderIcon} alt="folder" width={60} height={60} />
             <p>Select a folder to View Notes</p>
           </div>
         ) : (
-          <div className="NotesFolder fixed sm:static sm:h-1/2 h-full overflow-auto xl:h-auto w-full xl:w-1/2 bg-[#1C1C1C] text-white px-4 py-7">
+          <div>
             <Head
               folder={notes.folder}
               activeFolder={activeFolder}
@@ -80,7 +82,8 @@ export default function NotesFolder({
               setDeleteAlert={setDeleteAlert}
             />
           </div>
-        ))}
+        )}
+      </div>
 
       <div
         onClick={() =>

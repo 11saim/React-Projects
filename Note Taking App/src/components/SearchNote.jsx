@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import searchIcon from "../assets/search-icon.png";
 
-export default function SearchNote({ setNotes, setActiveFolder,notes }) {
+export default function SearchNote({ setNotes, setActiveFolder }) {
   const [searchedNote, setSearchedNote] = useState("");
 
   useEffect(() => {
