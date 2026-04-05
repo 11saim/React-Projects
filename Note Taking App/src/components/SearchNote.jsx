@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import searchIcon from "../assets/search-icon.png";
+import { fetchNotes } from "../utils/api/notes";
 
 export default function SearchNote({ setNotes, setActiveFolder }) {
   const [searchedNote, setSearchedNote] = useState("");
@@ -14,15 +15,10 @@ export default function SearchNote({ setNotes, setActiveFolder }) {
       return;
     }
 
-    const fetchNotes = async (URL) => {
-      const response = await fetch(URL);
-      const data = await response.json();
+    const delay = setTimeout(async () => {
+      const data = await fetchNotes(`?search=${searchedNote}`);
       setNotes(data.data);
       setActiveFolder("Search");
-    };
-
-    const delay = setTimeout(() => {
-      fetchNotes(`http://localhost:3000/api/notes/?search=${searchedNote}`);
     }, 500);
 
     return () => clearTimeout(delay);

@@ -9,6 +9,7 @@ import whiteDeleteIcon from "../assets/trash-icon.png";
 import Loader from "./Loader";
 import Modal from "../components/Modal";
 import DeleteModal from "../components/DeleteModal";
+import { fetchFolders, addFolder, updateFolder } from "../utils/api/folders";
 
 export default function Folders({
   activeFolder,
@@ -24,65 +25,53 @@ export default function Folders({
   const [modalProps, setModalProps] = useState({});
   const inputRef = useRef(null);
 
-  useEffect(() => {
-    const fetchFolders = async () => {
-      const response = await fetch(
-        "http://localhost:3000/api/folders/?active=true",
-      );
-      const data = await response.json();
-      if (data.success) {
-        setFolders([...data.data]);
-      }
-    };
-
-    fetchFolders();
-  }, [trashedFolders]);
-
   const handleAddFolder = async () => {
     const folderName = inputRef.current.value;
-
     if (!folderName) return;
 
-    const response = await fetch("http://localhost:3000/api/folders/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ name: folderName }),
+    const data = await addFolder({
+      name: folderName,
     });
 
-    const data = await response.json();
     if (data.success) {
       setFolders((prev) => [...prev, data.data]);
     }
   };
 
-  const handleUpdateFolder = async (id, body) => {
-    const response = await fetch(`http://localhost:3000/api/folders/${id}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(body),
-    });
+  const handleFolderDelete = async () => {
+    const data = await updateFolder(deleteAlert.id, { status: "trash" });
+    if (!data.success) return;
 
-    const data = await response.json();
-
-    if (data.success) {
-      if (body.name) {
-        setFolders((prev) =>
-          prev.map((folder) => (folder._id === id ? data.data : folder)),
-        );
-      }
-      if (body.status) {
-        setFolders((prev) => prev.filter((folder) => folder._id != id));
-        if (activeFolder === id) {
-          setActiveFolder("");
-          setActiveNote(null);
-        }
-      }
+    setFolders((prev) =>
+      prev.filter((folder) => folder._id !== deleteAlert.id),
+    );
+    if (activeFolder === deleteAlert.id) {
+      setActiveFolder("");
+      setActiveNote(null);
     }
   };
+
+  const handleFolderRename = async (id) => {
+    const updatedFolderName = inputRef.current.value;
+    if (!updatedFolderName) return;
+
+    const data = await updateFolder(id, { name: updatedFolderName });
+    if (!data.success) return;
+
+    setFolders((prev) =>
+      prev.map((folder) => (folder._id === id ? data.data : folder)),
+    );
+  };
+
+  useEffect(() => {
+    const getFolders = async () => {
+      const data = await fetchFolders("?active=true");
+      if (data.success) {
+        setFolders([...data.data]);
+      }
+    };
+    getFolders();
+  }, [trashedFolders]);
 
   return (
     <>
@@ -101,7 +90,7 @@ export default function Folders({
                       setIsModal,
                       inputRef,
                       btnText: "Add",
-                      handler: () => handleAddFolder(),
+                      handler: handleAddFolder,
                     },
               );
               setIsModal(() => (folders === null ? false : true));
@@ -160,13 +149,7 @@ export default function Folders({
                         setIsModal,
                         inputRef,
                         btnText: "Update",
-                        handler: () => {
-                          const updatedFolderName = inputRef.current.value;
-                          if (!updatedFolderName) return;
-                          handleUpdateFolder(folder._id, {
-                            name: updatedFolderName,
-                          });
-                        },
+                        handler: handleFolderRename(folder._id),
                       });
                       setIsModal(true);
                     }}
@@ -199,9 +182,7 @@ export default function Folders({
       {deleteAlert && (
         <DeleteModal
           setDeleteAlert={setDeleteAlert}
-          handler={() =>
-            handleUpdateFolder(deleteAlert.id, { status: "trash" })
-          }
+          handler={handleFolderDelete}
         />
       )}
     </>

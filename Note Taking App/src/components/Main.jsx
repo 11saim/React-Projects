@@ -6,6 +6,8 @@ import unarchiveIcon from "../assets/unarchive.png";
 import unfavoriteIcon from "../assets/filled-favorite.png";
 import restoreIcon from "../assets/restore.png";
 import closeFolderIcon from "../assets/close-folder-icon.png";
+import { updateNote, deleteNote } from "../utils/api/notes";
+import { updateFolder, deleteFolder } from "../utils/api/folders";
 
 export default function Main({
   notes,
@@ -32,17 +34,7 @@ export default function Main({
     return formattedDate;
   };
 
-  const updateNote = async (id, body) => {
-    if (!body) return;
-
-    const response = await fetch(`http://localhost:3000/api/notes/${id}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(body),
-    });
-    const data = await response.json();
+  const handleNoteUpdate = (noteId, data) => {
     if (data.success) {
       if (
         body.status === "active" ||
@@ -52,63 +44,31 @@ export default function Main({
       ) {
         setNotes({
           folder,
-          notes: notes.filter((note) => note._id != id),
+          notes: notes.filter((note) => note._id != noteId),
         });
-        if (activeNote === id) {
+        if (activeNote === noteId) {
           setActiveNote(false);
         }
       } else {
         setNotes({
           folder,
-          notes: notes.map((note) => (note._id === id ? data.data : note)),
+          notes: notes.map((note) => (note._id === noteId ? data.data : note)),
         });
       }
     }
   };
 
-  const handleUpdateFolder = async (id, body) => {
-    const response = await fetch(`http://localhost:3000/api/folders/${id}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(body),
-    });
-
-    const data = await response.json();
+  const handleFolderUpdate = async (data, folderId) => {
     if (data.success) {
       if (body.name) {
         setTrashedFolders((prev) =>
-          prev.map((folder) => (folder._id === id ? data.data : folder)),
+          prev.map((folder) => (folder._id === folderId ? data.data : folder)),
         );
       } else if (body.status) {
-        setTrashedFolders((prev) => prev.filter((folder) => folder._id !== id));
+        setTrashedFolders((prev) =>
+          prev.filter((folder) => folder._id !== folderId),
+        );
       }
-    }
-  };
-
-  const handleDeleteFolder = async (id) => {
-    const response = await fetch(`http://localhost:3000/api/folders/${id}`, {
-      method: "DELETE",
-    });
-
-    const data = await response.json();
-    if (data.success) {
-      setTrashedFolders((prev) => prev.filter((folder) => folder._id !== id));
-    }
-  };
-
-  const handleDeleteNote = async (id) => {
-    const response = await fetch(`http://localhost:3000/api/notes/${id}`, {
-      method: "DELETE",
-    });
-
-    const data = await response.json();
-    if (data.success) {
-      setNotes({
-        folder,
-        notes: notes.filter((note) => note._id != id),
-      });
     }
   };
 
@@ -153,15 +113,16 @@ export default function Main({
                                 setIsModal,
                                 inputRef,
                                 btnText: "Update",
-                                handler: () => {
+                                handler: async () => {
                                   const updatedFolderName =
                                     inputRef.current.value;
 
                                   if (!updatedFolderName) return;
 
-                                  handleUpdateFolder(folder._id, {
+                                  const data = await updateFolder(folder._id, {
                                     name: updatedFolderName,
                                   });
+                                  handleFolderUpdate(data, folder._id);
                                 },
                               });
                               setIsModal(true);
@@ -177,7 +138,17 @@ export default function Main({
                                 ? setDeleteAlert({
                                     id: folder._id,
                                   })
-                                : handleDeleteFolder(folder._id)
+                                : async () => {
+                                    const folderId = folder._id;
+                                    const data = await deleteFolder(folderId);
+                                    if (data.success) {
+                                      setTrashedFolders((prev) =>
+                                        prev.filter(
+                                          (folder) => folder._id !== folderId,
+                                        ),
+                                      );
+                                    }
+                                  }
                             }
                             width={20}
                             height={20}
@@ -190,11 +161,12 @@ export default function Main({
                                   ? unfavoriteIcon
                                   : activeFolder === "Archived" && unarchiveIcon
                             }
-                            onClick={() =>
-                              handleUpdateFolder(folder._id, {
+                            onClick={async () => {
+                              const data = await updateFolder(folder._id, {
                                 status: "active",
-                              })
-                            }
+                              });
+                              handleFolderUpdate(data, folder._id);
+                            }}
                             alt="Icon"
                             className="opacity-0 group-hover:opacity-100 transition-opacity duration-200"
                             width={20}
@@ -243,10 +215,19 @@ export default function Main({
                                   setIsModal,
                                   inputRef,
                                   btnText: "Update",
-                                  handler: () =>
-                                    updateNote(note._id, {
-                                      title: inputRef.current.value,
-                                    }),
+                                  handler: () => {
+                                    async () => {
+                                      const noteId = note._id;
+                                      const body = {
+                                        title: inputRef.current.value,
+                                      };
+                                      const data = await updateNote(
+                                        noteId,
+                                        body,
+                                      );
+                                      handleNoteUpdate(noteId, data);
+                                    };
+                                  },
                                 });
                                 setIsModal(true);
                               }}
@@ -261,8 +242,24 @@ export default function Main({
                             className="delete"
                             onClick={() =>
                               activeFolder === "Trash"
-                                ? handleDeleteNote(note._id)
-                                : updateNote(note._id, { status: "trash" })
+                                ? async () => {
+                                    const noteId = note._id;
+                                    const data = await deleteNote(noteId);
+                                    if (data.success) {
+                                      setNotes({
+                                        folder,
+                                        notes: notes.filter(
+                                          (note) => note._id != noteId,
+                                        ),
+                                      });
+                                    }
+                                  }
+                                : async () => {
+                                    const noteId = note._id;
+                                    const body = { status: "trash" };
+                                    const data = await updateNote(noteId, body);
+                                    handleNoteUpdate(noteId, data);
+                                  }
                             }
                           >
                             <img
@@ -280,10 +277,24 @@ export default function Main({
                               className="extraIcon"
                               onClick={() => {
                                 activeFolder === "Favorite"
-                                  ? updateNote(note._id, {
-                                      isFavourite: false,
-                                    })
-                                  : updateNote(note._id, { status: "active" });
+                                  ? async () => {
+                                      const noteId = note._id;
+                                      const body = { isFavourite: false };
+                                      const data = await updateNote(
+                                        noteId,
+                                        body,
+                                      );
+                                      handleNoteUpdate(noteId, data);
+                                    }
+                                  : async () => {
+                                      const noteId = note._id;
+                                      const body = { status: "active" };
+                                      const data = await updateNote(
+                                        noteId,
+                                        body,
+                                      );
+                                      handleNoteUpdate(noteId, data);
+                                    };
                               }}
                             >
                               <img

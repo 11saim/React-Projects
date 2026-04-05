@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import whiteNoteIcon from "../assets/white-note-icon.png";
 import greyNoteIcon from "../assets/grey-note-icon.png";
 import Loader from "./Loader";
+import { fetchNotes } from "../utils/api/notes";
 
 export default function Recents({
   activeNote,
@@ -12,16 +13,13 @@ export default function Recents({
 }) {
   const [recentNotes, setRecentNotes] = useState(null);
   useEffect(() => {
-    const fetchRecentNotes = async () => {
-      const response = await fetch(
-        `http://localhost:3000/api/notes/?recent=true`,
-      );
-      const data = await response.json();
+    const getRecentNotes = async () => {
+      const data = await fetchNotes("?recent=true");
       if (data.success) {
         setRecentNotes([...data.data.notes]);
       }
     };
-    fetchRecentNotes();
+    getRecentNotes();
   }, [notes, folders]);
 
   return (

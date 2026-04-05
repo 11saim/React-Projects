@@ -1,35 +1,11 @@
 import React from "react";
 import { useState, useRef } from "react";
 import addIcon from "../assets/plus.png";
+import { addNote } from "../utils/api/notes";
 
 export default function Head({ folder, activeFolder, setNotes }) {
   const [isModal, setIsModal] = useState(false);
   const inputRef = useRef(null);
-
-  const handleAddNote = async () => {
-    const noteName = inputRef.current.value;
-
-    if (!noteName) return;
-
-    const response = await fetch(
-      `http://localhost:3000/api/notes/folders/${activeFolder}`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          title: noteName,
-          content: "",
-        }),
-      },
-    );
-    const data = await response.json();
-
-    if (data.success) {
-      setNotes((prev) => ({ folder, notes: [...prev.notes, data.data] }));
-    }
-  };
 
   return (
     <>
@@ -78,8 +54,25 @@ export default function Head({ folder, activeFolder, setNotes }) {
             </div>
             <div className="flex justify-end">
               <button
-                onClick={() => {
-                  handleAddNote();
+                onClick={async () => {
+                  const noteName = inputRef.current.value;
+                  if (!noteName) return;
+
+                  const folderId = activeFolder;
+                  const body = {
+                    title: noteName,
+                    content: "",
+                  };
+
+                  const data = await addNote(folderId, body);
+
+                  if (data.success) {
+                    setNotes((prev) => ({
+                      folder,
+                      notes: [...prev.notes, data.data],
+                    }));
+                  }
+
                   setIsModal(false);
                 }}
                 className="px-4 py-2 rounded-lg bg-blue-600 text-white 

@@ -3,6 +3,8 @@ import Main from "./Main";
 import folderIcon from "../assets/close-folder-icon.png";
 import Menu from "../assets/menu.png";
 import { useEffect } from "react";
+import { fetchFolders } from "../utils/api/folders";
+import { fetchNotes } from "../utils/api/notes";
 
 export default function NotesFolder({
   isDesktop,
@@ -19,38 +21,28 @@ export default function NotesFolder({
   folders,
 }) {
   const shouldOpen = isDesktop || activePanel === "notesfolder";
-  const fetchFolders = async () => {
-    const response = await fetch(
-      "http://localhost:3000/api/folders/?trash=true",
-    );
-    const data = await response.json();
-    if (data.success) {
-      setTrashedFolders([...data.data]);
-    }
-  };
 
   useEffect(() => {
-    if (!activeFolder || activeFolder === "Search") return;
+    const fetchData = async () => {
+      if (!activeFolder || activeFolder === "Search") return;
 
-    let API_URL = null;
-    if (activeFolder === "Favorite") {
-      API_URL = "http://localhost:3000/api/notes/?favorite=true";
-    } else if (activeFolder === "Archived") {
-      API_URL = "http://localhost:3000/api/notes/?archived=true";
-    } else if (activeFolder === "Trash") {
-      API_URL = "http://localhost:3000/api/notes/?trash=true";
-      fetchFolders();
-    } else {
-      API_URL = `http://localhost:3000/api/notes/folders/${activeFolder}`;
-    }
+      if (activeFolder === "Trash") {
+        const foldersData = await fetchFolders("?trash=true");
+        if (foldersData.success) setTrashedFolders([...foldersData.data]);
+      }
 
-    const fetchNotes = async (URL) => {
-      const response = await fetch(URL);
-      const data = await response.json();
-      setNotes(data.data);
+      const filterMap = {
+        Favorite: "?favorite=true",
+        Archived: "?archived=true",
+        Trash: "?trash=true",
+      };
+
+      const filter = filterMap[activeFolder] ?? `folders/${activeFolder}`;
+      const notesData = await fetchNotes(filter);
+      setNotes(notesData.data);
     };
 
-    fetchNotes(API_URL);
+    fetchData();
   }, [activeFolder, folders]);
 
   return (

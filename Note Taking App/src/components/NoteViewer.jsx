@@ -11,7 +11,6 @@ export default function NoteViewer({
   folder,
   setNotes,
   folders,
-  activeFolder,
 }) {
   const [noteDetails, setNoteDetails] = useState({});
   const [loading, setLoading] = useState(false);
