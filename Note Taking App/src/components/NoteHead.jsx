@@ -3,6 +3,7 @@ import closedOptions from "../assets/closed-options.png";
 import favoriteIcon from "../assets/favorite-icon.png";
 import archivedIcon from "../assets/archived-icon.png";
 import trashIcon from "../assets/trash-icon.png";
+import { updateNote } from "../utils/api/notes";
 
 export default function NoteHead({
   title,
@@ -28,17 +29,7 @@ export default function NoteHead({
     };
   }, [isModel]);
 
-  const updateNote = async (id, body) => {
-    if (!body) return;
-
-    const response = await fetch(`http://localhost:3000/api/notes/${id}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(body),
-    });
-    const data = await response.json();
+  const handleNoteUpdate = (data, body, noteId) => {
     if (data.success) {
       if (
         body.status === "active" ||
@@ -46,18 +37,17 @@ export default function NoteHead({
         body.status === "archived" ||
         body.isFavourite === true
       ) {
-        console.log("Triggered");
         setNotes({
           folder,
-          notes: notes.filter((note) => note._id != id),
+          notes: notes.filter((note) => note._id != noteId),
         });
-        if (activeNote === id) {
+        if (activeNote === noteId) {
           setActiveNote(false);
         }
       } else {
         setNotes({
           folder,
-          notes: notes.map((note) => (note._id === id ? data.data : note)),
+          notes: notes.map((note) => (note._id === noteId ? data.data : note)),
         });
       }
     }
@@ -103,7 +93,10 @@ export default function NoteHead({
               <div
                 className="archived flex space-x-2 mb-2 cursor-pointer"
                 onClick={() => {
-                  updateNote(activeNote, { status: "archived" });
+                  const nodeId = activeNote;
+                  const body = { status: "archived" };
+                  const data = updateNote(nodeId, body);
+                  handleNoteUpdate(data, body, nodeId);
                   setIsModel(false);
                 }}
               >
@@ -120,7 +113,10 @@ export default function NoteHead({
               <div
                 className="delete flex space-x-2 cursor-pointer"
                 onClick={() => {
-                  updateNote(activeNote, { status: "trash" });
+                  const noteId = activeNote;
+                  const body = { status: "trash" };
+                  const data = updateNote(noteId, body);
+                  handleNoteUpdate(data, body, noteId);
                   setIsModel(false);
                 }}
               >

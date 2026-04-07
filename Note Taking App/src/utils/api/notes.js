@@ -6,6 +6,13 @@ export const fetchNotes = async (URL) => {
     return data;
 };
 
+export const fetchNote = async (noteId) => {
+    const response = await fetch(BASE + noteId);
+    const data = await response.json();
+    return data;
+};
+
+
 export const addNote = async (folderId, body) => {
     const response = await fetch(BASE + `folders/${folderId}`,
         {

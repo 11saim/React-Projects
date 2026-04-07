@@ -1,17 +1,9 @@
 import React from "react";
 import dateIcon from "../assets/date.png";
 import folderIcon from "../assets/close-folder-icon.png";
+import { getDate } from "../utils/getDate";
 
 export default function NoteDetails({ date, folder }) {
-  const getDate = (timeStamp) => {
-    const dateObj = new Date(parseInt(timeStamp));
-
-    const formattedDate = `${dateObj.getDate()}/${
-      dateObj.getMonth() + 1
-    }/${dateObj.getFullYear()}`;
-
-    return formattedDate;
-  };
   return (
     <div className="note-details">
       <div className="date flex pt-7 pb-4 border-b-2 border-b-[#2f2f2f] space-x-30 md:space-x-32">

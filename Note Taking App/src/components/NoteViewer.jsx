@@ -3,6 +3,7 @@ import NoteHead from "./NoteHead";
 import NoteDetails from "./NoteDetails";
 import NoteEditor from "./NoteEditor";
 import noteIcon from "../assets/note.png";
+import { fetchNote } from "../utils/api/notes";
 
 export default function NoteViewer({
   activeNote,
@@ -17,17 +18,14 @@ export default function NoteViewer({
 
   useEffect(() => {
     if (!activeNote) return;
-    setLoading(true);
-    setNoteDetails({});
-    const fetchNoteDetails = async () => {
-      const response = await fetch(
-        `http://localhost:3000/api/notes/${activeNote}`,
-      );
-      const data = await response.json();
+    const getNoteDetails = async () => {
+      setLoading(true);
+      setNoteDetails({});
+      const data = await fetchNote(activeNote);
       if (data.success) setNoteDetails(data.data);
       setLoading(false);
     };
-    fetchNoteDetails();
+    getNoteDetails();
   }, [activeNote]);
 
   useEffect(() => {

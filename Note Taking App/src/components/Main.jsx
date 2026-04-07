@@ -8,6 +8,7 @@ import restoreIcon from "../assets/restore.png";
 import closeFolderIcon from "../assets/close-folder-icon.png";
 import { updateNote, deleteNote } from "../utils/api/notes";
 import { updateFolder, deleteFolder } from "../utils/api/folders";
+import { getDate } from "../utils/getDate";
 
 export default function Main({
   notes,
@@ -24,17 +25,7 @@ export default function Main({
   const inputRef = useRef(null);
   const [modalProps, setModalProps] = useState({});
 
-  const getDate = (timeStamp) => {
-    const dateObj = new Date(parseInt(timeStamp));
-
-    const formattedDate = `${dateObj.getDate()}/${
-      dateObj.getMonth() + 1
-    }/${dateObj.getFullYear()}`;
-
-    return formattedDate;
-  };
-
-  const handleNoteUpdate = (noteId, data) => {
+  const handleNoteUpdate = (noteId, data, body) => {
     if (data.success) {
       if (
         body.status === "active" ||
@@ -225,7 +216,7 @@ export default function Main({
                                         noteId,
                                         body,
                                       );
-                                      handleNoteUpdate(noteId, data);
+                                      handleNoteUpdate(noteId, data, body);
                                     };
                                   },
                                 });
@@ -258,7 +249,7 @@ export default function Main({
                                     const noteId = note._id;
                                     const body = { status: "trash" };
                                     const data = await updateNote(noteId, body);
-                                    handleNoteUpdate(noteId, data);
+                                    handleNoteUpdate(noteId, data, body);
                                   }
                             }
                           >
@@ -284,7 +275,7 @@ export default function Main({
                                         noteId,
                                         body,
                                       );
-                                      handleNoteUpdate(noteId, data);
+                                      handleNoteUpdate(noteId, data, body);
                                     }
                                   : async () => {
                                       const noteId = note._id;
@@ -293,7 +284,7 @@ export default function Main({
                                         noteId,
                                         body,
                                       );
-                                      handleNoteUpdate(noteId, data);
+                                      handleNoteUpdate(noteId, data, body);
                                     };
                               }}
                             >
