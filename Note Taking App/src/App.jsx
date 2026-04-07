@@ -2,6 +2,8 @@ import SideBar from "./components/SideBar";
 import NotesFolder from "./components/NotesFolder";
 import NoteViewer from "./components/NoteViewer";
 import { useEffect, useState } from "react";
+import { FolderProvider } from "./context/FolderContext";
+import { NoteProvider } from "./context/NoteContext";
 
 function App() {
   const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 640);
@@ -27,49 +29,53 @@ function App() {
   }, []);
 
   return (
-    <div className="flex flex-col sm:flex-row w-full max-h-screen xl:max-h-full relative">
-      <div className="flex flex-col w-full sm:w-[40%] xl:flex-row h-auto relative">
-        <SideBar
-          isDesktop={isDesktop}
-          activePanel={activePanel}
-          setActivePanel={setActivePanel}
-          activeNote={activeNote}
-          setActiveNote={setActiveNote}
-          activeFolder={activeFolder}
-          setActiveFolder={setActiveFolder}
-          notes={notes}
-          setNotes={setNotes}
-          folders={folders}
-          setFolders={setFolders}
-          deleteAlert={deleteAlert}
-          setDeleteAlert={setDeleteAlert}
-          trashedFolders={trashedFolders}
-        />
-        <NotesFolder
-          isDesktop={isDesktop}
-          activePanel={activePanel}
-          setActivePanel={setActivePanel}
-          activeNote={activeNote}
-          setActiveNote={setActiveNote}
-          activeFolder={activeFolder}
-          notes={notes}
-          setNotes={setNotes}
-          folders={folders}
-          setDeleteAlert={setDeleteAlert}
-          trashedFolders={trashedFolders}
-          setTrashedFolders={setTrashedFolders}
-        />
-      </div>
-      <NoteViewer
-        activeNote={activeNote}
-        setActiveNote={setActiveNote}
-        notes={notes.notes}
-        folder={notes.folder}
-        setNotes={setNotes}
-        folders={folders}
-        activeFolder={activeFolder}
-      />
-    </div>
+    <FolderProvider>
+      <NoteProvider>
+        <div className="flex flex-col sm:flex-row w-full max-h-screen xl:max-h-full relative">
+          <div className="flex flex-col w-full sm:w-[40%] xl:flex-row h-auto relative">
+            <SideBar
+              isDesktop={isDesktop}
+              activePanel={activePanel}
+              setActivePanel={setActivePanel}
+              activeNote={activeNote}
+              setActiveNote={setActiveNote}
+              activeFolder={activeFolder}
+              setActiveFolder={setActiveFolder}
+              notes={notes}
+              setNotes={setNotes}
+              folders={folders}
+              setFolders={setFolders}
+              deleteAlert={deleteAlert}
+              setDeleteAlert={setDeleteAlert}
+              trashedFolders={trashedFolders}
+            />
+            <NotesFolder
+              isDesktop={isDesktop}
+              activePanel={activePanel}
+              setActivePanel={setActivePanel}
+              activeNote={activeNote}
+              setActiveNote={setActiveNote}
+              activeFolder={activeFolder}
+              notes={notes}
+              setNotes={setNotes}
+              folders={folders}
+              setDeleteAlert={setDeleteAlert}
+              trashedFolders={trashedFolders}
+              setTrashedFolders={setTrashedFolders}
+            />
+          </div>
+          <NoteViewer
+            activeNote={activeNote}
+            setActiveNote={setActiveNote}
+            notes={notes.notes}
+            folder={notes.folder}
+            setNotes={setNotes}
+            folders={folders}
+            activeFolder={activeFolder}
+          />
+        </div>
+      </NoteProvider>
+    </FolderProvider>
   );
 }
 
