@@ -8,11 +8,11 @@ import  NoteProvider from "./context/NoteContext";
 function App() {
   const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 640);
   const [activePanel, setActivePanel] = useState(null);
-  const [activeNote, setActiveNote] = useState("");
   const [activeFolder, setActiveFolder] = useState("");
   const [folders, setFolders] = useState(null);
-  const [trashedFolders, setTrashedFolders] = useState([]);
+  const [trashedFolders, setTrashedFolders] = useState([]); 
   const [deleteAlert, setDeleteAlert] = useState(null);
+  const [activeNote, setActiveNote] = useState("");         
   const [notes, setNotes] = useState({
     folder: "",
     notes: [],
