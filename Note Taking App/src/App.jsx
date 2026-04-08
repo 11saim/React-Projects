@@ -2,8 +2,8 @@ import SideBar from "./components/SideBar";
 import NotesFolder from "./components/NotesFolder";
 import NoteViewer from "./components/NoteViewer";
 import { useEffect, useState } from "react";
-import { FolderProvider } from "./context/FolderContext";
-import { NoteProvider } from "./context/NoteContext";
+import FolderProvider from "./context/FolderContext";
+import  NoteProvider from "./context/NoteContext";
 
 function App() {
   const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 640);

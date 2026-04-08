@@ -207,7 +207,7 @@ export default function Main({
                                   inputRef,
                                   btnText: "Update",
                                   handler: () => {
-                                    async () => {
+                                    const update = async () => {
                                       const noteId = note._id;
                                       const body = {
                                         title: inputRef.current.value,
@@ -218,6 +218,7 @@ export default function Main({
                                       );
                                       handleNoteUpdate(noteId, data, body);
                                     };
+                                    update();
                                   },
                                 });
                                 setIsModal(true);
