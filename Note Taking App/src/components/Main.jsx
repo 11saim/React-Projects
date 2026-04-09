@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useContext } from "react";
 import Modal from "./Modal";
 import whiteEditIcon from "../assets/whiteEditIcon.png";
 import deleteIcon from "../assets/trash-icon.png";
@@ -9,6 +9,8 @@ import closeFolderIcon from "../assets/close-folder-icon.png";
 import { updateNote, deleteNote } from "../utils/api/notes";
 import { updateFolder, deleteFolder } from "../utils/api/folders";
 import { getDate } from "../utils/getDate";
+import { FolderContext } from "../context/FolderContext";
+import { NoteContext } from "../context/NoteContext";
 
 export default function Main({
   notes,
@@ -24,6 +26,9 @@ export default function Main({
   const [isModal, setIsModal] = useState(false);
   const inputRef = useRef(null);
   const [modalProps, setModalProps] = useState({});
+  const { state: folderState, dispatch: folderDispatch } =
+    useContext(FolderContext);
+  const { state: noteState, dispatch: noteDispatch } = useContext(NoteContext);
 
   const handleNoteUpdate = (noteId, data, body) => {
     if (data.success) {
@@ -33,32 +38,43 @@ export default function Main({
         body.status === "archived" ||
         body.isFavourite === false
       ) {
-        setNotes({
-          folder,
-          notes: notes.filter((note) => note._id != noteId),
-        });
-        if (activeNote === noteId) {
-          setActiveNote(false);
+        // setNotes({
+        //   folder,
+        //   notes: notes.filter((note) => note._id != noteId),
+        // });
+        noteDispatch({ action: "REMOVE_NOTE", payload: noteId });
+        if (folderState.activeNote === noteId) {
+          // setActiveNote(false);
+          noteDispatch({ action: "SET_ACTIVE_NOTE", payload: false });
         }
       } else {
-        setNotes({
-          folder,
-          notes: notes.map((note) => (note._id === noteId ? data.data : note)),
+        // setNotes({
+        //   folder,
+        //   notes: notes.map((note) => (note._id === noteId ? data.data : note)),
+        // });
+        noteDispatch({
+          action: "UPDATE_NOTE",
+          payload: { id: noteId, data: data.data },
         });
       }
     }
   };
 
-  const handleFolderUpdate = async (data, folderId) => {
+  const handleFolderUpdate = async (body, data, folderId) => {
     if (data.success) {
       if (body.name) {
-        setTrashedFolders((prev) =>
-          prev.map((folder) => (folder._id === folderId ? data.data : folder)),
-        );
+        // setTrashedFolders((prev) =>
+        //   prev.map((folder) => (folder._id === folderId ? data.data : folder)),
+        // );
+        folderDispatch({
+          action: "UPDATE_TRASHED_FOLDERS",
+          payload: { id: folderId, data: data.data },
+        });
       } else if (body.status) {
-        setTrashedFolders((prev) =>
-          prev.filter((folder) => folder._id !== folderId),
-        );
+        // setTrashedFolders((prev) =>
+        //   prev.filter((folder) => folder._id !== folderId),
+        // );
+        folderDispatch({ action: "REMOVE_TRASHED_FOLDERS", payload: folderId });
       }
     }
   };
@@ -110,10 +126,15 @@ export default function Main({
 
                                   if (!updatedFolderName) return;
 
-                                  const data = await updateFolder(folder._id, {
+                                  const folderId = folder._id;
+                                  const body = {
                                     name: updatedFolderName,
-                                  });
-                                  handleFolderUpdate(data, folder._id);
+                                  };
+                                  const data = await updateFolder(
+                                    folderId,
+                                    body,
+                                  );
+                                  handleFolderUpdate(body, data, folder._id);
                                 },
                               });
                               setIsModal(true);
@@ -153,10 +174,12 @@ export default function Main({
                                   : activeFolder === "Archived" && unarchiveIcon
                             }
                             onClick={async () => {
-                              const data = await updateFolder(folder._id, {
+                              const folderId = folder._id;
+                              const body = {
                                 status: "active",
-                              });
-                              handleFolderUpdate(data, folder._id);
+                              };
+                              const data = await updateFolder(folderId, body);
+                              handleFolderUpdate(body, data, folder._id);
                             }}
                             alt="Icon"
                             className="opacity-0 group-hover:opacity-100 transition-opacity duration-200"

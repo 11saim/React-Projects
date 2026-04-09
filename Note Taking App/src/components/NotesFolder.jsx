@@ -1,3 +1,4 @@
+import { useContext } from "react";
 import Head from "./Head";
 import Main from "./Main";
 import folderIcon from "../assets/close-folder-icon.png";
@@ -5,6 +6,8 @@ import Menu from "../assets/menu.png";
 import { useEffect } from "react";
 import { fetchFolders } from "../utils/api/folders";
 import { fetchNotes } from "../utils/api/notes";
+import { FolderContext } from "../context/FolderContext";
+import { NoteContext } from "../context/NoteContext";
 
 export default function NotesFolder({
   isDesktop,
@@ -21,14 +24,24 @@ export default function NotesFolder({
   folders,
 }) {
   const shouldOpen = isDesktop || activePanel === "notesfolder";
+  const { state: folderState, dispatch: folderDispatch } =
+    useContext(FolderContext);
+  const { dispatch: noteDispatch } = useContext(NoteContext);
 
   useEffect(() => {
     const fetchData = async () => {
-      if (!activeFolder || activeFolder === "Search") return;
+      if (!folderState.activeFolder || folderState.activeFolder === "Search")
+        return;
 
-      if (activeFolder === "Trash") {
+      if (folderState.activeFolder === "Trash") {
         const foldersData = await fetchFolders("?trash=true");
-        if (foldersData.success) setTrashedFolders([...foldersData.data]);
+        if (foldersData.success) {
+          folderDispatch({
+            action: "SET_TRASHED_FOLDERS",
+            payload: [...foldersData.data],
+          });
+          // setTrashedFolders([...foldersData.data]);
+        }
       }
 
       const filterMap = {
@@ -37,20 +50,23 @@ export default function NotesFolder({
         Trash: "?trash=true",
       };
 
-      const filter = filterMap[activeFolder] ?? `folders/${activeFolder}`;
+      const filter =
+        filterMap[folderState.activeFolder] ??
+        `folders/${folderState.activeFolder}`;
       const notesData = await fetchNotes(filter);
-      setNotes(notesData.data);
+      noteDispatch({ action: "SET_NOTES", payload: notesData.data });
+      // setNotes(notesData.data);
     };
 
     fetchData();
-  }, [activeFolder, folders]);
+  }, [folderState.activeFolder, folderState.folders]);
 
   return (
     <>
       <div
         className={`z-90 fixed sm:static sm:h-1/2 h-full overflow-auto xl:h-auto w-full xl:w-1/2 bg-[#1C1C1C] text-white px-4 py-7 ${shouldOpen ? "" : "hidden"}`}
       >
-        {!activeFolder ? (
+        {!folderState.activeFolder ? (
           <div className="h-full flex flex-col justify-center items-center">
             <img src={folderIcon} alt="folder" width={60} height={60} />
             <p>Select a folder to View Notes</p>

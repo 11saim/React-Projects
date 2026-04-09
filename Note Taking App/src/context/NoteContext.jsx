@@ -1,6 +1,6 @@
 import React, { createContext, useReducer } from "react";
 
-const NoteContext = createContext();
+export const NoteContext = createContext();
 
 const initialState = {
   activeNote: "",
@@ -33,7 +33,7 @@ function noteReducer(state, action) {
         notes: {
           ...state.notes,
           notes: state.notes.notes.map((n) =>
-            n._id === action.payload.id ? action.payload.data : n,
+            n._id === action.payload.id ? { ...n, ...action.payload.data } : n,
           ),
         },
       };

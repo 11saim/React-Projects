@@ -1,10 +1,10 @@
 import React, { createContext, useReducer } from "react";
 
-const FolderContext = createContext();
+export const FolderContext = createContext();
 
 const initialState = {
   activeFolder: "",
-  folders: null,
+  folders: [],
   trashedFolders: [],
   deleteAlert: null,
 };
@@ -15,22 +15,41 @@ const folderReducer = (state, action) => {
       return { ...state, activeFolder: action.payload };
 
     case "SET_FOLDERS":
-      return { ...state, folders: action.payload };
+      return { ...state, folders: action.payload || [] };
 
     case "SET_TRASHED_FOLDERS":
-      return { ...state, trashedFolders: action.payload };
+      return { ...state, trashedFolders: action.payload || [] };
+
+    case "UPDATE_TRASHED_FOLDERS":
+      return {
+        ...state,
+        trashedFolders: state.trashedFolders.map((f) =>
+          f._id === action.payload.id ? action.payload.data : f,
+        ),
+      };
+
+    case "REMOVE_TRASHED_FOLDERS":
+      return {
+        ...state,
+        trashedFolders: state.trashedFolders.filter(
+          (f) => f._id !== action.payload,
+        ),
+      };
 
     case "SET_DELETE_ALERT":
       return { ...state, deleteAlert: action.payload };
 
     case "ADD_FOLDER":
-      return { ...state, folders: [...state.folders, action.payload] };
+      return {
+        ...state,
+        folders: [...state.folders, action.payload],
+      };
 
     case "UPDATE_FOLDER":
       return {
         ...state,
         folders: state.folders.map((f) =>
-          f._id === action.payload.id ? action.payload.data : f,
+          f._id === action.payload.id ? { ...f, ...action.payload.data } : f,
         ),
       };
 

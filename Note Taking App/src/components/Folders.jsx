@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useContext } from "react";
 import openFolderIcon from "../assets/open-folder-icon.png";
 import editIcon from "../assets/edit.png";
 import whiteEditIcon from "../assets/whiteEditIcon.png";
@@ -10,6 +10,8 @@ import Loader from "./Loader";
 import Modal from "../components/Modal";
 import DeleteModal from "../components/DeleteModal";
 import { fetchFolders, addFolder, updateFolder } from "../utils/api/folders";
+import { FolderContext } from "../context/FolderContext";
+import { NoteContext } from "../context/NoteContext";
 
 export default function Folders({
   activeFolder,
@@ -24,6 +26,9 @@ export default function Folders({
   const [isModal, setIsModal] = useState(false);
   const [modalProps, setModalProps] = useState({});
   const inputRef = useRef(null);
+  const { state: folderState, dispatch: folderDispatch } =
+    useContext(FolderContext);
+  const { state: noteState, dispatch: noteDispatch } = useContext(NoteContext);
 
   const handleAddFolder = async () => {
     const folderName = inputRef.current.value;
@@ -34,20 +39,29 @@ export default function Folders({
     });
 
     if (data.success) {
-      setFolders((prev) => [...prev, data.data]);
+      // setFolders((prev) => [...prev, data.data]);
+      folderDispatch({ type: "ADD_FOLDER", payload: data.data });
     }
   };
 
   const handleFolderDelete = async () => {
-    const data = await updateFolder(deleteAlert.id, { status: "trash" });
+    const data = await updateFolder(folderState.deleteAlert.id, {
+      status: "trash",
+    });
     if (!data.success) return;
 
-    setFolders((prev) =>
-      prev.filter((folder) => folder._id !== deleteAlert.id),
-    );
-    if (activeFolder === deleteAlert.id) {
-      setActiveFolder("");
-      setActiveNote(null);
+    // setFolders((prev) =>
+    //   prev.filter((folder) => folder._id !== deleteAlert.id),
+    // );
+    folderDispatch({
+      type: "REMOVE_FOLDER",
+      payload: folderState.deleteAlert.id,
+    });
+    if (folderState.activeFolder === folderState.deleteAlert.id) {
+      // setActiveFolder("");
+      // setActiveNote(null);
+      folderDispatch({ type: "SET_ACTIVE_FOLDER", payload: "" });
+      noteDispatch({ type: "SET_ACTIVE_NOTE", payload: "" });
     }
   };
 
@@ -58,20 +72,22 @@ export default function Folders({
     const data = await updateFolder(id, { name: updatedFolderName });
     if (!data.success) return;
 
-    setFolders((prev) =>
-      prev.map((folder) => (folder._id === id ? data.data : folder)),
-    );
+    // setFolders((prev) =>
+    //   prev.map((folder) => (folder._id === id ? data.data : folder)),
+    // );
+    folderDispatch({ type: "UPDATE_FOLDER", payload: { id, data: data.data } });
   };
 
   useEffect(() => {
     const getFolders = async () => {
       const data = await fetchFolders("?active=true");
       if (data.success) {
-        setFolders([...data.data]);
+        // setFolders([...data.data]);
+        folderDispatch({ type: "SET_FOLDERS", payload: data.data });
       }
     };
     getFolders();
-  }, [trashedFolders]);
+  }, [folderState.trashedFolders]);
 
   return (
     <>
@@ -83,7 +99,7 @@ export default function Folders({
           <div
             onClick={() => {
               setModalProps(() =>
-                folders === null
+                !folderState.folders
                   ? {}
                   : {
                       title: "Folder Name:",
@@ -93,7 +109,7 @@ export default function Folders({
                       handler: handleAddFolder,
                     },
               );
-              setIsModal(() => (folders === null ? false : true));
+              setIsModal(() => (folderState.folders === null ? false : true));
             }}
             className="icon cursor-pointer"
           >
@@ -102,22 +118,28 @@ export default function Folders({
         </div>
 
         <div className="folders">
-          {folders === null ? (
+          {folderState.folders ? (
             <Loader />
-          ) : folders.length > 0 ? (
-            folders.map((folder) => (
+          ) : folderState.folders.length > 0 ? (
+            folderState.folders.map((folder) => (
               <div
                 key={folder._id}
                 onClick={() => {
-                  setActiveFolder((prev) =>
-                    prev === folder._id ? "" : folder._id,
-                  );
-                  setActiveNote(null);
+                  // setActiveFolder((prev) =>
+                  //   prev === folder._id ? "" : folder._id,
+                  // );
+                  // setActiveNote(null);
+                  folderDispatch({
+                    type: "SET_ACTIVE_FOLDER",
+                    payload:
+                      folderState.activeFolder === folder._id ? "" : folder._id,
+                  });
+                  noteDispatch({ type: "SET_ACTIVE_NOTE", payload: "" });
                 }}
                 className={`group flex p-3 justify-between items-center 
                 text-white cursor-pointer transition-colors duration-200
                 ${
-                  activeFolder === folder._id
+                  folderState.activeFolder === folder._id
                     ? "bg-[#312EB5]"
                     : "hover:bg-[#2a2a2a]"
                 }`}
@@ -125,7 +147,7 @@ export default function Folders({
                 <div className="flex items-center space-x-3">
                   <img
                     src={
-                      activeFolder === folder._id
+                      folderState.activeFolder === folder._id
                         ? openFolderIcon
                         : closeFolderIcon
                     }
@@ -141,7 +163,11 @@ export default function Folders({
                   onClick={(e) => e.stopPropagation()}
                 >
                   <img
-                    src={activeFolder === folder._id ? whiteEditIcon : editIcon}
+                    src={
+                      folderState.activeFolder === folder._id
+                        ? whiteEditIcon
+                        : editIcon
+                    }
                     alt="edit-icon"
                     onClick={() => {
                       setModalProps({
@@ -158,12 +184,18 @@ export default function Folders({
                   />
                   <img
                     src={
-                      activeFolder === folder._id ? whiteDeleteIcon : deleteIcon
+                      folderState.activeFolder === folder._id
+                        ? whiteDeleteIcon
+                        : deleteIcon
                     }
                     alt="delete-icon"
                     onClick={() =>
-                      setDeleteAlert({
-                        id: folder._id,
+                      // setDeleteAlert({
+                      //   id: folder._id,
+                      // })
+                      folderDispatch({
+                        type: "SET_DELETE_ALERT",
+                        payload: { id: folder._id },
                       })
                     }
                     width={20}
@@ -179,9 +211,11 @@ export default function Folders({
       </div>
 
       {isModal && <Modal {...modalProps} />}
-      {deleteAlert && (
+      {folderState.deleteAlert && (
         <DeleteModal
-          setDeleteAlert={setDeleteAlert}
+          setDeleteAlert={() =>
+            folderDispatch({ type: "SET_DELETE_ALERT", payload: null })
+          }
           handler={handleFolderDelete}
         />
       )}

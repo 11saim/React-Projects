@@ -12,7 +12,7 @@ export default function DeleteModal({ setDeleteAlert, handler }) {
 
         <div className="flex justify-end space-x-3">
           <button
-            onClick={() => setDeleteAlert(null)}
+            onClick={() => setDeleteAlert()}
             className="px-4 py-2 bg-gray-600 rounded hover:bg-gray-500"
           >
             Cancel
@@ -21,7 +21,7 @@ export default function DeleteModal({ setDeleteAlert, handler }) {
           <button
             onClick={() => {
               handler();
-              setDeleteAlert(null);
+              setDeleteAlert();
             }}
             className="px-4 py-2 bg-red-600 rounded hover:bg-red-500"
           >

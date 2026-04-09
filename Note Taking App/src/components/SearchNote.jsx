@@ -1,24 +1,32 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import searchIcon from "../assets/search-icon.png";
 import { fetchNotes } from "../utils/api/notes";
+import { FolderContext } from "../context/FolderContext";
+import { NoteContext } from "../context/NoteContext";
 
 export default function SearchNote({ setNotes, setActiveFolder }) {
   const [searchedNote, setSearchedNote] = useState("");
+  const { dispatch: folderDispatch } = useContext(FolderContext);
+  const { dispatch: noteDispatch } = useContext(NoteContext);
 
   useEffect(() => {
     if (!searchedNote) {
-      setActiveFolder("");
-      setNotes({
-        folder: "",
-        notes: [],
-      });
+      // setActiveFolder("");
+      folderDispatch({ type: "SET_ACTIVE_FOLDER", payload: "" });
+      // setNotes({
+      //   folder: "",
+      //   notes: [],
+      // });
+      noteDispatch({ type: "SET_NOTES", payload: { folder: "", notes: [] } });
       return;
     }
 
     const delay = setTimeout(async () => {
       const data = await fetchNotes(`?search=${searchedNote}`);
-      setNotes(data.data);
-      setActiveFolder("Search");
+      // setNotes(data.data);
+      // setActiveFolder("Search");
+      folderDispatch({ type: "SET_ACTIVE_FOLDER", payload: "Search" });
+      noteDispatch({ type: "SET_NOTES", payload: data.data });
     }, 500);
 
     return () => clearTimeout(delay);
