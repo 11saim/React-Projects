@@ -72,10 +72,10 @@ export default function Head({ folder, activeFolder, setNotes }) {
 
                   if (data.success) {
                     noteDispatch({
-                      action: "SET_NOTES",
+                      type: "SET_NOTES",
                       payload: {
                         folder: noteState.notes.folder,
-                        notes: [noteState.notes.notes, data.data],
+                        notes: [...noteState.notes.notes, data.data],
                       },
                     });
                     // setNotes((prev) => ({

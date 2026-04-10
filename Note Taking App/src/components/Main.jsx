@@ -42,10 +42,10 @@ export default function Main({
         //   folder,
         //   notes: notes.filter((note) => note._id != noteId),
         // });
-        noteDispatch({ action: "REMOVE_NOTE", payload: noteId });
+        noteDispatch({ type: "REMOVE_NOTE", payload: noteId });
         if (folderState.activeNote === noteId) {
           // setActiveNote(false);
-          noteDispatch({ action: "SET_ACTIVE_NOTE", payload: false });
+          noteDispatch({ type: "SET_ACTIVE_NOTE", payload: false });
         }
       } else {
         // setNotes({
@@ -53,7 +53,7 @@ export default function Main({
         //   notes: notes.map((note) => (note._id === noteId ? data.data : note)),
         // });
         noteDispatch({
-          action: "UPDATE_NOTE",
+          type: "UPDATE_NOTE",
           payload: { id: noteId, data: data.data },
         });
       }
@@ -67,14 +67,14 @@ export default function Main({
         //   prev.map((folder) => (folder._id === folderId ? data.data : folder)),
         // );
         folderDispatch({
-          action: "UPDATE_TRASHED_FOLDERS",
+          type: "UPDATE_TRASHED_FOLDERS",
           payload: { id: folderId, data: data.data },
         });
       } else if (body.status) {
         // setTrashedFolders((prev) =>
         //   prev.filter((folder) => folder._id !== folderId),
         // );
-        folderDispatch({ action: "REMOVE_TRASHED_FOLDERS", payload: folderId });
+        folderDispatch({ type: "REMOVE_TRASHED_FOLDERS", payload: folderId });
       }
     }
   };
@@ -151,7 +151,7 @@ export default function Main({
                                   //     id: folder._id,
                                   //   })
                                   folderDispatch({
-                                    action: "SET_DELETE_ALERT",
+                                    type: "SET_DELETE_ALERT",
                                     payload: { id: folder._id },
                                   })
                                 : async () => {
@@ -164,7 +164,7 @@ export default function Main({
                                       //   ),
                                       // );
                                       folderDispatch({
-                                        action: "REMOVE_TRASHED_FOLDERS",
+                                        type: "REMOVE_TRASHED_FOLDERS",
                                         payload: folderId,
                                       });
                                     }
@@ -215,7 +215,7 @@ export default function Main({
                       onClick={() => {
                         // setActiveNote(isActive ? null : note._id)
                         noteDispatch({
-                          action: "SET_ACTIVE_NOTE",
+                          type: "SET_ACTIVE_NOTE",
                           payload: isActive ? null : note._id,
                         });
                       }}
@@ -283,7 +283,7 @@ export default function Main({
                                       //   ),
                                       // });
                                       noteDispatch({
-                                        action: "REMOVE_NOTE",
+                                        type: "REMOVE_NOTE",
                                         payload: noteId,
                                       });
                                     }

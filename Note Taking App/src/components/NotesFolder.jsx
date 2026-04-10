@@ -37,7 +37,7 @@ export default function NotesFolder({
         const foldersData = await fetchFolders("?trash=true");
         if (foldersData.success) {
           folderDispatch({
-            action: "SET_TRASHED_FOLDERS",
+            type: "SET_TRASHED_FOLDERS",
             payload: [...foldersData.data],
           });
           // setTrashedFolders([...foldersData.data]);
@@ -54,7 +54,7 @@ export default function NotesFolder({
         filterMap[folderState.activeFolder] ??
         `folders/${folderState.activeFolder}`;
       const notesData = await fetchNotes(filter);
-      noteDispatch({ action: "SET_NOTES", payload: notesData.data });
+      noteDispatch({ type: "SET_NOTES", payload: notesData.data });
       // setNotes(notesData.data);
     };
 

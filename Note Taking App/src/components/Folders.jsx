@@ -99,7 +99,7 @@ export default function Folders({
           <div
             onClick={() => {
               setModalProps(() =>
-                !folderState.folders.length
+                folderState.folders.length < 1
                   ? {}
                   : {
                       title: "Folder Name:",
@@ -109,7 +109,7 @@ export default function Folders({
                       handler: handleAddFolder,
                     },
               );
-              setIsModal(() => (folderState.folders.length > 0 ? false : true));
+              setIsModal(() => (folderState.folders.length > 0 ? true : false));
             }}
             className="icon cursor-pointer"
           >
