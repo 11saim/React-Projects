@@ -1,6 +1,6 @@
 import { useEditor, EditorContent } from "@tiptap/react";
 import { Extension } from "@tiptap/core";
-import { useState, useRef, useCallback, useEffect } from "react";
+import { useState, useRef, useCallback, useEffect, useContext } from "react";
 import StarterKit from "@tiptap/starter-kit";
 import { Underline } from "@tiptap/extension-underline";
 import { Link } from "@tiptap/extension-link";
@@ -14,6 +14,8 @@ import {
   TableHeader,
   TableCell,
 } from "@tiptap/extension-table";
+import { FolderContext } from "../context/FolderContext";
+import { NoteContext } from "../context/NoteContext";
 
 // Icons
 import boldIcon from "../assets/bold.png";
@@ -364,6 +366,9 @@ export default function TiptapEditor({
   const [showTableOps, setShowTableOps] = useState(false);
   const [, forceUpdate] = useState(0);
   const colorPickerRef = useRef(null);
+  const { state: folderState, dispatch: folderDispatch } =
+    useContext(FolderContext);
+  const { state: noteState, dispatch: noteDispatch } = useContext(NoteContext);
 
   useEffect(() => {
     const handler = (e) => {
@@ -504,18 +509,21 @@ export default function TiptapEditor({
         body.status === "archived" ||
         body.isFavorite === true
       ) {
-        setNotes({
-          folder,
-          notes: notes.filter((note) => note._id != id),
-        });
+        // setNotes({
+        //   folder,
+        //   notes: notes.filter((note) => note._id != id),
+        // });
+        noteDispatch({ type: "REMOVE_NOTE", payload: id });
       } else {
-        setNotes({
-          folder,
-          notes: notes.map((note) => (note._id === id ? data.data : note)),
-        });
+        // setNotes({
+        //   folder,
+        //   notes: notes.map((note) => (note._id === id ? data.data : note)),
+        // });
+        noteDispatch({ type: "UPDATE_NOTE", payload: { id, data: data.data } });
       }
-      if (activeNote === id) {
-        setActiveNote(false);
+      if (noteState.activeNote === id) {
+        // setActiveNote(false);
+        noteDispatch({ type: "SET_ACTIVE_NOTE", payload: "" });
       }
     }
   };
@@ -914,7 +922,7 @@ export default function TiptapEditor({
         </div>
         <button
           onClick={() =>
-            handleSave(activeNote, {
+            handleSave(noteState.activeNote, {
               content: editor.getHTML(),
               plainText: editor.getText(),
             })

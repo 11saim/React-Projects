@@ -1,9 +1,11 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useContext } from "react";
 import closedOptions from "../assets/closed-options.png";
 import favoriteIcon from "../assets/favorite-icon.png";
 import archivedIcon from "../assets/archived-icon.png";
 import trashIcon from "../assets/trash-icon.png";
 import { updateNote } from "../utils/api/notes";
+import { FolderContext } from "../context/FolderContext";
+import { NoteContext } from "../context/NoteContext";
 
 export default function NoteHead({
   title,
@@ -15,6 +17,7 @@ export default function NoteHead({
 }) {
   const [isModel, setIsModel] = useState(false);
   const optionsRef = useRef(null);
+  const { state: noteState, dispatch: noteDispatch } = useContext(NoteContext);
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -37,17 +40,29 @@ export default function NoteHead({
         body.status === "archived" ||
         body.isFavourite === true
       ) {
-        setNotes({
-          folder,
-          notes: notes.filter((note) => note._id != noteId),
+        // setNotes({
+        //   folder,
+        //   notes: notes.filter((note) => note._id != noteId),
+        // });
+        noteDispatch({
+          type: "REMOVE_NOTE",
+          payload: noteId,
         });
-        if (activeNote === noteId) {
-          setActiveNote(false);
+        if (noteState.activeNote === noteId) {
+          // setActiveNote(false);
+          noteDispatch({
+            type: "SET_ACTIVE_NOTE",
+            payload: "",
+          });
         }
       } else {
-        setNotes({
-          folder,
-          notes: notes.map((note) => (note._id === noteId ? data.data : note)),
+        // setNotes({
+        //   folder,
+        //   notes: notes.map((note) => (note._id === noteId ? data.data : note)),
+        // });
+        noteDispatch({
+          type: "UPDATE_NOTE",
+          payload: { id: noteId, data: data.data },
         });
       }
     }
@@ -77,9 +92,13 @@ export default function NoteHead({
               <div
                 className="add-to-favorite flex space-x-2 cursor-pointer"
                 onClick={() => {
-                  updateNote(activeNote, { isFavourite: true });
+                  updateNote(noteState.activeNote, { isFavourite: true });
                   setIsModel(false);
-                  setActiveNote("");
+                  // setActiveNote("");
+                  noteDispatch({
+                    type: "SET_ACTIVE_NOTE",
+                    payload: "",
+                  });
                 }}
               >
                 <img
@@ -93,7 +112,7 @@ export default function NoteHead({
               <div
                 className="archived flex space-x-2 mb-2 cursor-pointer"
                 onClick={() => {
-                  const nodeId = activeNote;
+                  const nodeId = noteState.activeNote;
                   const body = { status: "archived" };
                   const data = updateNote(nodeId, body);
                   handleNoteUpdate(data, body, nodeId);
@@ -113,7 +132,7 @@ export default function NoteHead({
               <div
                 className="delete flex space-x-2 cursor-pointer"
                 onClick={() => {
-                  const noteId = activeNote;
+                  const noteId = noteState.activeNote;
                   const body = { status: "trash" };
                   const data = updateNote(noteId, body);
                   handleNoteUpdate(data, body, noteId);

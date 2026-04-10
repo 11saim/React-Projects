@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import NoteHead from "./NoteHead";
 import NoteDetails from "./NoteDetails";
 import NoteEditor from "./NoteEditor";
 import noteIcon from "../assets/note.png";
 import { fetchNote } from "../utils/api/notes";
+import { FolderContext } from "../context/FolderContext";
+import { NoteContext } from "../context/NoteContext";
 
 export default function NoteViewer({
   activeNote,
@@ -15,39 +17,43 @@ export default function NoteViewer({
 }) {
   const [noteDetails, setNoteDetails] = useState({});
   const [loading, setLoading] = useState(false);
+  const { state: folderState } = useContext(FolderContext);
+  const { state: noteState } = useContext(NoteContext);
 
   useEffect(() => {
-    if (!activeNote) return;
+    if (!noteState.activeNote) return;
     const getNoteDetails = async () => {
       setLoading(true);
       setNoteDetails({});
-      const data = await fetchNote(activeNote);
+      const data = await fetchNote(noteState.activeNote);
       if (data.success) setNoteDetails(data.data);
       setLoading(false);
     };
     getNoteDetails();
-  }, [activeNote]);
+  }, [noteState.activeNote]);
 
   useEffect(() => {
-    if (!activeNote || !notes?.length) return;
-    const updatedNote = notes.find((n) => n._id === activeNote);
+    if (!noteState.activeNote || !noteState.notes.notes?.length) return;
+    const updatedNote = noteState.notes.notes.find(
+      (n) => n._id === noteState.activeNote,
+    );
     if (updatedNote) {
       const { folder, ...rest } = updatedNote;
       setNoteDetails((prev) => ({ ...prev, ...rest }));
     }
-  }, [notes]);
+  }, [noteState.notes.notes]);
 
   useEffect(() => {
-    if (!noteDetails.folder || !folders?.length) return;
-    const updatedFolder = folders.find(
+    if (!noteDetails.folder || !folderState.folders?.length) return;
+    const updatedFolder = folderState.folders.find(
       (f) => f._id === noteDetails.folder?._id,
     );
     if (updatedFolder) {
       setNoteDetails((prev) => ({ ...prev, folder: updatedFolder }));
     }
-  }, [folders]);
+  }, [folderState.folders]);
 
-  return !activeNote ? (
+  return !noteState.activeNote ? (
     <div className="space-y-3 flex justify-center items-center flex-col w-full sm:w-[60%] bg-[#181818] text-white p-5 lg:p-10 min-h-screen h-auto">
       <img src={noteIcon} alt="note" width={100} height={100} />
       <p className="text-xl font-semibold">Select a note to view</p>

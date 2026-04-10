@@ -85,10 +85,10 @@ export default function Main({
         <div className="folders flex flex-col items-center">
           <div className="w-full folder-section py-4">
             <div className="w-full space-y-3">
-              {activeFolder === "Trash" && <p>Folders</p>}
-              {activeFolder === "Trash" &&
-                (trashedFolders.length != 0 ? (
-                  trashedFolders.map((folder) => {
+              {folderState.activeFolder === "Trash" && <p>Folders</p>}
+              {folderState.activeFolder === "Trash" &&
+                (folderState.trashedFolders.length != 0 ? (
+                  folderState.trashedFolders.map((folder) => {
                     return (
                       <div
                         key={folder._id}
@@ -146,19 +146,27 @@ export default function Main({
                             src={deleteIcon}
                             alt="delete-icon"
                             onClick={() =>
-                              activeFolder !== "Trash"
-                                ? setDeleteAlert({
-                                    id: folder._id,
+                              folderState.activeFolder !== "Trash"
+                                ? // setDeleteAlert({
+                                  //     id: folder._id,
+                                  //   })
+                                  folderDispatch({
+                                    action: "SET_DELETE_ALERT",
+                                    payload: { id: folder._id },
                                   })
                                 : async () => {
                                     const folderId = folder._id;
                                     const data = await deleteFolder(folderId);
                                     if (data.success) {
-                                      setTrashedFolders((prev) =>
-                                        prev.filter(
-                                          (folder) => folder._id !== folderId,
-                                        ),
-                                      );
+                                      // setTrashedFolders((prev) =>
+                                      //   prev.filter(
+                                      //     (folder) => folder._id !== folderId,
+                                      //   ),
+                                      // );
+                                      folderDispatch({
+                                        action: "REMOVE_TRASHED_FOLDERS",
+                                        payload: folderId,
+                                      });
                                     }
                                   }
                             }
@@ -167,11 +175,12 @@ export default function Main({
                           />
                           <img
                             src={
-                              activeFolder === "Trash"
+                              folderState.activeFolder === "Trash"
                                 ? restoreIcon
-                                : activeFolder === "Favorite"
+                                : folderState.activeFolder === "Favorite"
                                   ? unfavoriteIcon
-                                  : activeFolder === "Archived" && unarchiveIcon
+                                  : folderState.activeFolder === "Archived" &&
+                                    unarchiveIcon
                             }
                             onClick={async () => {
                               const folderId = folder._id;
@@ -195,15 +204,21 @@ export default function Main({
                     No Folders
                   </p>
                 ))}
-              {activeFolder === "Trash" && <p>Notes</p>}
-              {notes.length != 0 ? (
-                notes.map((note) => {
-                  const isActive = activeNote === note._id;
+              {folderState.activeFolder === "Trash" && <p>Notes</p>}
+              {noteState.notes.notes.length != 0 ? (
+                noteState.notes.notes.map((note) => {
+                  const isActive = noteState.activeNote === note._id;
 
                   return (
                     <div
                       key={note._id}
-                      onClick={() => setActiveNote(isActive ? null : note._id)}
+                      onClick={() => {
+                        // setActiveNote(isActive ? null : note._id)
+                        noteDispatch({
+                          action: "SET_ACTIVE_NOTE",
+                          payload: isActive ? null : note._id,
+                        });
+                      }}
                       className={`group folder w-full p-5 cursor-pointer transition-colors duration-200
                     ${
                       isActive
@@ -256,16 +271,20 @@ export default function Main({
                           <div
                             className="delete"
                             onClick={() =>
-                              activeFolder === "Trash"
+                              folderState.activeFolder === "Trash"
                                 ? async () => {
                                     const noteId = note._id;
                                     const data = await deleteNote(noteId);
                                     if (data.success) {
-                                      setNotes({
-                                        folder,
-                                        notes: notes.filter(
-                                          (note) => note._id != noteId,
-                                        ),
+                                      // setNotes({
+                                      //   folder,
+                                      //   notes: notes.filter(
+                                      //     (note) => note._id != noteId,
+                                      //   ),
+                                      // });
+                                      noteDispatch({
+                                        action: "REMOVE_NOTE",
+                                        payload: noteId,
                                       });
                                     }
                                   }
@@ -285,13 +304,13 @@ export default function Main({
                               height={20}
                             />
                           </div>
-                          {(activeFolder === "Trash" ||
-                            activeFolder === "Archived" ||
-                            activeFolder === "Favorite") && (
+                          {(folderState.activeFolder === "Trash" ||
+                            folderState.activeFolder === "Archived" ||
+                            folderState.activeFolder === "Favorite") && (
                             <div
                               className="extraIcon"
                               onClick={() => {
-                                activeFolder === "Favorite"
+                                folderState.activeFolder === "Favorite"
                                   ? async () => {
                                       const noteId = note._id;
                                       const body = { isFavourite: false };
@@ -314,12 +333,12 @@ export default function Main({
                             >
                               <img
                                 src={
-                                  activeFolder === "Trash"
+                                  folderState.activeFolder === "Trash"
                                     ? restoreIcon
-                                    : activeFolder === "Favorite"
+                                    : folderState.activeFolder === "Favorite"
                                       ? unfavoriteIcon
-                                      : activeFolder === "Archived" &&
-                                        unarchiveIcon
+                                      : folderState.activeFolder ===
+                                          "Archived" && unarchiveIcon
                                 }
                                 alt="Icon"
                                 className="opacity-0 group-hover:opacity-100 transition-opacity duration-200"

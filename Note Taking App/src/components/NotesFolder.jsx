@@ -64,7 +64,7 @@ export default function NotesFolder({
   return (
     <>
       <div
-        className={`z-90 fixed sm:static sm:h-1/2 h-full overflow-auto xl:h-auto w-full xl:w-1/2 bg-[#1C1C1C] text-white px-4 py-7 ${shouldOpen ? "" : "hidden"}`}
+        className={`z-80 fixed sm:static sm:h-1/2 h-full overflow-auto xl:h-auto w-full xl:w-1/2 bg-[#1C1C1C] text-white px-4 py-7 ${shouldOpen ? "" : "hidden"}`}
       >
         {!folderState.activeFolder ? (
           <div className="h-full flex flex-col justify-center items-center">

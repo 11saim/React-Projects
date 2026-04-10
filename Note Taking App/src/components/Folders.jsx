@@ -28,7 +28,7 @@ export default function Folders({
   const inputRef = useRef(null);
   const { state: folderState, dispatch: folderDispatch } =
     useContext(FolderContext);
-  const { state: noteState, dispatch: noteDispatch } = useContext(NoteContext);
+  const { dispatch: noteDispatch } = useContext(NoteContext);
 
   const handleAddFolder = async () => {
     const folderName = inputRef.current.value;
@@ -99,7 +99,7 @@ export default function Folders({
           <div
             onClick={() => {
               setModalProps(() =>
-                !folderState.folders
+                !folderState.folders.length
                   ? {}
                   : {
                       title: "Folder Name:",
@@ -109,7 +109,7 @@ export default function Folders({
                       handler: handleAddFolder,
                     },
               );
-              setIsModal(() => (folderState.folders === null ? false : true));
+              setIsModal(() => (folderState.folders.length > 0 ? false : true));
             }}
             className="icon cursor-pointer"
           >
@@ -118,7 +118,7 @@ export default function Folders({
         </div>
 
         <div className="folders">
-          {folderState.folders ? (
+          {folderState.folders.length < 1 ? (
             <Loader />
           ) : folderState.folders.length > 0 ? (
             folderState.folders.map((folder) => (

@@ -16,7 +16,7 @@ function noteReducer(state, action) {
       return { ...state, activeNote: action.payload };
 
     case "SET_NOTES":
-      return { ...state, notes: action.payload };
+      return { ...state, notes: { ...state.notes, ...action.payload } };
 
     case "ADD_NOTE":
       return {
