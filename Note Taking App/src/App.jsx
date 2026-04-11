@@ -8,15 +8,6 @@ import NoteProvider from "./context/NoteContext";
 function App() {
   const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 640);
   const [activePanel, setActivePanel] = useState(null);
-  const [activeFolder, setActiveFolder] = useState("");
-  const [folders, setFolders] = useState(null);
-  const [trashedFolders, setTrashedFolders] = useState([]);
-  const [deleteAlert, setDeleteAlert] = useState(null);
-  const [activeNote, setActiveNote] = useState("");
-  const [notes, setNotes] = useState({
-    folder: "",
-    notes: [],
-  });
 
   useEffect(() => {
     function handleResize() {
@@ -37,42 +28,14 @@ function App() {
               isDesktop={isDesktop}
               activePanel={activePanel}
               setActivePanel={setActivePanel}
-              activeNote={activeNote}
-              setActiveNote={setActiveNote}
-              activeFolder={activeFolder}
-              setActiveFolder={setActiveFolder}
-              notes={notes}
-              setNotes={setNotes}
-              folders={folders}
-              setFolders={setFolders}
-              deleteAlert={deleteAlert}
-              setDeleteAlert={setDeleteAlert}
-              trashedFolders={trashedFolders}
             />
             <NotesFolder
               isDesktop={isDesktop}
               activePanel={activePanel}
               setActivePanel={setActivePanel}
-              activeNote={activeNote}
-              setActiveNote={setActiveNote}
-              activeFolder={activeFolder}
-              notes={notes}
-              setNotes={setNotes}
-              folders={folders}
-              setDeleteAlert={setDeleteAlert}
-              trashedFolders={trashedFolders}
-              setTrashedFolders={setTrashedFolders}
             />
           </div>
-          <NoteViewer
-            activeNote={activeNote}
-            setActiveNote={setActiveNote}
-            notes={notes.notes}
-            folder={notes.folder}
-            setNotes={setNotes}
-            folders={folders}
-            activeFolder={activeFolder}
-          />
+          <NoteViewer />
         </div>
       </NoteProvider>
     </FolderProvider>

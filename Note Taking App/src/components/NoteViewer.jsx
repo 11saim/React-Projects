@@ -7,14 +7,7 @@ import { fetchNote } from "../utils/api/notes";
 import { FolderContext } from "../context/FolderContext";
 import { NoteContext } from "../context/NoteContext";
 
-export default function NoteViewer({
-  activeNote,
-  setActiveNote,
-  notes,
-  folder,
-  setNotes,
-  folders,
-}) {
+export default function NoteViewer() {
   const [noteDetails, setNoteDetails] = useState({});
   const [loading, setLoading] = useState(false);
   const { state: folderState } = useContext(FolderContext);
@@ -65,14 +58,7 @@ export default function NoteViewer({
   ) : (
     <div className="NoteViewer w-full sm:w-[60%] bg-[#181818] text-white p-5 lg:p-10 min-h-screen h-auto">
       <div>
-        <NoteHead
-          title={noteDetails.title}
-          activeNote={activeNote}
-          setActiveNote={setActiveNote}
-          folder={folder}
-          notes={notes}
-          setNotes={setNotes}
-        />
+        <NoteHead title={noteDetails.title} />
         <NoteDetails date={noteDetails.createdAt} folder={noteDetails.folder} />
       </div>
       {loading ? (
@@ -81,11 +67,6 @@ export default function NoteViewer({
         <NoteEditor
           key={noteDetails._id}
           initialContent={noteDetails.content}
-          activeNote={activeNote}
-          setActiveNote={setActiveNote}
-          notes={notes}
-          folder={folder}
-          setNotes={setNotes}
         />
       )}
     </div>

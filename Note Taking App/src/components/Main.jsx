@@ -12,17 +12,7 @@ import { getDate } from "../utils/getDate";
 import { FolderContext } from "../context/FolderContext";
 import { NoteContext } from "../context/NoteContext";
 
-export default function Main({
-  notes,
-  activeNote,
-  setActiveNote,
-  setNotes,
-  folder,
-  activeFolder,
-  trashedFolders,
-  setTrashedFolders,
-  setDeleteAlert,
-}) {
+export default function Main() {
   const [isModal, setIsModal] = useState(false);
   const inputRef = useRef(null);
   const [modalProps, setModalProps] = useState({});
@@ -38,20 +28,11 @@ export default function Main({
         body.status === "archived" ||
         body.isFavourite === false
       ) {
-        // setNotes({
-        //   folder,
-        //   notes: notes.filter((note) => note._id != noteId),
-        // });
         noteDispatch({ type: "REMOVE_NOTE", payload: noteId });
         if (folderState.activeNote === noteId) {
-          // setActiveNote(false);
           noteDispatch({ type: "SET_ACTIVE_NOTE", payload: false });
         }
       } else {
-        // setNotes({
-        //   folder,
-        //   notes: notes.map((note) => (note._id === noteId ? data.data : note)),
-        // });
         noteDispatch({
           type: "UPDATE_NOTE",
           payload: { id: noteId, data: data.data },
@@ -63,19 +44,75 @@ export default function Main({
   const handleFolderUpdate = async (body, data, folderId) => {
     if (data.success) {
       if (body.name) {
-        // setTrashedFolders((prev) =>
-        //   prev.map((folder) => (folder._id === folderId ? data.data : folder)),
-        // );
         folderDispatch({
           type: "UPDATE_TRASHED_FOLDERS",
           payload: { id: folderId, data: data.data },
         });
       } else if (body.status) {
-        // setTrashedFolders((prev) =>
-        //   prev.filter((folder) => folder._id !== folderId),
-        // );
         folderDispatch({ type: "REMOVE_TRASHED_FOLDERS", payload: folderId });
       }
+    }
+  };
+
+  const handleFolderDelete = async (folder) => {
+    if (folderState.activeFolder !== "Trash") {
+      folderDispatch({
+        type: "SET_DELETE_ALERT",
+        payload: { id: folder._id },
+      });
+      return;
+    }
+
+    try {
+      const data = await deleteFolder(folder._id);
+
+      if (data.success) {
+        folderDispatch({
+          type: "REMOVE_TRASHED_FOLDERS",
+          payload: folder._id,
+        });
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleNoteDelete = async (note) => {
+    const noteId = note._id;
+
+    try {
+      if (folderState.activeFolder === "Trash") {
+        const data = await deleteNote(noteId);
+
+        if (data.success) {
+          noteDispatch({
+            type: "REMOVE_NOTE",
+            payload: noteId,
+          });
+        }
+      } else {
+        const body = { status: "trash" };
+        const data = await updateNote(noteId, body);
+        handleNoteUpdate(noteId, data, body);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleNoteExtraAction = async (note) => {
+    const noteId = note._id;
+    let body = null;
+    if (folderState.activeFolder === "Favorite") {
+      body = { isFavourite: false };
+    } else {
+      body = { status: "active" };
+    }
+    try {
+      const data = await updateNote(noteId, body);
+      handleNoteUpdate(noteId, data, body);
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -145,43 +182,12 @@ export default function Main({
                           <img
                             src={deleteIcon}
                             alt="delete-icon"
-                            onClick={() =>
-                              folderState.activeFolder !== "Trash"
-                                ? // setDeleteAlert({
-                                  //     id: folder._id,
-                                  //   })
-                                  folderDispatch({
-                                    type: "SET_DELETE_ALERT",
-                                    payload: { id: folder._id },
-                                  })
-                                : async () => {
-                                    const folderId = folder._id;
-                                    const data = await deleteFolder(folderId);
-                                    if (data.success) {
-                                      // setTrashedFolders((prev) =>
-                                      //   prev.filter(
-                                      //     (folder) => folder._id !== folderId,
-                                      //   ),
-                                      // );
-                                      folderDispatch({
-                                        type: "REMOVE_TRASHED_FOLDERS",
-                                        payload: folderId,
-                                      });
-                                    }
-                                  }
-                            }
+                            onClick={() => handleFolderDelete(folder)}
                             width={20}
                             height={20}
                           />
                           <img
-                            src={
-                              folderState.activeFolder === "Trash"
-                                ? restoreIcon
-                                : folderState.activeFolder === "Favorite"
-                                  ? unfavoriteIcon
-                                  : folderState.activeFolder === "Archived" &&
-                                    unarchiveIcon
-                            }
+                            src={restoreIcon}
                             onClick={async () => {
                               const folderId = folder._id;
                               const body = {
@@ -213,7 +219,6 @@ export default function Main({
                     <div
                       key={note._id}
                       onClick={() => {
-                        // setActiveNote(isActive ? null : note._id)
                         noteDispatch({
                           type: "SET_ACTIVE_NOTE",
                           payload: isActive ? null : note._id,
@@ -270,31 +275,7 @@ export default function Main({
                           </div>
                           <div
                             className="delete"
-                            onClick={() =>
-                              folderState.activeFolder === "Trash"
-                                ? async () => {
-                                    const noteId = note._id;
-                                    const data = await deleteNote(noteId);
-                                    if (data.success) {
-                                      // setNotes({
-                                      //   folder,
-                                      //   notes: notes.filter(
-                                      //     (note) => note._id != noteId,
-                                      //   ),
-                                      // });
-                                      noteDispatch({
-                                        type: "REMOVE_NOTE",
-                                        payload: noteId,
-                                      });
-                                    }
-                                  }
-                                : async () => {
-                                    const noteId = note._id;
-                                    const body = { status: "trash" };
-                                    const data = await updateNote(noteId, body);
-                                    handleNoteUpdate(noteId, data, body);
-                                  }
-                            }
+                            onClick={() => handleNoteDelete(note)}
                           >
                             <img
                               src={deleteIcon}
@@ -309,27 +290,7 @@ export default function Main({
                             folderState.activeFolder === "Favorite") && (
                             <div
                               className="extraIcon"
-                              onClick={() => {
-                                folderState.activeFolder === "Favorite"
-                                  ? async () => {
-                                      const noteId = note._id;
-                                      const body = { isFavourite: false };
-                                      const data = await updateNote(
-                                        noteId,
-                                        body,
-                                      );
-                                      handleNoteUpdate(noteId, data, body);
-                                    }
-                                  : async () => {
-                                      const noteId = note._id;
-                                      const body = { status: "active" };
-                                      const data = await updateNote(
-                                        noteId,
-                                        body,
-                                      );
-                                      handleNoteUpdate(noteId, data, body);
-                                    };
-                              }}
+                              onClick={() => handleNoteExtraAction(note)}
                             >
                               <img
                                 src={

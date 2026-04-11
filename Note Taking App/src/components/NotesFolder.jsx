@@ -12,16 +12,7 @@ import { NoteContext } from "../context/NoteContext";
 export default function NotesFolder({
   isDesktop,
   activePanel,
-  setActivePanel,
-  activeNote,
-  setActiveNote,
-  activeFolder,
-  notes,
-  setNotes,
-  setDeleteAlert,
-  trashedFolders,
-  setTrashedFolders,
-  folders,
+  setActivePanel
 }) {
   const shouldOpen = isDesktop || activePanel === "notesfolder";
   const { state: folderState, dispatch: folderDispatch } =
@@ -40,7 +31,6 @@ export default function NotesFolder({
             type: "SET_TRASHED_FOLDERS",
             payload: [...foldersData.data],
           });
-          // setTrashedFolders([...foldersData.data]);
         }
       }
 
@@ -55,7 +45,6 @@ export default function NotesFolder({
         `folders/${folderState.activeFolder}`;
       const notesData = await fetchNotes(filter);
       noteDispatch({ type: "SET_NOTES", payload: notesData.data });
-      // setNotes(notesData.data);
     };
 
     fetchData();
@@ -73,22 +62,8 @@ export default function NotesFolder({
           </div>
         ) : (
           <div>
-            <Head
-              folder={notes.folder}
-              activeFolder={activeFolder}
-              setNotes={setNotes}
-            />
-            <Main
-              notes={notes.notes}
-              folder={notes.folder}
-              setNotes={setNotes}
-              activeNote={activeNote}
-              setActiveNote={setActiveNote}
-              activeFolder={activeFolder}
-              trashedFolders={trashedFolders}
-              setTrashedFolders={setTrashedFolders}
-              setDeleteAlert={setDeleteAlert}
-            />
+            <Head />
+            <Main />
           </div>
         )}
       </div>

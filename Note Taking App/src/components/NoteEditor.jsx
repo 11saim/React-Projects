@@ -348,15 +348,7 @@ function TableGridPicker({ onSelect, onClose }) {
 }
 
 // ── Main Editor ──────────────────────────────────────────────────────────────
-export default function TiptapEditor({
-  key,
-  initialContent = "",
-  activeNote,
-  setActiveNote,
-  notes,
-  folder,
-  setNotes,
-}) {
+export default function TiptapEditor({ key, initialContent = "" }) {
   const [showLinkModal, setShowLinkModal] = useState(false);
   const [showImageModal, setShowImageModal] = useState(false);
   const [linkUrl, setLinkUrl] = useState("");
@@ -366,8 +358,6 @@ export default function TiptapEditor({
   const [showTableOps, setShowTableOps] = useState(false);
   const [, forceUpdate] = useState(0);
   const colorPickerRef = useRef(null);
-  const { state: folderState, dispatch: folderDispatch } =
-    useContext(FolderContext);
   const { state: noteState, dispatch: noteDispatch } = useContext(NoteContext);
 
   useEffect(() => {

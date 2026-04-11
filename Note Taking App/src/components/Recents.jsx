@@ -6,13 +6,7 @@ import { fetchNotes } from "../utils/api/notes";
 import { FolderContext } from "../context/FolderContext";
 import { NoteContext } from "../context/NoteContext";
 
-export default function Recents({
-  activeNote,
-  setActiveNote,
-  setActiveFolder,
-  notes,
-  folders,
-}) {
+export default function Recents() {
   const [recentNotes, setRecentNotes] = useState(null);
   const { state: folderState, dispatch: folderDispatch } =
     useContext(FolderContext);
@@ -44,15 +38,11 @@ export default function Recents({
                 <div
                   key={note._id}
                   onClick={() => {
-                    // setActiveNote((prev) =>
-                    //   note._id === prev ? "" : note._id,
-                    // );
                     noteDispatch({
                       type: "SET_ACTIVE_NOTE",
                       payload:
                         noteState.activeNote === note._id ? "" : note._id,
                     });
-                    // setActiveFolder(note.folder._id);
                     folderDispatch({
                       type: "SET_ACTIVE_FOLDER",
                       payload: note.folder._id,

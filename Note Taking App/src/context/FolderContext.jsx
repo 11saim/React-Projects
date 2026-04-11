@@ -4,7 +4,7 @@ export const FolderContext = createContext();
 
 const initialState = {
   activeFolder: "",
-  folders: [],
+  folders: null,
   trashedFolders: [],
   deleteAlert: null,
 };

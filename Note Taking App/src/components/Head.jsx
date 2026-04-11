@@ -5,7 +5,7 @@ import { addNote } from "../utils/api/notes";
 import { FolderContext } from "../context/FolderContext";
 import { NoteContext } from "../context/NoteContext";
 
-export default function Head({ folder, activeFolder, setNotes }) {
+export default function Head() {
   const [isModal, setIsModal] = useState(false);
   const inputRef = useRef(null);
   const { state: folderState } = useContext(FolderContext);
@@ -78,10 +78,6 @@ export default function Head({ folder, activeFolder, setNotes }) {
                         notes: [...noteState.notes.notes, data.data],
                       },
                     });
-                    // setNotes((prev) => ({
-                    //   folder,
-                    //   notes: [...prev.notes, data.data],
-                    // }));
                   }
 
                   setIsModal(false);

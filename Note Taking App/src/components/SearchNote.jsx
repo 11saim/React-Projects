@@ -4,27 +4,20 @@ import { fetchNotes } from "../utils/api/notes";
 import { FolderContext } from "../context/FolderContext";
 import { NoteContext } from "../context/NoteContext";
 
-export default function SearchNote({ setNotes, setActiveFolder }) {
+export default function SearchNote() {
   const [searchedNote, setSearchedNote] = useState("");
   const { dispatch: folderDispatch } = useContext(FolderContext);
   const { dispatch: noteDispatch } = useContext(NoteContext);
 
   useEffect(() => {
     if (!searchedNote) {
-      // setActiveFolder("");
       folderDispatch({ type: "SET_ACTIVE_FOLDER", payload: "" });
-      // setNotes({
-      //   folder: "",
-      //   notes: [],
-      // });
       noteDispatch({ type: "SET_NOTES", payload: { folder: "", notes: [] } });
       return;
     }
 
     const delay = setTimeout(async () => {
       const data = await fetchNotes(`?search=${searchedNote}`);
-      // setNotes(data.data);
-      // setActiveFolder("Search");
       folderDispatch({ type: "SET_ACTIVE_FOLDER", payload: "Search" });
       noteDispatch({ type: "SET_NOTES", payload: data.data });
     }, 500);

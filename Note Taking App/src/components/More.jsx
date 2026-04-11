@@ -20,7 +20,7 @@ const options = [
   },
 ];
 
-export default function More({ activeFolder, setActiveFolder, setActiveNote }) {
+export default function More() {
   const { state: folderState, dispatch: folderDispatch } =
     useContext(FolderContext);
   const { dispatch: noteDispatch } = useContext(NoteContext);
@@ -38,10 +38,6 @@ export default function More({ activeFolder, setActiveFolder, setActiveNote }) {
             <div
               key={option.title}
               onClick={() => {
-                // setActiveFolder((prev) =>
-                //   option.title === prev ? "" : option.title,
-                // );
-                // setActiveNote(null);
                 folderDispatch({
                   type: "SET_ACTIVE_FOLDER",
                   payload:

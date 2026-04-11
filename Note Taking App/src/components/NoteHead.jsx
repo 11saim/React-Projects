@@ -4,17 +4,9 @@ import favoriteIcon from "../assets/favorite-icon.png";
 import archivedIcon from "../assets/archived-icon.png";
 import trashIcon from "../assets/trash-icon.png";
 import { updateNote } from "../utils/api/notes";
-import { FolderContext } from "../context/FolderContext";
 import { NoteContext } from "../context/NoteContext";
 
-export default function NoteHead({
-  title,
-  activeNote,
-  setActiveNote,
-  folder,
-  notes,
-  setNotes,
-}) {
+export default function NoteHead({ title }) {
   const [isModel, setIsModel] = useState(false);
   const optionsRef = useRef(null);
   const { state: noteState, dispatch: noteDispatch } = useContext(NoteContext);
@@ -34,38 +26,41 @@ export default function NoteHead({
 
   const handleNoteUpdate = (data, body, noteId) => {
     if (data.success) {
-      if (
-        body.status === "active" ||
-        body.status === "trash" ||
-        body.status === "archived" ||
-        body.isFavourite === true
-      ) {
-        // setNotes({
-        //   folder,
-        //   notes: notes.filter((note) => note._id != noteId),
-        // });
-        noteDispatch({
-          type: "REMOVE_NOTE",
-          payload: noteId,
-        });
+      const shouldRemove =
+        ["active", "trash", "archived"].includes(body.status) ||
+        body.isFavourite;
+
+      if (shouldRemove) {
+        noteDispatch({ type: "REMOVE_NOTE", payload: noteId });
+
         if (noteState.activeNote === noteId) {
-          // setActiveNote(false);
           noteDispatch({
             type: "SET_ACTIVE_NOTE",
             payload: "",
           });
         }
       } else {
-        // setNotes({
-        //   folder,
-        //   notes: notes.map((note) => (note._id === noteId ? data.data : note)),
-        // });
         noteDispatch({
           type: "UPDATE_NOTE",
           payload: { id: noteId, data: data.data },
         });
       }
     }
+  };
+
+  const performAction = async (body) => {
+    const noteId = noteState.activeNote;
+
+    const data = await updateNote(noteId, body);
+
+    handleNoteUpdate(data, body, noteId);
+
+    setIsModel(false);
+
+    noteDispatch({
+      type: "SET_ACTIVE_NOTE",
+      payload: "",
+    });
   };
 
   return (
@@ -91,15 +86,7 @@ export default function NoteHead({
             <div className="top-options space-y-4 border-b-2 border-b-[#3d3d3d]">
               <div
                 className="add-to-favorite flex space-x-2 cursor-pointer"
-                onClick={() => {
-                  updateNote(noteState.activeNote, { isFavourite: true });
-                  setIsModel(false);
-                  // setActiveNote("");
-                  noteDispatch({
-                    type: "SET_ACTIVE_NOTE",
-                    payload: "",
-                  });
-                }}
+                onClick={() => performAction({ isFavourite: true })}
               >
                 <img
                   src={favoriteIcon}
@@ -111,13 +98,7 @@ export default function NoteHead({
               </div>
               <div
                 className="archived flex space-x-2 mb-2 cursor-pointer"
-                onClick={() => {
-                  const nodeId = noteState.activeNote;
-                  const body = { status: "archived" };
-                  const data = updateNote(nodeId, body);
-                  handleNoteUpdate(data, body, nodeId);
-                  setIsModel(false);
-                }}
+                onClick={() => performAction({ status: "archived" })}
               >
                 <img
                   src={archivedIcon}
@@ -131,13 +112,7 @@ export default function NoteHead({
             <div className="bottom-options">
               <div
                 className="delete flex space-x-2 cursor-pointer"
-                onClick={() => {
-                  const noteId = noteState.activeNote;
-                  const body = { status: "trash" };
-                  const data = updateNote(noteId, body);
-                  handleNoteUpdate(data, body, noteId);
-                  setIsModel(false);
-                }}
+                onClick={() => performAction({ status: "trash" })}
               >
                 <img src={trashIcon} alt="trash-icon" width={25} height={25} />
                 <p>Delete</p>

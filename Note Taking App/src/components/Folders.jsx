@@ -13,16 +13,7 @@ import { fetchFolders, addFolder, updateFolder } from "../utils/api/folders";
 import { FolderContext } from "../context/FolderContext";
 import { NoteContext } from "../context/NoteContext";
 
-export default function Folders({
-  activeFolder,
-  setActiveFolder,
-  setActiveNote,
-  folders,
-  setFolders,
-  deleteAlert,
-  setDeleteAlert,
-  trashedFolders,
-}) {
+export default function Folders() {
   const [isModal, setIsModal] = useState(false);
   const [modalProps, setModalProps] = useState({});
   const inputRef = useRef(null);
@@ -39,7 +30,6 @@ export default function Folders({
     });
 
     if (data.success) {
-      // setFolders((prev) => [...prev, data.data]);
       folderDispatch({ type: "ADD_FOLDER", payload: data.data });
     }
   };
@@ -50,16 +40,11 @@ export default function Folders({
     });
     if (!data.success) return;
 
-    // setFolders((prev) =>
-    //   prev.filter((folder) => folder._id !== deleteAlert.id),
-    // );
     folderDispatch({
       type: "REMOVE_FOLDER",
       payload: folderState.deleteAlert.id,
     });
     if (folderState.activeFolder === folderState.deleteAlert.id) {
-      // setActiveFolder("");
-      // setActiveNote(null);
       folderDispatch({ type: "SET_ACTIVE_FOLDER", payload: "" });
       noteDispatch({ type: "SET_ACTIVE_NOTE", payload: "" });
     }
@@ -72,9 +57,6 @@ export default function Folders({
     const data = await updateFolder(id, { name: updatedFolderName });
     if (!data.success) return;
 
-    // setFolders((prev) =>
-    //   prev.map((folder) => (folder._id === id ? data.data : folder)),
-    // );
     folderDispatch({ type: "UPDATE_FOLDER", payload: { id, data: data.data } });
   };
 
@@ -82,7 +64,6 @@ export default function Folders({
     const getFolders = async () => {
       const data = await fetchFolders("?active=true");
       if (data.success) {
-        // setFolders([...data.data]);
         folderDispatch({ type: "SET_FOLDERS", payload: data.data });
       }
     };
@@ -99,7 +80,7 @@ export default function Folders({
           <div
             onClick={() => {
               setModalProps(() =>
-                folderState.folders.length < 1
+                !folderState.folders
                   ? {}
                   : {
                       title: "Folder Name:",
@@ -109,7 +90,7 @@ export default function Folders({
                       handler: handleAddFolder,
                     },
               );
-              setIsModal(() => (folderState.folders.length > 0 ? true : false));
+              setIsModal(() => (!folderState.folders ? false : true));
             }}
             className="icon cursor-pointer"
           >
@@ -118,17 +99,13 @@ export default function Folders({
         </div>
 
         <div className="folders">
-          {folderState.folders.length < 1 ? (
+          {!folderState.folders ? (
             <Loader />
           ) : folderState.folders.length > 0 ? (
             folderState.folders.map((folder) => (
               <div
                 key={folder._id}
                 onClick={() => {
-                  // setActiveFolder((prev) =>
-                  //   prev === folder._id ? "" : folder._id,
-                  // );
-                  // setActiveNote(null);
                   folderDispatch({
                     type: "SET_ACTIVE_FOLDER",
                     payload:
@@ -175,7 +152,7 @@ export default function Folders({
                         setIsModal,
                         inputRef,
                         btnText: "Update",
-                        handler: handleFolderRename(folder._id),
+                        handler: () => handleFolderRename(folder._id),
                       });
                       setIsModal(true);
                     }}
@@ -190,9 +167,6 @@ export default function Folders({
                     }
                     alt="delete-icon"
                     onClick={() =>
-                      // setDeleteAlert({
-                      //   id: folder._id,
-                      // })
                       folderDispatch({
                         type: "SET_DELETE_ALERT",
                         payload: { id: folder._id },

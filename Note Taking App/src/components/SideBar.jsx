@@ -5,22 +5,7 @@ import Folders from "./Folders";
 import More from "./More";
 import Menu from "../assets/menu.png";
 
-export default function Sidebar({
-  isDesktop,
-  activePanel,
-  setActivePanel,
-  activeNote,
-  setActiveNote,
-  activeFolder,
-  setActiveFolder,
-  setNotes,
-  notes,
-  folders,
-  setFolders,
-  deleteAlert,
-  setDeleteAlert,
-  trashedFolders,
-}) {
+export default function Sidebar({ isDesktop, activePanel, setActivePanel }) {
   const shouldOpen = isDesktop || activePanel === "sidebar";
 
   return (
@@ -30,36 +15,12 @@ export default function Sidebar({
       >
         <div>
           <Navbar />
-          <SeacrhNote
-            setNotes={setNotes}
-            setActiveFolder={setActiveFolder}
-            notes={notes}
-          />
+          <SeacrhNote />
         </div>
         <div>
-          <Recents
-            activeFolder={activeFolder}
-            setActiveFolder={setActiveFolder}
-            activeNote={activeNote}
-            setActiveNote={setActiveNote}
-            notes={notes}
-            folders={folders}
-          />
-          <Folders
-            activeFolder={activeFolder}
-            setActiveFolder={setActiveFolder}
-            setActiveNote={setActiveNote}
-            folders={folders}
-            setFolders={setFolders}
-            deleteAlert={deleteAlert}
-            setDeleteAlert={setDeleteAlert}
-            trashedFolders={trashedFolders}
-          />
-          <More
-            activeFolder={activeFolder}
-            setActiveFolder={setActiveFolder}
-            setActiveNote={setActiveNote}
-          />
+          <Recents />
+          <Folders />
+          <More />
         </div>
       </div>
 
