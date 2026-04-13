@@ -108,6 +108,10 @@ export default function Main() {
     } else {
       body = { status: "active" };
     }
+    noteDispatch({
+      type: "SET_ACTIVE_NOTE",
+      payload: null,
+    });
     try {
       const data = await updateNote(noteId, body);
       handleNoteUpdate(noteId, data, body);
@@ -225,11 +229,10 @@ export default function Main() {
                         });
                       }}
                       className={`group folder w-full p-5 cursor-pointer transition-colors duration-200
-                    ${
-                      isActive
-                        ? "bg-[#312EB5]"
-                        : "bg-[#232323] hover:bg-[#2a2a2a]"
-                    }`}
+                    ${isActive
+                          ? "bg-[#312EB5]"
+                          : "bg-[#232323] hover:bg-[#2a2a2a]"
+                        }`}
                     >
                       <div className="head flex items-center justify-between">
                         <div
@@ -288,40 +291,38 @@ export default function Main() {
                           {(folderState.activeFolder === "Trash" ||
                             folderState.activeFolder === "Archived" ||
                             folderState.activeFolder === "Favorite") && (
-                            <div
-                              className="extraIcon"
-                              onClick={() => handleNoteExtraAction(note)}
-                            >
-                              <img
-                                src={
-                                  folderState.activeFolder === "Trash"
-                                    ? restoreIcon
-                                    : folderState.activeFolder === "Favorite"
-                                      ? unfavoriteIcon
-                                      : folderState.activeFolder ===
-                                          "Archived" && unarchiveIcon
-                                }
-                                alt="Icon"
-                                className="opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-                                width={20}
-                                height={20}
-                              />
-                            </div>
-                          )}
+                              <div
+                                className="extraIcon"
+                                onClick={() => handleNoteExtraAction(note)}
+                              >
+                                <img
+                                  src={
+                                    folderState.activeFolder === "Trash"
+                                      ? restoreIcon
+                                      : folderState.activeFolder === "Favorite"
+                                        ? unfavoriteIcon
+                                        : folderState.activeFolder ===
+                                        "Archived" && unarchiveIcon
+                                  }
+                                  alt="Icon"
+                                  className="opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                                  width={20}
+                                  height={20}
+                                />
+                              </div>
+                            )}
                         </div>
                       </div>
                       <div className="details flex items-center text-[13px] space-x-3 mt-2">
                         <div
-                          className={`date transition-colors duration-200 ${
-                            isActive ? "text-white" : "text-[#7b7b7b]"
-                          }`}
+                          className={`date transition-colors duration-200 ${isActive ? "text-white" : "text-[#7b7b7b]"
+                            }`}
                         >
                           {getDate(note.createdAt)}
                         </div>
                         <div
-                          className={`subtitle line-clamp-1 transition-colors duration-200 ${
-                            isActive ? "text-white" : "text-[#a7a7a7]"
-                          }`}
+                          className={`subtitle line-clamp-1 transition-colors duration-200 ${isActive ? "text-white" : "text-[#a7a7a7]"
+                            }`}
                         >
                           {!note.plainText
                             ? "This note is empty..."

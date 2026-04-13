@@ -8,6 +8,11 @@ import NoteProvider from "./context/NoteContext";
 function App() {
   const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 640);
   const [activePanel, setActivePanel] = useState(null);
+  const commonProps = {
+    isDesktop,
+    activePanel,
+    setActivePanel,
+  };
 
   useEffect(() => {
     function handleResize() {
@@ -24,16 +29,8 @@ function App() {
       <NoteProvider>
         <div className="flex flex-col sm:flex-row w-full max-h-screen xl:max-h-full relative">
           <div className="flex flex-col w-full sm:w-[40%] xl:flex-row h-auto relative">
-            <SideBar
-              isDesktop={isDesktop}
-              activePanel={activePanel}
-              setActivePanel={setActivePanel}
-            />
-            <NotesFolder
-              isDesktop={isDesktop}
-              activePanel={activePanel}
-              setActivePanel={setActivePanel}
-            />
+            <SideBar {...commonProps} />
+            <NotesFolder {...commonProps} />
           </div>
           <NoteViewer />
         </div>

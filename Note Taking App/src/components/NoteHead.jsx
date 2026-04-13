@@ -1,12 +1,15 @@
 import React, { useEffect, useRef, useState, useContext } from "react";
 import closedOptions from "../assets/closed-options.png";
 import favoriteIcon from "../assets/favorite-icon.png";
+import unFavoriteIcon from "../assets/filled-favorite.png";
 import archivedIcon from "../assets/archived-icon.png";
+import unArchivedIcon from "../assets/unarchive.png";
 import trashIcon from "../assets/trash-icon.png";
+import unTrashIcon from "../assets/restore.png";
 import { updateNote } from "../utils/api/notes";
 import { NoteContext } from "../context/NoteContext";
 
-export default function NoteHead({ title }) {
+export default function NoteHead({ note }) {
   const [isModel, setIsModel] = useState(false);
   const optionsRef = useRef(null);
   const { state: noteState, dispatch: noteDispatch } = useContext(NoteContext);
@@ -67,7 +70,7 @@ export default function NoteHead({ title }) {
     <div className="note-head flex justify-between items-center">
       <div className="note-title flex items-center pb-2 gap-2">
         <p className="flex-1 text-lg sm:text-xl lg:text-3xl leading-normal truncate">
-          {title}
+          {note.title}
         </p>
       </div>
 
@@ -89,33 +92,33 @@ export default function NoteHead({ title }) {
                 onClick={() => performAction({ isFavourite: true })}
               >
                 <img
-                  src={favoriteIcon}
+                  src={note.isFavourite ? unFavoriteIcon : favoriteIcon}
                   alt="favorite-icon"
                   width={25}
                   height={25}
                 />
-                <p>Add to Favorites</p>
+                <p>{note.isFavourite ? "UnFavorite" : "Favorite"}</p>
               </div>
               <div
                 className="archived flex space-x-2 mb-2 cursor-pointer"
                 onClick={() => performAction({ status: "archived" })}
               >
                 <img
-                  src={archivedIcon}
+                  src={note.status === "archived" ? unArchivedIcon : archivedIcon}
                   alt="archived-icon"
                   width={25}
                   height={25}
                 />
-                <p>Archived</p>
+                <p>{note.status === "archived" ? "Unarchive" : "Archive"}</p>
               </div>
             </div>
             <div className="bottom-options">
               <div
                 className="delete flex space-x-2 cursor-pointer"
-                onClick={() => performAction({ status: "trash" })}
+                onClick={() => performAction({ status: note.status === "trash" ? "active" : "trash" })}
               >
-                <img src={trashIcon} alt="trash-icon" width={25} height={25} />
-                <p>Delete</p>
+                <img src={note.status === "trash" ? unTrashIcon : trashIcon} alt="trash-icon" width={25} height={25} />
+                <p>{note.status === "trash" ? "Restore" : "Delete"}</p>
               </div>
             </div>
           </div>
