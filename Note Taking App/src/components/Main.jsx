@@ -95,6 +95,10 @@ export default function Main() {
         const data = await updateNote(noteId, body);
         handleNoteUpdate(noteId, data, body);
       }
+      noteDispatch({
+        type: "SET_ACTIVE_NOTE",
+        payload: null,
+      });
     } catch (error) {
       console.error(error);
     }

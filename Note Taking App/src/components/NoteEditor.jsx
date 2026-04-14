@@ -52,15 +52,15 @@ const FontSize = Extension.create({
     return {
       setFontSize:
         (size) =>
-        ({ chain }) =>
-          chain().setMark("textStyle", { fontSize: size }).run(),
+          ({ chain }) =>
+            chain().setMark("textStyle", { fontSize: size }).run(),
       unsetFontSize:
         () =>
-        ({ chain }) =>
-          chain()
-            .setMark("textStyle", { fontSize: null })
-            .removeEmptyTextStyle()
-            .run(),
+          ({ chain }) =>
+            chain()
+              .setMark("textStyle", { fontSize: null })
+              .removeEmptyTextStyle()
+              .run(),
     };
   },
 });
@@ -322,7 +322,7 @@ function TableGridPicker({ onSelect, onClose }) {
             <div
               key={i}
               onMouseEnter={() => setHovered({ r, c })}
-              onMouseLeave={() => {}}
+              onMouseLeave={() => { }}
               onMouseDown={(e) => {
                 e.preventDefault();
                 if (hovered.r > 0 && hovered.c > 0) {
@@ -359,6 +359,7 @@ export default function TiptapEditor({ key, initialContent = "" }) {
   const [, forceUpdate] = useState(0);
   const colorPickerRef = useRef(null);
   const { state: noteState, dispatch: noteDispatch } = useContext(NoteContext);
+  const { state: folderState } = useContext(FolderContext);
 
   useEffect(() => {
     const handler = (e) => {
@@ -910,7 +911,7 @@ export default function TiptapEditor({ key, initialContent = "" }) {
         >
           <EditorContent editor={editor} />
         </div>
-        <button
+        {folderState.activeFolder !== "Trash" && (<button
           onClick={() =>
             handleSave(noteState.activeNote, {
               content: editor.getHTML(),
@@ -920,7 +921,7 @@ export default function TiptapEditor({ key, initialContent = "" }) {
           className="bg-[#312eb5] py-3 outline-0 px-8 rounded-md cursor-pointer"
         >
           Save
-        </button>
+        </button>)}
       </div>
 
       {/* ── Link modal ── */}

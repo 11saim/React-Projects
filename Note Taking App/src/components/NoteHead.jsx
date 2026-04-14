@@ -8,11 +8,16 @@ import trashIcon from "../assets/trash-icon.png";
 import unTrashIcon from "../assets/restore.png";
 import { updateNote } from "../utils/api/notes";
 import { NoteContext } from "../context/NoteContext";
+import { FolderContext } from "../context/FolderContext";
 
 export default function NoteHead({ note }) {
   const [isModel, setIsModel] = useState(false);
   const optionsRef = useRef(null);
   const { state: noteState, dispatch: noteDispatch } = useContext(NoteContext);
+  const { state: folderState } = useContext(FolderContext);
+  const isArchived = note.status === "archived";
+  const isTrashed = note.status === "trash";
+  const isFavourite = note.isFavourite;
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -29,11 +34,13 @@ export default function NoteHead({ note }) {
 
   const handleNoteUpdate = (data, body, noteId) => {
     if (data.success) {
-      const shouldRemove =
-        ["active", "trash", "archived"].includes(body.status) ||
-        body.isFavourite;
+      const isSearchFolder = folderState.activeFolder === "Search";
 
-      if (shouldRemove) {
+      if (
+        isSearchFolder
+          ? body.status === "trash"
+          : (["active", "trash", "archived"].includes(body.status) || body.isFavourite === true || body.isFavourite === false)
+      ) {
         noteDispatch({ type: "REMOVE_NOTE", payload: noteId });
 
         if (noteState.activeNote === noteId) {
@@ -89,36 +96,47 @@ export default function NoteHead({ note }) {
             <div className="top-options space-y-4 border-b-2 border-b-[#3d3d3d]">
               <div
                 className="add-to-favorite flex space-x-2 cursor-pointer"
-                onClick={() => performAction({ isFavourite: true })}
+                onClick={() => performAction({ isFavourite: !isFavourite })}
               >
                 <img
-                  src={note.isFavourite ? unFavoriteIcon : favoriteIcon}
+                  src={isFavourite ? unFavoriteIcon : favoriteIcon}
                   alt="favorite-icon"
                   width={25}
                   height={25}
                 />
-                <p>{note.isFavourite ? "UnFavorite" : "Favorite"}</p>
+                <p>{isFavourite ? "UnFavorite" : "Favorite"}</p>
               </div>
               <div
                 className="archived flex space-x-2 mb-2 cursor-pointer"
-                onClick={() => performAction({ status: "archived" })}
+                onClick={() =>
+                  performAction({
+                    status: isArchived ? "active" : "archived",
+                  })
+                }
               >
                 <img
-                  src={note.status === "archived" ? unArchivedIcon : archivedIcon}
+                  src={isArchived ? unArchivedIcon : archivedIcon}
                   alt="archived-icon"
                   width={25}
                   height={25}
                 />
-                <p>{note.status === "archived" ? "Unarchive" : "Archive"}</p>
+                <p>{isArchived ? "Unarchive" : "Archive"}</p>
               </div>
             </div>
             <div className="bottom-options">
               <div
                 className="delete flex space-x-2 cursor-pointer"
-                onClick={() => performAction({ status: note.status === "trash" ? "active" : "trash" })}
+                onClick={() =>
+                  performAction({ status: isTrashed ? "active" : "trash" })
+                }
               >
-                <img src={note.status === "trash" ? unTrashIcon : trashIcon} alt="trash-icon" width={25} height={25} />
-                <p>{note.status === "trash" ? "Restore" : "Delete"}</p>
+                <img
+                  src={isTrashed ? unTrashIcon : trashIcon}
+                  alt="trash-icon"
+                  width={25}
+                  height={25}
+                />
+                <p>{isTrashed ? "Restore" : "Delete"}</p>
               </div>
             </div>
           </div>

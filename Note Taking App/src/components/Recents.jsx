@@ -11,6 +11,11 @@ export default function Recents() {
   const { state: folderState, dispatch: folderDispatch } =
     useContext(FolderContext);
   const { state: noteState, dispatch: noteDispatch } = useContext(NoteContext);
+  const getTargetFolder = (note) => {
+    if (note.status === "archived") return "Archived";
+    if (note.isFavourite || note.status === "favorite") return "Favorite";
+    return note.folder?._id || "";
+  };
 
   useEffect(() => {
     const getRecentNotes = async () => {
@@ -38,15 +43,17 @@ export default function Recents() {
                 <div
                   key={note._id}
                   onClick={() => {
+                    const isClosing = noteState.activeNote === note._id;
                     noteDispatch({
                       type: "SET_ACTIVE_NOTE",
-                      payload:
-                        noteState.activeNote === note._id ? "" : note._id,
+                      payload: isClosing ? "" : note._id,
                     });
-                    folderDispatch({
-                      type: "SET_ACTIVE_FOLDER",
-                      payload: note.folder._id,
-                    });
+                    if (!isClosing) {
+                      folderDispatch({
+                        type: "SET_ACTIVE_FOLDER",
+                        payload: getTargetFolder(note),
+                      });
+                    }
                   }}
                   className={`flex items-center space-x-3 p-3 cursor-pointer transition-colors duration-200
                 ${isActive ? "bg-[#312EB5] text-white" : "hover:bg-[#232323]"}`}

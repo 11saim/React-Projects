@@ -83,12 +83,12 @@ export default function Folders() {
                 !folderState.folders
                   ? {}
                   : {
-                      title: "Folder Name:",
-                      setIsModal,
-                      inputRef,
-                      btnText: "Add",
-                      handler: handleAddFolder,
-                    },
+                    title: "Folder Name:",
+                    setIsModal,
+                    inputRef,
+                    btnText: "Add",
+                    handler: handleAddFolder,
+                  },
               );
               setIsModal(() => (!folderState.folders ? false : true));
             }}
@@ -115,11 +115,10 @@ export default function Folders() {
                 }}
                 className={`group flex p-3 justify-between items-center 
                 text-white cursor-pointer transition-colors duration-200
-                ${
-                  folderState.activeFolder === folder._id
+                ${folderState.activeFolder === folder._id
                     ? "bg-[#312EB5]"
                     : "hover:bg-[#2a2a2a]"
-                }`}
+                  }`}
               >
                 <div className="flex items-center space-x-3">
                   <img
