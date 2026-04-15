@@ -18,7 +18,6 @@ export default function NoteHead({ note }) {
   const isArchived = note.status === "archived";
   const isTrashed = note.status === "trash";
   const isFavourite = note.isFavourite;
-
   useEffect(() => {
     function handleClickOutside(event) {
       if (optionsRef.current && !optionsRef.current.contains(event.target)) {
@@ -39,7 +38,9 @@ export default function NoteHead({ note }) {
       if (
         isSearchFolder
           ? body.status === "trash"
-          : (["active", "trash", "archived"].includes(body.status) || body.isFavourite === true || body.isFavourite === false)
+          : ["active", "trash", "archived"].includes(body.status) ||
+            body.isFavourite === true ||
+            body.isFavourite === false
       ) {
         noteDispatch({ type: "REMOVE_NOTE", payload: noteId });
 
@@ -55,6 +56,8 @@ export default function NoteHead({ note }) {
           payload: { id: noteId, data: data.data },
         });
       }
+    } else {
+      alert(data.error);
     }
   };
 
@@ -104,7 +107,7 @@ export default function NoteHead({ note }) {
                   width={25}
                   height={25}
                 />
-                <p>{isFavourite ? "UnFavorite" : "Favorite"}</p>
+                <p>{isFavourite ? "Unfavourite" : "Favourite"}</p>
               </div>
               <div
                 className="archived flex space-x-2 mb-2 cursor-pointer"

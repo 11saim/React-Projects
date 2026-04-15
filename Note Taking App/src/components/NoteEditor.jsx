@@ -52,15 +52,15 @@ const FontSize = Extension.create({
     return {
       setFontSize:
         (size) =>
-          ({ chain }) =>
-            chain().setMark("textStyle", { fontSize: size }).run(),
+        ({ chain }) =>
+          chain().setMark("textStyle", { fontSize: size }).run(),
       unsetFontSize:
         () =>
-          ({ chain }) =>
-            chain()
-              .setMark("textStyle", { fontSize: null })
-              .removeEmptyTextStyle()
-              .run(),
+        ({ chain }) =>
+          chain()
+            .setMark("textStyle", { fontSize: null })
+            .removeEmptyTextStyle()
+            .run(),
     };
   },
 });
@@ -322,7 +322,7 @@ function TableGridPicker({ onSelect, onClose }) {
             <div
               key={i}
               onMouseEnter={() => setHovered({ r, c })}
-              onMouseLeave={() => { }}
+              onMouseLeave={() => {}}
               onMouseDown={(e) => {
                 e.preventDefault();
                 if (hovered.r > 0 && hovered.c > 0) {
@@ -500,20 +500,11 @@ export default function TiptapEditor({ key, initialContent = "" }) {
         body.status === "archived" ||
         body.isFavorite === true
       ) {
-        // setNotes({
-        //   folder,
-        //   notes: notes.filter((note) => note._id != id),
-        // });
         noteDispatch({ type: "REMOVE_NOTE", payload: id });
       } else {
-        // setNotes({
-        //   folder,
-        //   notes: notes.map((note) => (note._id === id ? data.data : note)),
-        // });
         noteDispatch({ type: "UPDATE_NOTE", payload: { id, data: data.data } });
       }
       if (noteState.activeNote === id) {
-        // setActiveNote(false);
         noteDispatch({ type: "SET_ACTIVE_NOTE", payload: "" });
       }
     }
@@ -597,8 +588,12 @@ export default function TiptapEditor({ key, initialContent = "" }) {
           overflow: "hidden",
           maxWidth: 960,
           margin: "0 auto",
+          position: "relative",
         }}
       >
+        {folderState.activeFolder === "Trash" && (
+          <div className="overlay cursor-not-allowed h-full w-full absolute z-100 opacity-5"></div>
+        )}
         {/* ── Separator line ── */}
         <div style={{ height: 2, background: "#a3a3a3", opacity: 0.15 }} />
 
@@ -911,17 +906,19 @@ export default function TiptapEditor({ key, initialContent = "" }) {
         >
           <EditorContent editor={editor} />
         </div>
-        {folderState.activeFolder !== "Trash" && (<button
-          onClick={() =>
-            handleSave(noteState.activeNote, {
-              content: editor.getHTML(),
-              plainText: editor.getText(),
-            })
-          }
-          className="bg-[#312eb5] py-3 outline-0 px-8 rounded-md cursor-pointer"
-        >
-          Save
-        </button>)}
+        {folderState.activeFolder !== "Trash" && (
+          <button
+            onClick={() =>
+              handleSave(noteState.activeNote, {
+                content: editor.getHTML(),
+                plainText: editor.getText(),
+              })
+            }
+            className="bg-[#312eb5] py-3 outline-0 px-8 rounded-md cursor-pointer"
+          >
+            Save
+          </button>
+        )}
       </div>
 
       {/* ── Link modal ── */}
