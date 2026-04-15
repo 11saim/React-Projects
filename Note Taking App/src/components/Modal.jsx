@@ -1,4 +1,5 @@
 import React from "react";
+import ModalPortal from "./ModalPortal";
 
 export default function Model({
   title,
@@ -8,7 +9,7 @@ export default function Model({
   handler,
 }) {
   return (
-    <>
+    <ModalPortal>
       <div className="fixed inset-0 z-1000 flex items-center justify-center bg-white/10 backdrop-blur-sm">
         <div className="relative w-96 mx-3 bg-[#181818] rounded-2xl shadow-xl border border-[#232323] p-5 sm:p-6">
           <div className="flex items-center justify-between border-b border-[#232323] pb-3">
@@ -49,6 +50,6 @@ export default function Model({
           </div>
         </div>
       </div>
-    </>
+    </ModalPortal>
   );
 }

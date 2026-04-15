@@ -13,6 +13,7 @@ export default function SearchNote() {
     if (!searchedNote) {
       folderDispatch({ type: "SET_ACTIVE_FOLDER", payload: "" });
       noteDispatch({ type: "SET_NOTES", payload: { folder: "", notes: [] } });
+      noteDispatch({ type: "SET_ACTIVE_NOTE", payload: "" });
       return;
     }
 

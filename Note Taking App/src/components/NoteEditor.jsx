@@ -16,6 +16,7 @@ import {
 } from "@tiptap/extension-table";
 import { FolderContext } from "../context/FolderContext";
 import { NoteContext } from "../context/NoteContext";
+import ModalPortal from "./ModalPortal";
 
 // Icons
 import boldIcon from "../assets/bold.png";
@@ -683,7 +684,7 @@ export default function TiptapEditor({ key, initialContent = "" }) {
 
           <div className="flex">
             {/* Color picker */}
-            <div style={{ position: "relative" }}>
+            <div style={{ position: "relative",zIndex: 1000 }}>
               <Btn
                 onClick={() => {
                   setShowColorPicker((p) => !p);
@@ -923,128 +924,132 @@ export default function TiptapEditor({ key, initialContent = "" }) {
 
       {/* ── Link modal ── */}
       {showLinkModal && (
-        <div
-          className="fixed inset-0 flex items-center justify-center bg-white/10 backdrop-blur-sm"
-          onClick={() => setShowLinkModal(false)}
-        >
+        <ModalPortal>
           <div
-            className="relative w-96 mx-3 bg-[#181818] rounded-2xl shadow-xl border border-[#232323] p-5 sm:p-6"
-            onClick={(e) => e.stopPropagation()}
+            className="fixed inset-0 z-1100 flex items-center justify-center bg-white/10 backdrop-blur-sm"
+            onClick={() => setShowLinkModal(false)}
           >
-            <div className="flex items-center justify-between border-b border-[#232323] pb-3">
-              <p className="text-lg sm:text-xl font-semibold text-white">
-                Insert Link
-              </p>
+            <div
+              className="relative w-96 mx-3 bg-[#181818] rounded-2xl shadow-xl border border-[#232323] p-5 sm:p-6"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex items-center justify-between border-b border-[#232323] pb-3">
+                <p className="text-lg sm:text-xl font-semibold text-white">
+                  Insert Link
+                </p>
 
-              <button
-                onClick={() => setShowLinkModal(false)}
-                className="text-gray-500 hover:text-white text-2xl font-bold transition-colors duration-200"
-              >
-                ×
-              </button>
-            </div>
+                <button
+                  onClick={() => setShowLinkModal(false)}
+                  className="text-gray-500 hover:text-white text-2xl font-bold transition-colors duration-200"
+                >
+                  ×
+                </button>
+              </div>
 
-            <div className="py-5">
-              <input
-                type="text"
-                placeholder="https://example.com"
-                value={linkUrl}
-                onChange={(e) => setLinkUrl(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && insertLink()}
-                autoFocus
-                className="w-full bg-[#232323] text-white px-4 py-3 rounded-lg 
+              <div className="py-5">
+                <input
+                  type="text"
+                  placeholder="https://example.com"
+                  value={linkUrl}
+                  onChange={(e) => setLinkUrl(e.target.value)}
+                  onKeyDown={(e) => e.key === "Enter" && insertLink()}
+                  autoFocus
+                  className="w-full bg-[#232323] text-white px-4 py-3 rounded-lg 
         outline-none focus:ring-2 focus:ring-blue-600 
         transition-all duration-200"
-              />
+                />
+              </div>
+
+              <div className="flex justify-between items-center">
+                {editor.isActive("link") && (
+                  <button
+                    className="text-red-400 hover:text-red-300 transition-colors duration-200"
+                    onClick={() => {
+                      editor.chain().focus().unsetLink().run();
+                      setShowLinkModal(false);
+                    }}
+                  >
+                    Remove link
+                  </button>
+                )}
+
+                <div className="flex gap-2 ml-auto">
+                  <button
+                    className="px-4 py-2 rounded-lg bg-[#232323] text-white hover:bg-[#2a2a2a] transition-colors duration-200"
+                    onClick={() => setShowLinkModal(false)}
+                  >
+                    Cancel
+                  </button>
+
+                  <button
+                    className="px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition-colors duration-200"
+                    onClick={insertLink}
+                  >
+                    Insert
+                  </button>
+                </div>
+              </div>
             </div>
+          </div>
+        </ModalPortal>
+      )}
 
-            <div className="flex justify-between items-center">
-              {editor.isActive("link") && (
+      {/* ── Image modal ── */}
+      {showImageModal && (
+        <ModalPortal>
+          <div
+            className="fixed inset-0 z-1100 flex items-center justify-center bg-white/10 backdrop-blur-sm"
+            onClick={() => setShowImageModal(false)}
+          >
+            <div
+              className="relative w-96 mx-3 bg-[#181818] rounded-2xl shadow-xl border border-[#232323] p-5 sm:p-6"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex items-center justify-between border-b border-[#232323] pb-3">
+                <p className="text-lg sm:text-xl font-semibold text-white">
+                  Insert Image
+                </p>
+
                 <button
-                  className="text-red-400 hover:text-red-300 transition-colors duration-200"
-                  onClick={() => {
-                    editor.chain().focus().unsetLink().run();
-                    setShowLinkModal(false);
-                  }}
+                  onClick={() => setShowImageModal(false)}
+                  className="text-gray-500 hover:text-white text-2xl font-bold transition-colors duration-200"
                 >
-                  Remove link
+                  ×
                 </button>
-              )}
+              </div>
 
-              <div className="flex gap-2 ml-auto">
+              <div className="py-5">
+                <input
+                  type="text"
+                  placeholder="https://example.com/image.jpg"
+                  value={imageUrl}
+                  onChange={(e) => setImageUrl(e.target.value)}
+                  onKeyDown={(e) => e.key === "Enter" && insertImage()}
+                  autoFocus
+                  className="w-full bg-[#232323] text-white px-4 py-3 rounded-lg 
+        outline-none focus:ring-2 focus:ring-blue-600 
+        transition-all duration-200"
+                />
+              </div>
+
+              <div className="flex justify-end gap-2">
                 <button
                   className="px-4 py-2 rounded-lg bg-[#232323] text-white hover:bg-[#2a2a2a] transition-colors duration-200"
-                  onClick={() => setShowLinkModal(false)}
+                  onClick={() => setShowImageModal(false)}
                 >
                   Cancel
                 </button>
 
                 <button
                   className="px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition-colors duration-200"
-                  onClick={insertLink}
+                  onClick={insertImage}
                 >
                   Insert
                 </button>
               </div>
             </div>
           </div>
-        </div>
-      )}
-
-      {/* ── Image modal ── */}
-      {showImageModal && (
-        <div
-          className="fixed inset-0 flex items-center justify-center bg-white/10 backdrop-blur-sm"
-          onClick={() => setShowImageModal(false)}
-        >
-          <div
-            className="relative w-96 mx-3 bg-[#181818] rounded-2xl shadow-xl border border-[#232323] p-5 sm:p-6"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="flex items-center justify-between border-b border-[#232323] pb-3">
-              <p className="text-lg sm:text-xl font-semibold text-white">
-                Insert Image
-              </p>
-
-              <button
-                onClick={() => setShowImageModal(false)}
-                className="text-gray-500 hover:text-white text-2xl font-bold transition-colors duration-200"
-              >
-                ×
-              </button>
-            </div>
-
-            <div className="py-5">
-              <input
-                type="text"
-                placeholder="https://example.com/image.jpg"
-                value={imageUrl}
-                onChange={(e) => setImageUrl(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && insertImage()}
-                autoFocus
-                className="w-full bg-[#232323] text-white px-4 py-3 rounded-lg 
-        outline-none focus:ring-2 focus:ring-blue-600 
-        transition-all duration-200"
-              />
-            </div>
-
-            <div className="flex justify-end gap-2">
-              <button
-                className="px-4 py-2 rounded-lg bg-[#232323] text-white hover:bg-[#2a2a2a] transition-colors duration-200"
-                onClick={() => setShowImageModal(false)}
-              >
-                Cancel
-              </button>
-
-              <button
-                className="px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition-colors duration-200"
-                onClick={insertImage}
-              >
-                Insert
-              </button>
-            </div>
-          </div>
-        </div>
+        </ModalPortal>
       )}
     </div>
   );
