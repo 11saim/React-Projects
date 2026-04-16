@@ -48,7 +48,7 @@ export default function NotesFolder({
     };
 
     fetchData();
-  }, [folderState.activeFolder, folderState.folders]);
+  }, [folderState.activeFolder, folderState.folders, noteDispatch, folderDispatch]);
 
   return (
     <>

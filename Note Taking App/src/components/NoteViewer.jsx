@@ -31,10 +31,10 @@ export default function NoteViewer() {
       (n) => n._id === noteState.activeNote,
     );
     if (updatedNote) {
-      const { folder, ...rest } = updatedNote;
+      const { ...rest } = updatedNote;
       setNoteDetails((prev) => ({ ...prev, ...rest }));
     }
-  }, [noteState.notes.notes]);
+  }, [noteState.notes.notes, noteState.activeNote]);
 
   useEffect(() => {
     if (!noteDetails.folder || !folderState.folders?.length) return;
@@ -44,7 +44,7 @@ export default function NoteViewer() {
     if (updatedFolder) {
       setNoteDetails((prev) => ({ ...prev, folder: updatedFolder }));
     }
-  }, [folderState.folders]);
+  }, [folderState.folders, noteDetails.folder]);
 
   return !noteState.activeNote ? (
     <div className="space-y-3 flex justify-center items-center flex-col w-full sm:w-[60%] bg-[#181818] text-white p-5 lg:p-10 min-h-screen h-auto">

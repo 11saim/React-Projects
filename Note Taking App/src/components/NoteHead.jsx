@@ -39,8 +39,8 @@ export default function NoteHead({ note }) {
         isSearchFolder
           ? body.status === "trash"
           : ["active", "trash", "archived"].includes(body.status) ||
-            body.isFavourite === true ||
-            body.isFavourite === false
+          body.isFavourite === true ||
+          body.isFavourite === false
       ) {
         noteDispatch({ type: "REMOVE_NOTE", payload: noteId });
 

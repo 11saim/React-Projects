@@ -27,6 +27,13 @@ export default function Model({
 
           <div className="py-5">
             <input
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  handler();
+                  setIsModal(false);
+                }
+              }}
+              autoFocus
               ref={inputRef}
               type="text"
               placeholder="Enter Here"

@@ -4,6 +4,7 @@ export const FolderContext = createContext();
 
 const initialState = {
   activeFolder: "",
+  searchedNote: "",
   folders: null,
   trashedFolders: [],
   deleteAlert: null,
@@ -12,7 +13,14 @@ const initialState = {
 const folderReducer = (state, action) => {
   switch (action.type) {
     case "SET_ACTIVE_FOLDER":
-      return { ...state, activeFolder: action.payload };
+      return {
+        ...state,
+        activeFolder: action.payload,
+        searchedNote: action.payload === "Search" ? state.searchedNote : "",
+      };
+
+    case "SET_SEARCHED_NOTE":
+      return { ...state, searchedNote: action.payload };
 
     case "SET_FOLDERS":
       return { ...state, folders: action.payload || [] };
